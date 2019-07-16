@@ -6,5 +6,11 @@ ErrorDocument 403 /wwwroot/templates/error/403
 
 RewriteEngine on
 
-RewriteCond %{REQUEST_URI} !-f
-RewriteRule .* %{REQUEST_URI}.php [END]
+RewriteCond "%{REQUEST_URI}" "/$"
+RewriteRule ".*" "%{REQUEST_URI}/index" [END]
+
+RewriteCond "%{REQUEST_URI}" "\.php$"
+RewriteRule ".*" - [R=404,END]
+
+RewriteCond "%{REQUEST_URI}" !-f 
+RewriteRule ".*" "%{REQUEST_URI}.php" [END]
