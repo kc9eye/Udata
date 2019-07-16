@@ -9,17 +9,17 @@ ErrorDocument 403 /wwwroot/templates/error/403
 RewriteEngine on
 
 #Prevents data directory access, but allows direct link file access
-RewriteRule ^data/?$ [R=404,END]
+#RewriteRule ^data/?$ [R=404,END]
 
 #This rewrties the host to remove the domain and redirect to intranet IP address
-RewriteCond %{HTTP_HOST} ^[A-Za-z]+
-RewriteRule .* http://%{SERVER_ADDR}%{REQUEST_URI} [R=301,END]
+#RewriteCond %{HTTP_HOST} ^[A-Za-z]+
+#RewriteRule .* http://%{SERVER_ADDR}%{REQUEST_URI} [R=301,END]
 
 #Prevents access to none controller directories
-RewriteRule .*/class/.* - [R=403,END]
-RewriteRule .*/etc/.* - [R=403,END]
-RewriteRule .*/lib/.* - [R=403,END]
-RewriteRule .*/models/.* - [R=403,END]
+#RewriteRule .*/class/.* - [R=403,END]
+#RewriteRule .*/etc/.* - [R=403,END]
+#RewriteRule .*/lib/.* - [R=403,END]
+#RewriteRule .*/models/.* - [R=403,END]
 
 #This catches /dir/dir/monkey to /dir/dir/monkey.php
 RewriteCond %{REQUEST_URI} !-f
