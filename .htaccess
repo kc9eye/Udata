@@ -1,8 +1,8 @@
 #Prevents directory listings
 Options -Indexes
 
-ErrorDocument 404 /udata/wwwroot/templates/error/404
-ErrorDocument 403 /udata/wwwroot/templates/error/403
+ErrorDocument 404 /wwwroot/templates/error/404
+ErrorDocument 403 /wwwroot/templates/error/403
 
 #URI Rewriting
 ######################################################
@@ -22,8 +22,8 @@ RewriteRule .*/lib/.* - [R=403,END]
 RewriteRule .*/models/.* - [R=403,END]
 
 #This catches /dir/dir/monkey to /dir/dir/monkey.php
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.php -f
+RewriteCond %{REQUEST_URI} !-f
+RewriteCond %{REQUEST_URI}.php -f
 RewriteRule .* %{REQUEST_URI}.php [END]
 
 #This catches /dir, /dir/ to /dir/index.php
