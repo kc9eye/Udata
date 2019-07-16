@@ -31,5 +31,5 @@ RewriteCond %{REQUEST_URI} ^(.*)/$
 RewriteRule /$ %{REQUEST_URI}index.php [END]
 
 #This catches any URI ending with .php and returns 404
-RewriteCond %{REQUEST_URI} ^(.*)\.php$
-RewriteRule \.php$ - [R=404,END]
+#RewriteCond %{REQUEST_URI} ^(.*)\.php$
+#RewriteRule \.php$ - [R=404,END]
