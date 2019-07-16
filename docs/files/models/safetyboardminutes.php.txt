@@ -1,0 +1,102 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/**
+ * SafetyBoardMinutes Class Model
+ * 
+ * @package UData\Models\Database\Postgres
+ * @link https://kc9eye.github.io/udata/UData_Database_Structure.html
+ * @author Paul W. Lane
+ * @license GPLv2
+ */
+class SafetyBoardMinutes {
+
+    protected $dbh;
+    protected $storage;
+
+    public function __construct ($dbh, $storage) {
+        $this->dbh = $dbh;
+        $this->storage = $storage;
+    }
+
+    public function addNewSBMFile ($data) {
+        try {
+            $indexer = new FileIndexer($this->dbh, $this->storage);
+            $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
+
+            if (($res = $indexer->indexFiles($upload, $data['uid'])) === false) {
+                throw new Exception('Indexer failed to index files');
+            }
+
+            $insert = [
+                ':id'=>uniqid(),
+                ':date'=>$data['date'],
+                ':uid'=>$data['uid'],
+                ':fid'=>$res[0]
+            ];
+            $pntr = $this->dbh->prepare('INSERT INTO sbm VALUES (:id,:date,:uid,:fid)');
+            if (! $pntr->execute($insert)) {
+                throw new Exception('Failed to insert data');
+            }
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+            return false;
+        } 
+    }
+
+    public function deleteSBMFileEntry ($data) {
+        try {
+            $indexer = new FileIndexer($this->dbh, $this->storage);
+            $del = explode(':', $data['ref']);
+            $pntr = $this->dbh->prepare('DELETE FROM sbm WHERE id = ?');
+            if ($indexer->removeIndexedFiles($indexer->getIndexByID($del[1])) === false) {
+                throw new Exception('Indexer falied to remove file');
+            }
+            elseif (!$pntr->execute([$del[0]])) {
+                throw new Exception('Filed to remove database entry');
+            }   
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARING);
+            return false;
+        }
+    }
+
+    public function getListing () {
+        try {
+            $sql = 'SELECT sbm.id, sbm.meeting_date, sbm.fid, file_index.file as file
+                    FROM sbm
+                    INNER JOIN file_index ON sbm.fid = file_index.id
+                    ORDER BY sbm.meeting_date DESC';
+            if (($pntr = $this->dbh->query($sql)) === false) {
+                throw new Exception('Failed to retrieve data listsing');
+            }
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOExection $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+}

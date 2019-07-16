@@ -1,0 +1,712 @@
+<?php
+/* This file is part of Udata.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/**
+ * The application interface widgets
+ * 
+ * Creates the main interface in a consistent manner.
+ * 
+ * This class can be used stand alone, however it is best instanitated with the 
+ * Instance class. In so doing all the heavy lifting is done for you.
+ * @package UData\Framework\UI\Boostrap3
+ * @see Instance::getViewer()
+ * @uses Security
+ * @uses config.php
+ * @author Paul W. Lane
+ */
+Class ViewMaker {
+
+    /**
+     * @var Array Contains an array of strings used in th ecurrent view. Typically used by a model
+     * to push data to an interface.
+     */
+    public $ViewData;
+    /**
+     * @var Array Contains an array of strings which are typically used on a per page basis
+     */
+    public $PageData;
+    /**
+     * @var Security Contains the security object given from the server Instance.
+     * @see Security
+     */
+    protected $security;
+    /**
+     * @var Boolean Switch used to deteremine if the current interface view has a side navigation bar.
+     * `true` if side navigation is present, `false` otherwise.
+     * @see ViewMaker::sideDropDownMenu()
+     * @see ViewMaker::offCanvasSideNav()
+     */
+    protected $sideNav;
+    /**
+     * @var Array Contains the configuration variables array received from the main Instance
+     * @uses config.php
+     */
+    protected $config;
+
+    /**
+     * Class constructor
+     * @param Security $security Optional, but not very useful without.
+     * @param Array $config The configuration variables array.
+     * @uses Security
+     * @see Instance::getViewer()
+     * @return ViewMaker
+     */
+    public function __construct (Security $security = null, $config) {
+        $this->security = $security;
+        $this->config = $config;
+        $this->sideNav = false;
+        $this->PageData['approot'] = $config['application-root'];
+        $this->PageData['wwwroot'] = $config['application-root'].'/wwwroot';
+        $this->PageData['companyName'] = $config['company-name'];
+        $this->PageData['companyMotto'] = $config['company-motto'];
+        $this->PageData['navbarBrand'] = $config['home-name'];
+    }
+
+    /**
+     * The interface header.
+     * 
+     * Ouputs the beginning of the interface view to the stream.
+     * @return Void
+     * @uses ViewMaker::sideNav
+     * @uses ViewMaker::navBar()
+     * @todo rewrite to use `echo` instead of hard coded html
+     */
+    public function header () {
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><?php echo $this->ViewData['pagetitle'];?></title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="Copyright" content="2018 Paul W. Lane" />
+        <meta name="License" content="MIT" />
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="<?php echo $this->PageData['wwwroot'];?>/images/favicons/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="<?php echo $this->PageData['wwwroot'];?>/css/dark-header.css" />
+        <link rel="stylesheet" href="<?php echo $this->PageData['wwwroot'];?>/css/print.css" />
+        <link rel="apple-touch-icon" sizes="57x57" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo $this->PageData['wwwroot'];?>/scripts/manifest.json">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="<?php echo $this->PageData['wwwroot'];?>/scripts/header.js"></script>
+        <?php
+        if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
+            foreach($this->PageData['headinserts'] as $insert) {
+                echo "{$insert}\n";
+            }
+        }
+        ?>
+    </head>
+    <body>
+        <div class='page-header' id='template-header'>
+            <h1><?php echo $this->PageData['companyName'];?></h1>
+            <span>
+                <?php echo $this->PageData['companyMotto'];?>
+            </span>
+        </div>
+        <?php $this->navBar();?>
+        <div class="container-float view-content">
+<?php
+    }
+
+    /**
+     * Outputs the interface view footer.
+     * 
+     * Closes the interface content section, once the view is complete.
+     * You are responsible for closing the view after your content.
+     * 
+     * @param Array $script_links Optional array of hyperlinks to add as script files
+     * that may be required for you content.
+     * @uses ViewMaker::sideNav
+     * @return Void
+     */
+    public function footer (Array $script_links = null) {
+        if ($this->sideNav) {
+            echo "</div></div>\n";
+        }
+        echo "</div>\n";
+        if (!empty($_SESSION['controller-security'])) {
+            echo "<div class='panel panel-default' id='admin-perms'>\n";
+            echo "<div class='panel-heading'>\n";
+            echo htmlentities('Roles & Permissions on this Page');
+            echo "</div><div class='panel-body'>\n";
+            $displayed = null;
+            foreach($_SESSION['controller-security'] as $i=>$y) {
+                if ($i == 'required') {
+                    echo "<strong>Required for Access:</strong>\n";
+                    echo "<ul class='list-group'>\n";
+                    echo "<li class='list-group-item'>{$y}</li>\n";
+                    echo "</ul>\n";
+                }
+                if ($i == 'roles') {
+                    echo "<strong>Page Access Roles:</strong>\n";
+                    echo "<ul class='list-group'>\n";
+                    foreach($_SESSION['controller-security']['roles'] as $role) {
+                        if ($role == $displayed) continue;
+                        echo "<li class='list-group-item'>{$role}</li>\n";
+                        $displayed = $role;
+                    }
+                    echo "</ul>\n";
+                }
+                if ($i == 'permissions') {
+                    echo "<strong>Page Access Permissions:</strong>\n";
+                    echo "<ul class='list-group'>\n";
+                    foreach($_SESSION['controller-security']['permissions'] as $perm) {
+                        if ($perm == $displayed) continue;
+                        echo "<li class='list-group-item'>{$perm}</li>\n";
+                        $displayed = $perm;
+                    }
+                    echo "</ul>\n";
+                }
+            }
+            echo "</div></div>\n";
+            unset($_SESSION['controller-security']);
+        }
+        echo "<div class='footer'>\n";
+        echo "UData v".APP_VERSION." Copyright (C) 2008-2018 Paul W. Lane";
+        $this->insertTab(2);
+        echo "<a href='{$this->config['error-support-link']}' target='_blank'>Problem with this page?</a>\n";
+        echo "</div>\n";
+        if (!is_null($script_links)) {
+            foreach($script_links as $link) {
+                echo "<script src='".$link."'></script>\n";
+            }
+        }
+        echo "</body>\n</html>\n";
+    }
+
+    /**
+     * Generates the upper interface view navigation bar.
+     * 
+     * This method should not be called standalone as the `ViewMaker::header()`
+     * method calls it as part of the standard interface. It is a seperate method
+     * only as it would make the header method overly complex.
+     * @uses ViewMaker::PageData
+     * @uses ViewMaker::ViewData
+     * @uses ViewMaker::security
+     * @uses ViewMaker::config
+     * @return Void
+     */
+    public function navBar () {
+?>
+<nav class='navbar navbar-inverse'>
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class='navbar-brand' href='<?php if (empty($this->PageData['approot'])){echo '/';} else {echo $this->PageData['approot'];}?>'>
+                <?php echo $this->PageData['navbarBrand'];?>
+            </a>
+        </div>
+        <div class='collapse navbar-collapse' id='myNavbar'>
+            <ul class='nav navbar-nav'>
+                <?php foreach($this->config['navbar-links'] as $label=>$link) {
+                    if (is_string($link))
+                        echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+                    elseif (is_array($link)) {
+                        if ($link[1]) 
+                            echo "<li><a href='{$link[0]}'>{$label}</a></li>\n";
+                        else
+                            echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+                    }
+
+                }
+                ?>
+            </ul>
+            <ul class='nav navbar-nav navbar-right'>
+            <?php
+                if (!is_null($this->security->secureUserID)) {
+                    $username = is_null($this->security->user['firstname']) ? $this->security->user['email'] : $this->security->user['firstname'];
+                    echo "          <li class='dropdown'>\n";
+                    echo "              <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$username."&#160;<span class='caret'></span></a>\n";
+                    echo "              <ul class='dropdown-menu'>\n";
+                    if ($this->security->userHasPermission('adminAll')) {
+                        echo "                  <li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>\n";
+                    }
+                    echo "                  <li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>\n";
+                    echo "                  <li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>\n";
+                    echo "              </ul>\n";
+                    echo "          </li>\n";
+                }
+                else {
+                    #$_SESSION['login-redirect'] = $_SERVER['REQUEST_URI']; This can't be implemented until after migration from 3.10. 
+                    echo "          <li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>\n";
+                    echo "          <li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>\n";
+                }
+            ?>
+            </ul>
+        </div>
+    </div>
+</nav>
+<?php        
+    }
+
+    /**
+     * Generates an off canvas sliding navigation bar.
+     * 
+     * This method of navigation is optional and has been given up
+     * for the cleaner looking, on mobile, method of ViewMaker::sideDropDownMenu().
+     * it can however still be used per preference.
+     * @uses ViewMaker::sideNav
+     * @param Array $navLinks Optional indexed string array of navigation links. 
+     * The array should be indexed as such: `link_text=>link_address`.
+     * @return Void
+     */
+    public function offCanvasSideNav (Array $navLinks = null) {
+        $this->sideNav = true;
+        echo "<div class='row'>\n";
+        echo "<div class='col-md-1 col-xs-12'>\n";
+        echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>\n";
+        echo "Menu<br />";
+        echo "<span class='glyphicon glyphicon-forward'></span>\n";
+        echo "</button>\n";
+        echo "<div id='offCanvasSideNav' class='offCanvasSideNav'>\n";
+        echo "<a href='javascript:void(0)' class='closebtn' id='offCanvasSideNavClose'>&times;</a>\n";
+        echo "<div class='offCanvasSideNavContent'>\n";
+        if (!is_null($navLinks)) {
+            foreach($navLinks as $link => $url) {
+                if (is_array($url)){
+                    if ($this->security->userHasPermission($url[1])) {
+                        echo "<a href='{$url[0]}'>{$link}</a>\n";
+                    }
+                }
+                else {
+                    echo "<a href='{$url}'>{$link}</a>\n";
+                }
+            }
+        }
+        echo "</div>\n";
+        echo "</div>\n";
+        echo "</div>\n";
+        echo "<div class='col-md-11 col-xs-12'>\n";        
+    }
+
+    /**
+     * Simple debugging interface method
+     * 
+     * Generates a scrollable `<pre>` section to the output
+     * stream with whatever string is given to the `$debug`
+     * variable.
+     * @param String @debug What ever you want output to the stream inside
+     * a scrollable pre section.
+     * @return Void
+     */
+    public function preDebug ($debug) {
+        echo "<pre class='pre-scrollable'>{$debug}</pre><br />";
+    }
+
+    /**
+     * Generates the left side drop down navigation menu.
+     * 
+     * Outputs a side navaigation drop down menu to the stream.
+     * Same parameters as ViewMaker::offCanvasSideNav(). Cleaner look
+     * on mobile than off canvas though.
+     * @param Array $links An indexed array in the form `link_text=>link_address`
+     * @see ViewMaker::offCanvasSideNav()
+     * @uses ViewMaker::sideNav
+     * @return Void
+     */
+    public function sideDropDownMenu (Array $links) {
+        $this->sideNav = true;
+?>
+<div class='row'>
+    <div class='col-md-2 col-xs-12'>
+        <div class='dropdown'>
+            <button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>
+                Section Menu <span class='caret'></span>
+            </button>
+            <ul class='dropdown-menu'>
+                <?php
+                foreach($links as $item => $info) {
+                    if (is_array($info)) {
+                        if ($this->security->userHasPermission($info[1])) {
+                            echo "<li><a href='{$info[0]}'>{$item}</a></li>\n";
+                        }
+                        else {
+                            echo "<li class='disabled'>{$item}</li>\n";
+                        }
+                    }
+                    else {
+                        echo "<li><a href='{$info}'>{$item}</a></li>\n";
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+    </div>
+    <div class='col-md-10 col-xs-12 view-content'>
+<?php
+    }
+
+    /**
+     * Outputs a file icon image to screen.
+     * 
+     * Based on the filename extension given as parameter
+     * will output an image link to the stream. The images 
+     * icons are the open source icons that are included 
+     * with the Apache Web Server.
+     * @param String $file_name The file name to use to retrieve an icon for.
+     * @return Void
+     */
+    public function getFileIcon ($file_name) {
+        $ext = @pathinfo($file_name, PATHINFO_EXTENSION);
+        $dir = $this->PageData['wwwroot'].'/images/icons';
+        if (!empty($ext)) {
+            switch ($ext) {
+                case 'pdf': $icon = $dir.'/pdf.png';break;
+                case 'odt': $icon = $dir.'/odf6odt.png';break;
+                case 'doc': $icon = $dir.'/odf6odt.png';break;
+                case 'docx': $icon = $dir.'/odf6odt.png';break;
+                case 'ods': $icon = $dir.'/odf6ods.png';break;
+                case 'xls': $icon = $dir.'/odf6ods.png';break;
+                case 'xlsx': $icon = $dir.'/odf6ods.png';break;
+                case 'png': $icon = $dir.'/image2.png';break;
+                case 'bmp': $icon = $dir.'/image2.png';break;
+                case 'gif': $icon = $dir.'/image2.png';break;
+                case 'jpg': $icon = $dir.'/image2.png';break;
+                case 'odp': $icon = $dir.'/odf6odp.png';break;
+                case 'ppt': $icon = $dir.'/odt6odp.png';break;
+                case 'pptx': $icon = $dir.'/odt6odp.png';break;
+                case 'tar': $icon = $dir.'/tar.png';break;
+                case 'tar.gz': $icon = $dir.'/compressed.png';break;
+                case 'gz': $icon = $dir.'/compressed.png';break;
+                case 'zip': $icon = $dir.'/compressed.png';break;
+                case 'iso': $icon = $dir.'/diskimg.png';break;
+                case 'exe': $icon = $dir.'/binary.png';break;
+                case 'txt': $icon = $dir.'/text.png';break;
+                case 'edit': $icon = $dir.'/quill.png';break;
+                default: $icon = $dir.'/unknown.png';break;
+            }
+            return "<img src='{$icon}' alt='[ ? ]' />";
+        }
+        else {
+            return "<img src='{$dir}/unknown.png' alt='[ ? ]' />";
+        }
+    }
+
+    /**
+     * Outputs a scrolltopbutton to the stream
+     * 
+     * Generates a button upon view scrolling that allows the 
+     * user to immediately reach the top of the current view scroll
+     * @return Void
+     */
+    public function addScrollTopBtn () {
+        echo "<button type='button'
+                class='btn btn-lg btn-info'
+                onclick='document.body.scrollTop=0;document.documentElement.scrollTop=0;'
+                id='scrollTopBtn'
+                title='Go to top'
+                style='display:none;position:fixed;bottom:20px;right:30px;z-index:99;'>
+                    <span class='glyphicon glyphicon-arrow-up'></span>&#160;Top
+            </button>
+            <script>
+                $(document).ready(function(){
+                    window.onscroll = function() {
+                        if (document.body.scrollTop > 20||document.documentElement.scrollTop > 20) {
+                            $('#scrollTopBtn').css('display','block');
+                        }
+                        else {
+                            $('#scrollTopBtn').css('display','none');
+                        }
+                    };
+                });
+            </script>";
+    }
+
+    /**
+     * Outputs a standard tab to the stream.
+     * 
+     * Inserts a standardized tab to the stream in the form
+     * of HTML nonbreaking spaces.
+     * @param Int $num Optional, the number of tabs to insert.
+     * @param Boolean $return If true output is returned instead of output to the stream
+     * @return Void
+     */
+    public function insertTab ($num = 1, $return = false) {
+        $tab = '';
+        for ($cnt = 0; $cnt != $num; $cnt++) {
+            $tab .= "&#160;&#160;&#160;";
+        }
+        if ($return) return $tab;
+        else echo $tab;
+    }
+
+    /**
+     * Outputs an HTML horizontal rule to the stream
+     * @return Void
+     */
+    public function hr () {
+        echo "<hr />\n";
+    }
+
+    /**
+     * Outputs an HTML line break to the stream
+     * @return Void
+     */
+    public function br () {
+        echo "<br />\n";
+    }
+
+    /**
+     * Encapsulates `$content` in an HTML heading.
+     * @param String $content The string to encapsulate.
+     * @return Void
+     */
+    public function h1 ($content, $centered=false) {
+        if ($centered) 
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h1>{$content}</h1></div><div class='col-md-3'></div></div>\n";
+        else
+            echo "<h1>{$content}</h1>\n";
+    }
+
+    /**
+     * Ecapsulates `$content` in an HTML heading.
+     * @param String $content The string to encapsulate
+     * @return Void
+     */
+    public function h2 ($content, $centered=false) {
+        if ($centered)
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h2>{$content}</h2></div><div class='col-md-3'></div></div>\n";
+        else
+            echo "<h2>{$content}</h2>\n";
+    }
+
+    /**
+     * Encapsulates `$content` in an HTML heading.
+     * @param String $content The string to encasulate
+     * @return Void
+     */
+    public function h3 ($content, $centered=false) {
+        if ($centered)
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-6'><h3>{$content}</h3></div><div class='col-md-3'></div></div>\n";
+        else
+            echo "<h3>{$content}</h3>\n";
+    }
+
+    /**
+     * Encapsulates `$content` in an HTML strong section.
+     * 
+     * This is an inline method bolding.
+     * @param String $content The string to encapsulate.
+     * @return Void
+     */
+    public function bold ($content) {
+        echo "<strong>{$content}</strong>";
+    }
+
+    /**
+     * Encapsulate `$content` in an HTML paragraph section in the bg-info bootstrap style.
+     * @param String $content The string to be in the paragraph.
+     * @return Void
+     */
+    public function bgInfoParagraph ($content, $centered=false) {
+        if ($centered)
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>\n";
+        else
+            echo "<p class='bg-primary'>{$content}</p>\n";
+    }
+
+    /**
+     * Outputs an edit button that when clicked goes to the given application centric addtress
+     * @param String $addr The application centric API address the user should be sent to.
+     * @param Boolean $passthru If true the address is passed through with alteration.
+     * @param Boolean $return If true the method returns the string instead of echoing it
+     * @return Mixed
+     */
+    public function editBtnSm ($addr, $return = false, $passthru = false) {
+        $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
+        $str = "<a href='{$addr}' class='btn btn-sm btn-warning' role='button'><span class='glyphicon glyphicon-pencil'></span></a>";
+        if ($return) return $str;
+        else echo $str;
+    }
+
+    /**
+     * Outputs a delete button to the stream that when clicked opens the API given
+     * @param String $addr The application centric API address the user should be sent to.
+     * @param Boolean $passthru If true the address is passed through with alteration.
+     * @param Boolean $return If true the method returns the string instead of echoing it
+     * @return Mixed
+     */
+    public function trashBtnSm ($addr, $return = false, $passthru = false) {
+        $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
+        $str = "<a href='{$addr}' class='btn btn-sm btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>";
+        if ($return) return $str;
+        else echo $str;
+    }
+
+    /**
+     * Ouputs the beginnig responsive table preamable to stream.
+     * @param Array $columnHeadings The headings for the table columns if any
+     * @param Boolean $centered Whether or not to include Bootstrap centering
+     * @return Void
+     */
+    public function responsiveTableStart (Array $columnHeadings = null, $centered = false) {
+        if ($centered) {
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><div class='table-responsive'><table class='table'>";
+        }
+        else {
+            echo "<div class='table-responsive'><table class='table'>\n";
+        }
+        if (!is_null($columnHeadings)) {
+            echo "<tr>";
+            foreach($columnHeadings as $heading) {
+                echo "<th>{$heading}</th>";
+            }
+            echo "</tr>\n";
+        }
+    }
+
+    /**
+     * Ouputs the closing responsive table to the stream
+     * @param Boolean $centered Whether to center the table with Bootstrap
+     */
+    public function responsiveTableClose ($centered = false) {
+        if ($centered)
+            echo "</table>\n</div>\n</div><div class='col-md-3'></div></div>\n";
+        else
+            echo "</table></div>\n";
+    }
+
+    /**
+     * Outputs a link formatted as a Bootstrap info button
+     * @param String $link Application centric link for the button
+     * @param String $name The name to display on the button
+     * @param String $type Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'
+     * @param Boolean $return Optional, if set true then the output is returned and not output to the stream buffer
+     * @param String $target Optional target argument to launch new window, default is '_self'
+     * @param Boolean $passthru Optional, if set true then the link is passed through unaltered.
+     * @return Mixed Either a String if $return is true or Void otherwise
+     */
+    public function linkButton ($link ,$name, $type = null, $return=false, $target='_self', $passthru=false) {
+        $link = $passthru ? $link : $this->PageData['approot'].$link;
+        $class = 'btn ';
+        if (!is_null($type)) {
+            switch($type) {
+                case 'default': $class .= 'btn-default'; break;
+                case 'primary': $class .= 'btn-primary'; break;
+                case 'success': $class .= 'btn-success'; break;
+                case 'info': $class .= 'btn-info'; break;
+                case 'warning': $class .= 'btn-warning'; break;
+                case 'danger': $class .= 'btn-danger'; break;
+                default: $class .= 'btn-info'; break;
+            }
+        }
+        else {
+            $class .= 'btn-info';
+        }
+        $string = "<a href='{$link}' class='{$class}' role='button' target='{$target}'>{$name}</a>\n";
+        if ($return) return $string;
+        else echo $string;
+    }
+
+    /**
+     * Outputs a button and beginning preamble for a collapse section.
+     * 
+     * Everything after this method call output to the stream will
+     * be wrapped in a collapse division until the subsequent `ViewMaker::endBtnCollapse()`
+     * is called.
+     * @param String $id The collapse ID for the button
+     * @param String $name The label name of the collapse button.
+     * @return Void This method outputs to the stream and returns nothing.
+     */
+    public function beginBtnCollapse ($name = 'Show/Hide Content',$id = null) {
+        if (is_null($id)) $id = uniqid();
+        echo "<button data-toggle='collapse' data-target='#{$id}' class='btn btn-default'>{$name}</button>\n";
+        echo "<div id='{$id}' class='collapse'>\n";
+    }
+
+    /**
+     * Outputs the closing button collapse division
+     * @return Void All out put is directed to the stream and returns no value.
+     * @see ViewMaker::beginBtnCollapse()
+     */
+    public function endBtnCollapse () {
+        echo "</div>\n";
+    }
+
+    /**
+     * Inserts a bootstrap well into the stream
+     * 
+     * Adds content encapsulated in a bootstrap well.
+     * @param String $content The content to wrapped in a well
+     * @param Boolean $centered Centers the well on page
+     * @return Void Output is sent directly to the stream and nothing is returned
+     */
+    public function wrapInWell ($content, $centered = false) {
+        if ($centered) {
+            echo "<div class='row'>\n";
+            echo "<div class='col-md-3'></div>\n";
+            echo "<div class='col-xs-12 col-md-6'>\n";
+        }
+        echo "<div class='well'>\n{$content}\n</div>\n";
+        if ($centered) {
+            echo "</div>\n";
+            echo "<div class='col-md-3'></div>\n";
+            echo "</div>\n";
+        }
+    }
+
+    /**
+     * Inserts content wrapped in a bootstrap scrollable '<pre>' section
+     * @param String $content The content to wrap
+     * @return Void Outputs directly to the stream and returns nothing
+     */
+    public function wrapInPre ($content) {
+        echo "<pre class='pre-scrollable'>\n{$content}\n</pre>\n";
+    }
+
+    /**
+     * Inserts a responsive image into the buffer stream, or returns as such.
+     * @param String $file The URI of the image file to insert
+     * @param Boolean $return Optional true if the method should return the image instead of inserting to the stream
+     */
+    public function responsiveImage ($file, $return = false) {
+        $image = "<img class='img-responsive' src='{$file}' alt='[IMAGE]' />";
+        if ($return) return $image;
+        else echo $image;
+    }
+
+    /**
+     * Inserts an image thumbnail to stream, or returns as such
+     * @param String $file The URI of the image file to insert
+     * @param Boolean $return Optional true if the method should return the image instead of inserting to the stream
+     */
+    public function imageThumbnail ($file, $return = false) {
+        $image = "<img class='img-thumbnail' src='{$file}' alt='[IMAGE]' />";
+        if ($return) return $image;
+        else echo $image;
+    }
+}

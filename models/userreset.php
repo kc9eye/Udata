@@ -1,0 +1,132 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/**
+ * UserReset Class Model
+ * 
+ * @package UData\Models\Database\Postgres
+ * @link https://kc9eye.github.io/udata/UData_Database_Structure.html
+ * @author Paul W. Lane
+ * @license GPLv2
+ */
+class UserReset {
+
+    protected $dbh;
+    protected $mailer;
+    protected $config;
+
+    public function __construct (PDO $dbh, Mailer $mailer, Array $config) {
+        $this->dbh = $dbh;
+        $this->mailer = $mailer;
+        $this->config = $config;
+    }
+
+    public function resetPassword ($username) {
+        try {
+            $sql = 'SELECT * FROM user_accts WHERE username = ?';
+            $pntr = $this->dbh->prepare($sql);
+            $pntr->execute([$username]);
+            if (count(($res = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
+                return false;
+            }
+
+            $code = bin2hex(random_bytes(32));
+            $sql = 'INSERT INTO user_accts_holding VALUES (:id,:username,:password,:firstname,:lastname,:alt_email,now(),:verify_code)';
+            $pntr = $this->dbh->prepare($sql);
+            $insert = [
+                ':id'=>$res[0]['id'],
+                ':username'=>$res[0]['username'],
+                ':password'=>'PASSWORD_RESET_IN_PROGRESS',
+                ':firstname'=>$res[0]['firstname'],
+                ':lastname'=>$res[0]['lastname'],
+                ':alt_email'=>$res[0]['alt_email'],
+                ':verify_code'=>hash('sha256',$code)
+            ];
+            $this->dbh->beginTransaction();
+            $pntr->execute($insert);
+
+            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
+            $body .= "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>";
+            $this->mailer->sendMail(['to'=>$res[0]['username'],'subject'=>'Password Reset','body'=>$body]);
+            if (!empty($res[0]['alt_email'])) {
+                $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/twofactorverify.html');
+                $body .= "<a href='{$this->config['error-support-link']}'><strong>Contact Support</strong></a>";
+                $this->mailer->sendMail(['to'=>$res[0]['alt_email'],'subject'=>'Security Notice','body'=>$body]);
+            }
+            $this->dbh->commit();
+            return true;
+        }
+        catch (PDOException $e) {
+            $this->dbh->rollback();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollback();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function finishReset ($data) {
+        try {
+            $code = hash('sha256',$data['verify']);
+            $sql = 'SELECT * FROM user_accts_holding WHERE verify_code = ?';
+            $pntr = $this->dbh->prepare($sql);
+            $pntr->execute([$code]);
+            if (count(($res = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
+                return false;
+            }
+            elseif (!hash_equals($res[0]['verify_code'],$code)) {
+                return false;
+            }
+            $this->dbh->beginTransaction();
+            $pntr = $this->dbh->prepare('UPDATE user_accts SET password = :password WHERE id = :id');
+            $pntr1 = $this->dbh->prepare('DELETE FROM user_accts_holding WHERE verify_code = ?');
+            $pntr->execute([':password'=>password_hash($data['password'],PASSWORD_DEFAULT), ':id'=>$res[0]['id']]);
+            $pntr1->execute([$code]);
+            $this->dbh->commit();
+            return true;
+        }
+        catch (PDOException $e) {
+            $this->dbh->rollback();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollback();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function verifyResetCode ($code) {
+        $code = hash('sha256', $code);
+        $sql = 'SELECT * FROM user_accts_holding WHERE verify_code = ?';
+        $pntr = $this->dbh->prepare($sql);
+        $pntr->execute([$code]);
+        if (count(($res = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
+            return false;
+        }
+        elseif (!hash_equals($res[0]['verify_code'],$code)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+}

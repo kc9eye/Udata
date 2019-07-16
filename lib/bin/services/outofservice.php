@@ -1,0 +1,64 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class outofservice implements Service {
+    private $server;
+    private $data;
+
+    public function __construct (Instance $server) {
+        $this->server = $server;
+        $this->data = array();
+    }
+
+    public function cronjob () {
+        return true;
+    }
+
+    public function kill () {
+        return true;
+    }
+
+    public function run () {
+        $sql = "SELECT * FROM equipment";
+        try {
+            if (!($pntr = $this->server->pdo->query($sql))) throw new Exception("Select failed: {$sql}");
+            $oos = $pntr->fetchAll(PDO::FETCH_ASSOC);
+            unset($pntr);
+            unset($sql);
+
+            $sql = 'INSERT INTO inspections VALUES (:id,:eqid,now(),:uid,:comments)';
+            $pntr = $this->server->pdo->prepare($sql);
+            $this->server->pdo->beginTransaction();
+            foreach($oos as $equip) {
+                $insert = [
+                    ':id'=>uniqid(),
+                    ':eqid'=>$equip['id'],
+                    ':uid'=>$equip['uid'],
+                    ':comments'=>'OUT OF SERVICE'
+                ];
+                $pntr->execute($insert);
+            }
+            $this->server->pdo->commit();
+            return true;
+        }
+        catch (Exception $e) {
+            $this->server->pdo->rollback();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+}

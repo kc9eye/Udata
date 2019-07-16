@@ -1,0 +1,104 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/**
+ * SafetyMedia Class Model
+ * 
+ * @package UData\Models\Database\Postgres
+ * @link https://kc9eye.github.io/udata/UData_Database_Structure.html
+ * @author Paul W. Lane
+ * @license GPLv2
+ */
+class SafetyMedia {
+
+    const MEDIA_GENRE = 'safety';
+
+    protected $dbh;
+    protected $storage;
+
+    public function __construct (PDO $dbh, $storage) {
+        $this->dbh = $dbh;
+        $this->storage = $storage;
+    }
+
+    public function getList () {
+        try {
+            $sql = 'SELECT media.id,media.name,media.genre,media.subgenre,media.fid,file_index.file,file_index.mime
+                    FROM media
+                    INNER JOIN file_index ON media.fid = file_index.id
+                    WHERE media.genre = ?';
+            $pntr = $this->dbh->prepare($sql);
+            $pntr->execute([self::MEDIA_GENRE]);
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function addNewSafetyMedia($data) {
+        try {
+            $sql = 'INSERT INTO media VALUES (:id,:name,now(),:genre,:subgenre,:uid,:fid)';
+            $indexer = new FileIndexer($this->dbh, $this->storage);
+            $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
+            $res = $indexer->indexFiles($upload, $data['uid']);
+            $pntr = $this->dbh->prepare($sql);
+            $insert = [
+                ':id'=>uniqid(),
+                ':name'=>$data['title'],
+                ':genre'=>self::MEDIA_GENRE,
+                ':subgenre'=>'',
+                ':uid'=>$data['uid'],
+                ':fid'=>$res[0]
+            ];
+            if ($res !== false) {
+                return $pntr->execute($insert);
+            }
+            else {
+                throw new Exception('Insert failed');
+            }
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function deleteSafetyMedia ($data) {
+        try {
+            $del = explode(':', $data['ref']);
+            $index = new FileIndexer($this->dbh, $this->storage);
+            $sql = 'DELETE FROM media WHERE id = ?';
+            $pntr = $this->dbh->prepare($sql);
+            if ($index->removeIndexedFiles($index->getIndexByID($del[1]))) {
+                return $pntr->execute([$del[0]]);
+            }
+            else {
+                throw new Exception('Indexer failed to remove the file');
+            }
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARING);
+            return false;
+        }
+    }
+}

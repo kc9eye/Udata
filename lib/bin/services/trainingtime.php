@@ -1,0 +1,151 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class trainingtime implements Service {
+    private $server;
+    private $data;
+
+    public function __construct (Instance $server) {
+        $this->server = $server;
+        $this->data = array();
+    }
+
+    public function run () {
+        try {
+            if (!$this->elapsedTraining()) throw new Exception("Failed to gather elapsed training data.");
+            if (!$this->requiredTraining()) throw new Exception("Failed to gather required training data.");
+            if (!$this->mail()) throw new Exception("Failed to send notifications.");
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function kill () {
+        return true;
+    }
+
+    public function cronjob () {
+        return true;
+    }
+
+    private function elapsedTraining () {
+        $sql = 
+        "SELECT 
+            (
+                SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                FROM profiles
+                WHERE id = a.pid
+            ) AS name,
+            emp_training.train_date AS train_date,
+            (
+                SELECT description FROM training WHERE id = emp_training.trid
+            ) AS training
+        FROM employees AS a
+        INNER JOIN emp_training ON emp_training.eid = a.id
+        INNER JOIN training ON emp_training.trid = training.id
+        WHERE 
+            (
+                reoccur_time_frame != '00:00:00' AND
+                CURRENT_DATE >= (emp_training.train_date + training.reoccur_time_frame)
+            )";
+        try {
+            $pntr = $this->server->pdo->prepare($sql);
+            if (!$pntr->execute()) throw new Exception("SELECT failed: {$sql}");
+            foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                array_push($this->data, $row);
+            }
+            return true;
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    private function requiredTraining () {
+        $required_sql = 'SELECT id FROM training WHERE required is true';
+        $active_sql = 'SELECT id FROM employees WHERE end_date IS NULL';
+        $search_sql = 'SELECT * FROM emp_training WHERE eid = :eid AND trid = :trid';
+        $data_sql = 
+            "SELECT
+                (
+                    SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                    FROM profiles
+                    INNER JOIN employees ON employees.pid = profiles.id
+                    WHERE employees.id = :eid
+                ) as name,
+                'Required' as train_date,
+                (
+                    SELECT description
+                    FROM training
+                    WHERE id = :trid
+                ) as training";
+
+        try {
+            $required_pntr = $this->server->pdo->prepare($required_sql);
+            $active_pntr = $this->server->pdo->prepare($active_sql);
+            $search_pntr = $this->server->pdo->prepare($search_sql);            
+            $data_pntr = $this->server->pdo->prepare($data_sql);
+
+            if (!$required_pntr->execute()) throw new Exception("Select failed: {$required_sql}");
+            if (!$active_pntr->execute()) throw new Exception("Select failed: {$active_sql}");
+            $required_training = $required_pntr->fetchAll(PDO::FETCH_ASSOC);
+            $active_employees = $active_pntr->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach($active_employees as $row) {
+                foreach($required_training as $required) {                    
+                    if (!$search_pntr->execute([':eid'=>$row['id'],':trid'=>$required['id']]))
+                        throw new Exception("Select failed: {$search_sql}");
+                    if (empty($search_pntr->fetchAll(PDO::FETCH_ASSOC))) {
+                        if (!$data_pntr->execute([':eid'=>$row['id'],':trid'=>$required['id']]))
+                            throw new Exception("Select failed: {$data_sql}");
+                            array_push($this->data,$data_pntr->fetchAll(PDO::FETCH_ASSOC)[0]);
+                    }
+                }
+            }
+            return true;
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    private function mail () {
+        $body = "<h1><img src='/favicons/favicon-16x16.png' />UData</h1>\n";
+        $body .= "<h2>Retraining Time Frame Elapsed For:</h2>\n";
+        $body .= "<table border='1'>\n";
+        $body .= "<tr><th>Name</th><th>Training</th><th>Last Training Date</th></tr>\n";
+        foreach($this->data as $row) {
+            $body .= "<tr><td>{$row['name']}</td><td>{$row['training']}</td><td>{$row['train_date']}</td></tr>\n";
+        }
+        $body .= "</table>\n";
+        $notify = new Notification($this->server->pdo,$this->server->mailer);
+        return $notify->notify('Reocurring Training','Reocurring Training',$body);
+    }
+}

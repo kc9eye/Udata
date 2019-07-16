@@ -1,0 +1,269 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/**
+ * The framework Error/Exception handler.
+ * 
+ * @package UData\Framework
+ * @author Paul W. Lane
+ * @license GPLv2
+ */
+Class Errorhandler {
+
+    /**
+     * Filepath to the log file
+     * @var String
+     */
+    public $LogFile;
+
+    /**
+     * The XML to be written to the log
+     * @var String
+     */
+    public $ErrorXML;
+
+    /**
+     * The id number of the current error or exception.
+     * @var String
+     */
+    public $ErrorID;
+
+    /**
+     * The support hyperlink to direct users in the event of an error/exception
+     * @var String
+     */
+    public $SupportLink;
+
+    /**
+     * Class constructor
+     * 
+     * Initializes the class and sets the error and exception handlers.
+     * @param String $log_file Optional file path to the log file. If it doesn't
+     * exist, it's creation is attempted.
+     * @param String $support_link Optional hyper link to direct users to bug reporting.
+     * @author Paul W. Lane
+     */
+    public function __construct ($log_file='error_log.xml',$support_link = null) {
+        $this->LogFile = $log_file;
+        $this->SupportLink = $support_link;
+        set_error_handler([$this, 'ErrorHandler']);
+        set_exception_handler([$this, 'ExceptionHandler']);
+    }
+
+    /**
+     * The error/exception handling method
+     * 
+     * Upon error's or exceptions this method is called to handle it.
+     * In the event the error level is either `E_USER_NOTICE || E_USER_WARNING`
+     * the error/exception is logged and script execution continues. Levels higher than
+     * this or unhandled will be logged and the error screen will be outputed to the stream
+     * indicating the error to the user and stopping script execution.
+     * 
+     * @param Int $code The error code/level.
+     * @param String $msg The error message.
+     * @param String $file The file the error occurred.
+     * @param String $line The file line the error occurred.
+     * @param Mixed $trace Can be either a string or array of the error backtrace
+     * @author Paul W. Lane
+     * @return Mixed
+     */
+    public function ErrorHandler ($code,$msg,$file,$line,$trace) {
+        if (isset($_SESSION['bg_process'])) {
+            $_SESSION['bg_process']['status'] = 'error';
+        }
+        if (!is_null($trace) && is_array($trace)) {
+            $trace = htmlentities(print_r($trace,true));
+        }
+        else {
+            $trace = htmlentities($trace);
+        }
+        $this->PrepareXML($code,$msg,$file,$line,$trace);
+        $this->WriteLog ();
+        if (($code === E_USER_NOTICE) || ($code === E_USER_WARNING)) {
+            return true;
+        }
+        elseif(isset($_SESSION['bg_process']) && $_SESSION['bg_process']['status'] == 'error') {
+            #deferr the blue screen of death and let processingDialog() handle it
+            return true;
+        }
+        else {
+            $this->DisplayErrorScreen();
+            die();
+        }
+    }
+
+    /**
+     * The exception handler
+     * 
+     * In the event of an exception this method is called. However,
+     * this method merely calls the `ErrorHandler()` method.
+     * 
+     * @param Exception $e The exception object thrown.
+     * @author Paul W. Lane
+     * @return Mixed
+     */
+    public function ExceptionHandler ($e) {
+        $this->ErrorHandler(
+            $e->getCode(),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine(),
+            $e->getTraceAsString()
+        );
+    }
+
+    /**
+     * This method prepares the XML for writing to the log.
+     * 
+     * It sets the `ErrorXML` property.
+     * @param Int $code
+     * @param String $msg
+     * @param String $file
+     * @param String $line
+     * @param Mixed $trace
+     * @author Paul W. Lane
+     */
+    protected function PrepareXML ($code, $msg, $file, $line, $trace = null) {
+        $this->ErrorID = uniqid('ERR_');
+        $xml = '<error><id>'.$this->ErrorID.'</id>';
+        $xml .= '<date>'.date('c').'</date>';
+        $xml .= '<number>'.$code.'</number>';
+        $xml .= '<message><![CDATA['.$msg.']]></message>';
+        $xml .= '<file><![CDATA['.$file.']]></file>';
+        $xml .= '<line>'.$line.'</line>';
+        if (!is_null($trace)) {
+            $xml .= '<trace><![CDATA['.$trace.']]></trace>';
+        }
+        $xml .= '</error>';
+        $this->ErrorXML = $xml;
+    }
+
+    /**
+     * This is a buffer method.
+     * 
+     * This method determines which method will write the log to the 
+     * error log based on whether or not it exists.
+     * 
+     * @return Void
+     * @author Paul W. Lane
+     */
+    protected function WriteLog () {
+        if (file_exists($this->LogFile)) {
+            $this->AppendLog();
+        }
+        else {
+            $this->CreateLog();
+        }
+    }
+
+    /**
+     * Append the current error to the log file
+     * 
+     * This method appends the current error the already
+     * existsing error log file.
+     * @return Void
+     * @author Paul W. Lane
+     */
+    protected function AppendLog () {
+        $fh = fopen($this->LogFile, 'c');
+        flock($fh,LOCK_EX);
+        fseek($fh,-13,SEEK_END);
+        fwrite($fh,$this->ErrorXML);
+        fwrite($fh,"\n</error_log>\n");
+        flock($fh,LOCK_UN);
+        fclose($fh);
+    }
+
+    /**
+     * Creates the log file
+     * 
+     * This method creates the log file if it does not
+     * exists and appends the current error to it.
+     * @return void
+     * @author Paul W. Lane
+     */
+    protected function CreateLog () {
+        $fh = fopen($this->LogFile, 'w');
+        flock($fh,LOCK_EX);
+        fwrite($fh,"<?xml version='1.0' ?>\n");
+        fwrite($fh,"<error_log>\n");
+        fwrite($fh,$this->ErrorXML);
+        fwrite($fh,"\n</error_log>\n");
+        flock($fh,LOCK_UN);
+        fclose($fh);
+    }
+
+    /**
+     * Ouputs an error interface to the stream and stops script execution.
+     * 
+     * @return Void
+     * @author Paul W. Lane
+     */
+    public function DisplayErrorScreen () {
+        unset($_SESSION);
+        $oldbuff = ob_get_contents();
+        ob_clean();
+        
+        if (is_null($this->SupportLink) || $this->SupportLink == '') {
+            $this->SupportLink = 'mailto:webadmin@'.$_SERVER['SERVER_NAME'].'?Subject:'.$this->ErrorID;
+        }
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fatal Exception</title>
+        <style>
+            html, body, .container {
+                background-color:blue;
+                color:white;
+                font-size:22px;
+                height:100%;
+            }
+            .container {
+                position: relative;
+            }
+            .centered {
+                position:absolute;
+                top:33%;
+                margin-left:33%;
+                margin-right:33%;
+            }
+            a {
+                color:white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='centered'>
+                <h1>Fatal Exception</h1>
+                <b>ID:</b>&nbsp;<?php echo $this->ErrorID;?><br />
+                <p>
+                    A fatal exception has occurred at: 0x<?php echo dechex(time());?> 
+                    and the application can not continue.
+                    Please use the above reference number when contacting the 
+                    adminstrator about the error. <br />
+                    <b>END OF LINE</b>
+                </p>
+                <a href='<?php echo $this->SupportLink;?>'>Contact Support</a>
+            </div>
+        </div>
+    </body>
+</html>
+<?php
+    }
+}

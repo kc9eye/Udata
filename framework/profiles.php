@@ -1,0 +1,135 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class Profiles {
+    protected $dbh;
+    protected $pid;
+
+    public function __construct (PDO $dbh) {
+        $this->dbh = $dbh;
+        $this->pid = null;
+    }
+
+    /**
+     * Creates a new profile with the given data
+     * @param Array $data The data array in the form:
+     * `['uid'=>string,'first'=>string,'middle'=>string,
+     * 'last=>string,'other'=>string,'email'=>string,'alt_email'=>string,'address'=>string,
+     * 'address_other'=>string,'city'=>string,'state_prov'=>string,'postal_code'=>string,
+     * 'home_phone'=>string,'cell_phone'=>string,'alt_phone'=>string,'e_contact_name'=>string,
+     * 'e_contact_number'=>string,'e_contact_relation'=>string]`
+     * @return Boolean True on success, false otherwise
+     */
+    public function createNewProfile (Array $data) {
+        $sql = 'INSERT INTO profiles VALUES (
+            :id,:first,:middle,:last,:other,:uid,
+            :address,:address_other,:city,:state_prov,:postal_code,
+            :home_phone,:cell_phone,:alt_phone,:email,:alt_email,
+            :e_contact_name,:e_contact_number,:e_contact_relation
+            )';
+            $insert = [
+                ':id'=>uniqid(),
+                ':first'=>$data['first'],
+                ':middle'=>$data['middle'],
+                ':last'=>$data['last'],
+                ':other'=>$data['other'],
+                ':uid'=>$data['uid'],
+                ':address'=>$data['address'],
+                ':address_other'=>$data['address_other'],
+                ':city'=>$data['city'],
+                ':state_prov'=>$data['state_prov'],
+                ':postal_code'=>$data['postal_code'],
+                ':home_phone'=>$data['home_phone'],
+                ':cell_phone'=>$data['cell_phone'],
+                ':alt_phone'=>$data['alt_phone'],
+                ':email'=>$data['email'],
+                ':alt_email'=>$data['alt_email'],
+                ':e_contact_name'=>$data['e_contact_name'],
+                ':e_contact_number'=>$data['e_contact_number'],
+                ':e_contact_relation'=>$data['e_contact_relation']
+            ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
+            $this->pid = $insert[':id'];
+            return true;
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+     /**
+     * Updates a profile with the given data
+     * @param Array $data The data array in the form:
+     * `['uid'=>string,'first'=>string,'middle'=>string,
+     * 'last=>string,'other'=>string,'email'=>string,'alt_email'=>string,'address'=>string,
+     * 'address_other'=>string,'city'=>string,'state_prov'=>string,'postal_code'=>string,
+     * 'home_phone'=>string,'cell_phone'=>string,'alt_phone'=>string,'e_contact_name'=>string,
+     * 'e_contact_number'=>string,'e_contact_relation'=>string]`
+     * @return Boolean True on success, false otherwise
+     */
+    public function updateProfile (Array $data) {
+        $sql = 
+            "UPDATE profiles SET
+                first=:first, middle=:middle, last=:last, other=:other, uid=:uid,
+                address=:address,address_other=:address_other,city=:city,state_prov=:state_prov,postal_code=:postal_code,
+                home_phone=:home_phone,cell_phone=:cell_phone,alt_phone=:alt_phone,
+                email=:email,alt_email=:alt_email,
+                e_contact_name=:e_contact_name,e_contact_number=:e_contact_number,e_contact_relation=:e_contact_relation
+            WHERE id = :pid";
+        $insert = [
+            ':pid'=>$data['pid'],
+            ':first'=>$data['first'],
+            ':middle'=>$data['middle'],
+            ':last'=>$data['last'],
+            ':other'=>$data['other'],
+            ':uid'=>$data['uid'],
+            ':address'=>$data['address'],
+            ':address_other'=>$data['address_other'],
+            ':city'=>$data['city'],
+            ':state_prov'=>$data['state_prov'],
+            ':postal_code'=>$data['postal_code'],
+            ':home_phone'=>$data['home_phone'],
+            ':cell_phone'=>$data['cell_phone'],
+            ':alt_phone'=>$data['alt_phone'],
+            ':email'=>$data['email'],
+            ':alt_email'=>$data['alt_email'],
+            ':e_contact_name'=>$data['e_contact_name'],
+            ':e_contact_number'=>$data['e_contact_number'],
+            ':e_contact_relation'=>$data['e_contact_relation']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception("Failed to update profile.");
+            return true;
+        }
+        catch(PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+}

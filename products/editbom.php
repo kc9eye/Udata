@@ -1,0 +1,100 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+//Source intialization, and check security access
+ require_once(dirname(__DIR__).'/lib/init.php');
+$server->userMustHavePermission('editBOM');
+
+//Controlling section, based on API URL
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'amend':
+            $bom = new BillOfMaterials($server->pdo);
+            $server->processingDialog(
+                [$bom,'amendBOMByID'],
+                [$_REQUEST],
+                $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
+            );
+        break;
+        case 'remove':
+            $bom = new BillOfMaterials($server->pdo);
+            $server->processingDialog(
+                [$bom,'removeMaterialByID'],
+                [$_REQUEST['id']],
+                $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
+            );
+        break;
+        case 'add':
+            $bom = new BillOfMaterials($server->pdo);
+            if (!$bom->verifyMaterialExists($_REQUEST['number'])) 
+                $server->newEndUserDialog(
+                    "This material number does not yet exists, first add it as a valid material.",
+                    DIALOG_FAILURE,
+                    $server->config['application-root'].'/material/addnew'
+                );
+            else 
+                $server->processingDialog(
+                    [$bom,'addendumBOM'],
+                    [$_REQUEST],
+                    $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
+                );
+        break;
+        case 'addendum': addendumDisplay(); break;
+        default: editMaterial(); break;
+    }
+}
+else editMaterial();
+
+//Various displays called by the controlling section
+function editMaterial () {
+    global $server;
+    $bom = new BillOfMaterials($server->pdo);
+    $line = $bom->getMaterialByID($_REQUEST['id']);
+
+    $view = $server->getViewer("BOM: Edit");
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    
+    $view->h1("<small>Material for:</small> {$line['productname']}",true);
+    $form->newForm("<small>Delete From BOM:</small> ".$view->trashBtnSm('/products/editbom?action=remove&id='.$_REQUEST['id'].'&prokey='.$line['prokey'],true));
+    $form->hiddenInput('action','amend');
+    $form->hiddenInput('id',$_REQUEST['id']);
+    $form->hiddenInput('uid',$server->currentUserID);
+    $form->hiddenInput('prokey',$line['prokey']);
+    $form->inputCapture('qty','Qty.',$line['qty'],true,"This is the quatity subtracted from inventory for each of this products units.");
+    $form->labelContent('Number',$line['number']);
+    $form->labelContent('Description',$line['description']);
+    $form->submitForm('Amend',false,$view->PageData['approot'].'/products/bom?prokey='.$line['prokey']);
+    $form->endForm();
+    $view->footer();
+}
+
+function addendumDisplay () {
+    global $server;
+    $product = new Product($server->pdo,$_REQUEST['prokey']);
+    $view = $server->getViewer("BOM: Addendum");
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->h1("<small>Addendum for:</small> {$product->pDescription}",true);
+    $form->newForm("BOM: Addendum");
+    $form->hiddenInput('action','add');
+    $form->hiddenInput('uid',$server->currentUserID);
+    $form->hiddenInput('prokey',$_REQUEST['prokey']);
+    $form->inputCapture('qty','Qty.',null,true);
+    $form->inputCapture('number',htmlentities('Part#'),null,true);
+    $form->submitForm('Add',true);
+    $form->endForm();
+    $view->footer();
+}

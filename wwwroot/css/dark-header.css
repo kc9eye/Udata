@@ -1,0 +1,177 @@
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+/*Main page styling
+/* for IE scroll bar */
+html {
+    -ms-overflow-style: scrollbar;
+    overflow-x: hidden;
+}
+body {
+    position: relative;
+}
+.affix {
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+}
+.navbar {
+    margin-bottom:0px;
+}
+#template-header {
+    margin:0px;
+    padding:10px;
+    background-color:black;
+    color:lightgrey;
+}
+.view-content {
+    padding:10px;
+    min-height:65vh;
+}
+.footer {
+    min-height:25px;
+    background-color:black;
+    color:lightgrey;
+    text-align:center;
+    font-size:small;
+}
+.screen-height {
+    min-height: 65vh;
+}
+.center-block {
+    margin: auto;
+    width: 50%;
+}
+.center-text {
+    text-align: center;
+}
+.right-text {
+    text-align: right;
+}
+.vertical-center {
+    position:relative;
+    top:25vmin;
+}
+
+/* Measuring bars */
+.meter { 
+    height: 25px;  /* Can be anything */
+    position: relative;
+    background: #555;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    padding:5px;
+    border-radius: 25px;
+    box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+
+.meter > span {
+    display: block;
+    height: 100%;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: rgb(43,194,83);
+    background: -webkit-linear-gradient(center bottom, rgb(43,194,83) 37%, rgb(84,240,84) 69%);
+    background: -moz-linear-gradient(center bottom, rgb(43,194,83) 37%, rgb(84,240,84) 69%);
+    background: -o-linear-gradient(center bottom, rgb(43,194,83) 37%, rgb(84,240,84) 69%);
+    background: linear-gradient(center bottom, rgb(43,194,83) 37%, rgb(84,240,84) 69%);
+    box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    color:white;
+    text-align:center;
+    padding-bottom:3px;
+    font-weight:bold;
+}
+
+.orange > span {
+    background-color: #f1a165;
+    background: -webkit-linear-gradient(center bottom, #f1a165, #f36d0a);
+    background: -moz-linear-gradient(center bottom, #f1a165, #f36d0a );
+    background: -o-linear-gradient(center bottom, #f1a165, #f36d0a);
+    background: linear-gradient(center bottom, #f1a165, #f36d0a);
+}
+
+.red > span {
+    background-color: #f0a3a3;
+    background: -webkit-linear-gradient(center bottom, #f0a3a3, #f42323);
+    background: -moz-linear-gradient(center bottom, #f0a3a3, #f42323);
+    background: -o-linear-gradient(center bottom, #f0a3a3, #f42323);
+    background: linear-gradient(center bottom, #f0a3a3, #f42323);
+}
+
+/* The off canvas side menu */
+.offCanvasSideNav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top:0;
+    left: 0;
+    background-color: rgba(0,0,0,0.9);
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+.offCanvasSideNav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.offCanvasSideNav a:hover {
+    color: #f1f1f1;
+}
+
+.offCanvasSideNav .closebtn {
+    position:absolute;
+    top: 0;
+    right: 25px;
+    font-size:36px;
+    margin-left: 50px;
+}
+
+.offCanvasSideNavContent {
+    position: relative;
+    top: 25%;
+    width:100%;
+    text-align:center;
+    margin-top: 30px;
+}
+
+@media screen and (max-height: 450px) {
+    .offCanvasSideNav {
+        padding-top: 15px;
+    }
+    .offCanvasSideNav a {
+        font-size: 18px;
+    }
+    .right-text {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .right-text {
+        text-align: left;
+    }
+}

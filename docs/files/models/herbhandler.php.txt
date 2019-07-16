@@ -1,0 +1,80 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class HerbHandler {
+
+    const FORM_NAME = 'Manlift-Inspection';
+
+    protected $dbh;
+
+    public function __construct (PDO $dbh) {
+        $this->dbh = $dbh;
+    }
+
+    public function logInspection ($data) {
+        try {
+            $sql = 'INSERT INTO inspections VALUES (:id,:name,:version,now(),:uid,:comments,:form_date)';
+            $pntr = $this->dbh->prepare($sql);
+            $insert = [
+                ':id'=>uniqid(),
+                ':name'=>self::FORM_NAME,
+                ':version'=>$data['form_version'],
+                ':uid'=>$data['uid'],
+                ':comments'=>'',
+                ':form_date'=>$data['form_date'],
+            ];
+            $pntr->execute($insert);
+            return true;
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        } 
+        catch (Exception $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+            return false;
+        }
+    }
+
+    public function getInspections () {
+        try {
+            $sql = 'SELECT 
+            inspections.inspection_date,
+            user_accts.firstname || \' \' ||user_accts.lastname as inspector,
+            inspections.form_name,
+            inspections.form_version,
+            inspections.form_date,
+            inspections.comments
+        FROM inspections
+        INNER JOIN user_accts ON user_accts.id = inspections.inspector_uid
+        WHERE inspections.form_name = ?
+        ORDER BY inspections.inspection_date ASC';
+            $pntr = $this->dbh->prepare($sql);
+            $pntr->execute([self::FORM_NAME]);
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+            return false;
+        }
+    }
+
+}

@@ -1,0 +1,71 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class inspectionoverdue implements Service {
+    private $server;
+    private $data;
+
+    public function __construct (Instance $server) {
+        $this->server = $server;
+        $this->data = array();
+    }
+
+    public function cronjob () {
+        return true;
+    }
+
+    public function kill () {
+        return true;
+    }
+
+    public function run () {
+        $sql = 
+            'SELECT
+                (SELECT description FROM equipment WHERE id = a.eqid) AS equipment,
+                a._date
+            FROM inspections AS a
+            INNER JOIN (
+                SELECT eqid,MAX(_date) as MaxDate
+                FROM inspections
+                GROUP BY eqid
+            ) as b ON b.eqid = a.eqid AND b.MaxDate = a._date
+            WHERE now() > (b.MaxDate + (SELECT timeframe FROM equipment WHERE id = a.eqid))';
+        try {
+            $pntr = $this->server->pdo->query($sql);
+            $this->data = $pntr->fetchAll(PDO::FETCH_ASSOC);
+            if (!empty($this->data)) return $this->emailNotification();
+            else return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    private function emailNotification () {
+        $body = "<h1><img src='/favicons/favicon-16x16.png' />UData</h1>\n";
+        $body .= "<h2>Inspections Over Due for Equipment:</h2>\n";
+        $body .= "<table border='1'>\n";
+        $body .= "<tr><th>Equipment</th><th>Last Inspection</th>\n";
+        foreach($this->data as $row) {
+            $body .= "<tr><td>{$row['equipment']}</td><td>{$row['_date']}</td></tr>\n";
+        }
+        $body .= "</table>\n";
+        $notify = new Notification($this->server->pdo,$this->server->mailer);
+        return $notify->notify('Inspection Overdue','Inspection Overdue',$body);
+    }
+}

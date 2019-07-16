@@ -1,0 +1,191 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class Injuries {
+    protected $dbh;
+    public $injuryID;
+
+    public function __construct (PDO $dbh) {
+        $this->dbh = $dbh;
+        $this->injuryID = null;
+    }
+
+    /**
+     * Adds a new injury record
+     * @param Array $data In the form:
+     * `['eid'=>string,'followup_medical'=>boolean,'recordable'=>boolean,
+     * 'injury_date'=>dateISO,'uid'=>string,'injury_description'=>string,'witnesses'=>string]`
+     * @return Boolean True on success, false otherwise
+     */
+    public function addInjuryReport (Array $data) {
+        $sql = 'INSERT INTO injuries VALUES (:id,:eid,:injury_date,:injury_description,:witnesses,:recordable,:followup_medical,now(),:uid)';
+        $insert = [
+            ':id'=>uniqid(),
+            ':eid'=>$data['eid'],
+            ':injury_date'=>$data['injury_date'],
+            ':injury_description'=>$data['injury_description'],
+            ':witnesses'=>$data['witnesses'],
+            ':recordable'=>$data['recordable'],
+            ':followup_medical'=>$data['followup_medical'],
+            ':uid'=>$data['uid']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
+            $this->injuryID = $insert[':id'];
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Amends an existing injury record with the given data
+     * @param Array $data The data to amend the record with
+     * @return Boolean True on success, false otherwise
+     */
+    public function amendInjuryReport (Array $data) {
+        $sql = 'UPDATE injuries SET 
+                uid = :uid, 
+                injury_date = :injury_date::date, 
+                recordable = :recordable::boolean,
+                followup_medical = :followup_medical::boolean,
+                injury_description = :injury_description,
+                witnesses = :witnesses
+                WHERE id = :id AND eid = :eid';
+        $insert = [
+            ':id'=>$data['id'],
+            ':eid'=>$data['eid'],
+            ':uid'=>$data['uid'],
+            ':injury_date'=>$data['injury_date'],
+            ':recordable'=>$data['recordable'],
+            ':followup_medical'=>$data['followup_medical'],
+            ':injury_description'=>$data['injury_description'],
+            ':witnesses'=>$data['witnesses']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception("Update failed: {$sql}");
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves a report record and returns the result in an array
+     * @param String $id The record ID
+     * @return Array The record array, or false on failure
+     */
+    public function getReport ($id) {
+        $sql = "SELECT 
+                    (
+                        SELECT first||' '||middle||' '||last||' '||other as name
+                        FROM profiles
+                        INNER JOIN employees ON profiles.id = employees.pid
+                        WHERE employees.id = a.eid
+                    ),
+                    (
+                        SELECT firstname||' '||lastname as reporter FROM user_accts WHERE id = a.uid
+                    ),
+                    id,eid,injury_date,injury_description,witnesses,recordable,followup_medical,_date,uid
+                    FROM injuries as a
+                    WHERE id = ?";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$id])) throw new Exception("Select failed: {$sql}");
+            return $pntr->fetchAll(PDO::FETCH_ASSOC)[0];
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    } 
+
+    /**
+     * Searches the injuries data for the given string
+     * @param String $search_str The search string given in the database form for to_tsquery()
+     * @return Array An array of records matching the query, false on error
+     */
+    public function searchInjuries ($search_str) {
+        $sql = 
+        "SELECT
+            id, 
+            (
+                SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                FROM profiles
+                INNER JOIN employees
+                ON employees.pid = profiles.id
+                WHERE employees.id = a.eid
+            ) as injured,
+            injury_date,
+            recordable,
+            followup_medical,
+            (
+                SELECT firstname||' '||lastname FROM user_accts WHERE id = a.uid
+            ) as reporter
+        FROM injuries as a
+        WHERE search @@ to_tsquery(?)";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$search_str])) throw new Exception("Select failed: {$sql}");
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns a complete list of all injury records
+     * @return Arry Multidimensional array of records, or false on error
+     */
+    public function listAll () {
+        $sql = 
+        "SELECT
+            id, 
+            (
+                SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                FROM profiles
+                INNER JOIN employees
+                ON employees.pid = profiles.id
+                WHERE employees.id = a.eid
+            ) as injured,
+            injury_date,
+            recordable,
+            followup_medical,
+            (
+                SELECT firstname||' '||lastname FROM user_accts WHERE id = a.uid
+            ) as reporter
+        FROM injuries as a
+        ORDER BY injury_date DESC";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception("Select failed: {$sql}");
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+}
