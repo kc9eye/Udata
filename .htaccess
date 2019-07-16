@@ -2,7 +2,7 @@
 Options -Indexes
 
 ErrorDocument 404 http://10.59.27.185:8080/wwwroot/templates/error/404
-ErrorDocument 403 http://10.59.27.185:8080/wwwroot/templates/error/403
+ErrorDocument 403 http://10.59.27.185:8080/user/login
 
 RewriteEngine on
 

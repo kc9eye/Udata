@@ -502,21 +502,6 @@ Class Instance {
         ob_clean();
         $this->loginRedirectHere();
         $this->redirect('/user/login');
-        /*
-        $view = $this->getViewer("Not Authorized!");
-        ?>
-        <!--<div class="row">
-            <div class='col-md-3'></div>
-            <div class="col-xs-12 col-md-6">
-                <img src='<?php echo $view->PageData['wwwroot'];?>/images/403.jpg' class='img-responsive' />
-            </div>
-            <div class='col-md-3'></div>
-        </div>-->
-
-        <?php
-        $view->footer();
-        die();
-        */
     }
 
     /**
