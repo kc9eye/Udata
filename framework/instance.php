@@ -586,7 +586,7 @@ Class Instance {
     public function loginRedirectHere ($url = null) {
         if (is_null($url)) {
             $replace = explode('/',$this->config['application-root']);
-            array_push($replace,'/');
+            array_push($replace,'//');
             $uri = '/'.str_replace($replace,'',$_SERVER['REQUEST_URI']);
         }
         else {
