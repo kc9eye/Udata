@@ -6,11 +6,9 @@ ErrorDocument 403 /wwwroot/templates/error/403
 
 RewriteEngine on
 
-RewriteCond "%{REQUEST_URI}" "/$"
-RewriteRule ".*" "%{REQUEST_URI}/index" [END]
+# Rewrite /foo/bar to /foo/bar.php
+RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
 
-RewriteCond "%{REQUEST_URI}" !-f 
-RewriteRule ".*" "%{REQUEST_URI}.php" [END]
-
-RewriteCond "%{REQUEST_URI}" "\.php$"
-RewriteRule ".*" - [R=404,END]
+# Return 404 if original request is /foo/bar.php
+RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"
+RewriteRule .* - [L,R=404]
