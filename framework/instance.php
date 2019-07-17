@@ -559,14 +559,15 @@ Class Instance {
     }
 
     /**
-     * I have no idea what this is for
+     * Used by user/login to redirect back to a requested previously unauthorized page
      * 
-     * This examplifies the reasons I started this documentation project.
-     * I am leaving it in place until I can not find where I used it. I believe
-     * it is obsoleted by something else.
+     * This method is used by `Instance->notAuthorized()` to return a redirect URL
+     * to `user/login`, so the user will be returned to a previously unauthorized 
+     * request after a succesful login.
      * 
      * @author Paul W. Lane
-     * @deprecated
+     * @param String $url Optional url to give to the `user/login` controller
+     * @return Boolean Always returns `true`
      */
     public function loginRedirectHere ($url = null) {
         if (is_null($url)) {
