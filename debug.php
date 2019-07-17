@@ -16,5 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once('lib/init.php');
-$server->loginRedirectHere();
-$server->getDebugViewer();
+$replace = explode('/',$this->config['application-root']);
+array_push($replace,'//');
+$uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
+$server->getDebugViewer(var_export($uri,true));
