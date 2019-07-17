@@ -125,14 +125,14 @@ Class Instance {
      * section, wrapped in an entire standard framework interface to the output stream.
      * It is intended to be used for debugging controllers.
      * 
-     * @param String $debug Anything passed in this variable as string will be output
+     * @param String $debug Optional, anything passed in this variable as string will be output
      * to the stream.
      * 
      * @return void
      * 
      * @author Paul W. Lane
      */
-    public function getDebugViewer ($debug) {
+    public function getDebugViewer ($debug = '') {
         $buff = ob_get_contents();
         ob_clean();
         $this->userMustHaveRole('Administrator');
