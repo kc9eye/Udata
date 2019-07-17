@@ -19,4 +19,6 @@ require_once('lib/init.php');
 $replace = explode('/',$server->config['application-root']);
 array_push($replace,'//');
 $uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
-$server->getDebugViewer(var_export($uri,true));
+
+$debug = array($_SERVER['REQUEST_URI'],$server->config['application-root'],$uri);
+$server->getDebugViewer(var_export($debug,true));
