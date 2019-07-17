@@ -164,7 +164,7 @@ class WorkCell {
             return $rtn[0];
         }
         else {
-            return '';
+            return array();
         }
     }
 
