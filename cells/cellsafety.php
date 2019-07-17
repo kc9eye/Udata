@@ -72,7 +72,7 @@ function editDisplay () {
     $cell = new WorkCell($server->pdo,$_REQUEST['cellid']);
     $view = $server->getViewer("Work Cells: Safety Assess. Edit",$pageOptions);
     $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
-    if (empty($cell->Safety['body'])) $cell->Safety['body'] = "<strong>Process Steps:</strong><br /><strong>Hazards:</strong><br /><strong>Required PPE:</strong><br />";
+    if (empty($cell->Safety)) $cell->Safety['body'] = "<strong>Process Steps:</strong><br /><strong>Hazards:</strong><br /><strong>Required PPE:</strong><br />";
     $form->newForm("Edit: {$cell->Name}");
     $form->hiddenInput('uid', $server->currentUserID);
     $form->hiddenInput('name', $_REQUEST['cellid']);
