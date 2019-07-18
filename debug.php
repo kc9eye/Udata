@@ -20,5 +20,10 @@ $replace = explode('/',$server->config['application-root']);
 array_push($replace,'//');
 $uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
 
-$debug = array($_SERVER['REQUEST_URI'],$server->config['application-root'],$uri);
+$debug = array(
+    'replace_var'=>$replace,
+    'request_uri'=>$_SERVER['REQUEST_URI'],
+    'app_root'=>$server->config['application-root'],
+    'session_uri'=>$uri
+);
 $server->getDebugViewer(var_export($debug,true));
