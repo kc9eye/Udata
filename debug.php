@@ -18,7 +18,6 @@
 require_once('lib/init.php');
 $replace = explode('/',$server->config['application-root']);
 array_push($replace,'//');
-array_push($replace,'/');
 $uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
 
 $debug = array(
