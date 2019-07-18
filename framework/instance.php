@@ -571,12 +571,15 @@ Class Instance {
     public function loginRedirectHere ($url = null) {
         if (is_null($url)) {
             $replace = explode('/',$this->config['application-root']);
+            $cnt = count($replace);
             array_push($replace,'//');
             $uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
         }
         else {
             $uri = $url;
         }
+        if ($cnt > 3) $uri = '/'.$uri;
+        
         $_SESSION['login-redirect'] = $uri;
         return true;
     }
