@@ -63,7 +63,8 @@ $config = [
         'Work Cells' =>'/cells/main',
         'Material' => '/material/main',
         'Maintenance' => '/maintenance/main',
-        'HR' => '/hr/main'
+        'Human Resources' => '/hr/main',
+        '[DEBUG]' => '/debug'
     ],
 
     #Background operations
