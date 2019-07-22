@@ -34,12 +34,16 @@ class inspectionoverdue implements Service {
 
     public function run () {
         $sql = 
-            'SELECT DISTINCT ON (eqid)
+            'SELECT
                 (SELECT description FROM equipment WHERE id = a.eqid) AS equipment,
-            _date
+                a._date
             FROM inspections AS a
-            WHERE now() > (a._date + (SELECT timeframe FROM equipment WHERE id = a.eqid))
-            ORDER BY eqid,_date DESC';
+            INNER JOIN (
+                SELECT eqid,MAX(_date) as MaxDate
+                FROM inspections
+                GROUP BY eqid
+            ) as b ON b.eqid = a.eqid AND b.MaxDate = a._date
+            WHERE now() > (b.MaxDate + (SELECT timeframe FROM equipment WHERE id = a.eqid))';
         try {
             $pntr = $this->server->pdo->query($sql);
             $this->data = $pntr->fetchAll(PDO::FETCH_ASSOC);
