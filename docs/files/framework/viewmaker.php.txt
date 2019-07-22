@@ -28,7 +28,7 @@
  * @uses config.php
  * @author Paul W. Lane
  */
-Class ViewMaker {
+Class ViewMaker implements ViewWidgets {
 
     /**
      * @var Array Contains an array of strings used in th ecurrent view. Typically used by a model
@@ -378,11 +378,13 @@ Class ViewMaker {
      * icons are the open source icons that are included 
      * with the Apache Web Server.
      * @param String $file_name The file name to use to retrieve an icon for.
+     * @param String $icon_root If not null, taken as the standard apache /icons root
      * @return Void
      */
-    public function getFileIcon ($file_name) {
+    public function getFileIcon ($file_name, $icon_root=null) {
         $ext = @pathinfo($file_name, PATHINFO_EXTENSION);
-        $dir = $this->PageData['wwwroot'].'/images/icons';
+        if (!is_null($icon_root)) $dir = $icon_root;
+        else $dir = '/icons';
         if (!empty($ext)) {
             switch ($ext) {
                 case 'pdf': $icon = $dir.'/pdf.png';break;
