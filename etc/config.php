@@ -52,7 +52,7 @@ $config = [
     'template-root' => '/var/www/udata/wwwroot/templates',     #Where the application templates are stored for file_get_contents
     
     #ViewMaker pagedata settings, effect how the UI looks
-    'company-name' => 'Chicago Assembly Division(TESTING)',
+    'company-name' => 'Chicago Assembly Division',
     'company-motto' => 'Building Uhaul\'s Finest and Safest',
     'home-name' => 'Safety',
     'theme' => 'dark', #Not implemented as yet
