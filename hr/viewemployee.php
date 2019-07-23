@@ -38,16 +38,13 @@ function employeeViewDisplay () {
 
     //Main profile data
     $view->hr();
-    if ($server->checkPermission('addNewProfile')) {
-        $title = "<small>Name:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']} ".
-        $view->editBtnSm('/hr/updateprofile?id='.$_REQUEST['id'],true);
-    }
-    else {
-        $title = "<small>Name:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']}";
-    }
-
-    $view->h2($title);
     
+    $title = "<small>Name:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']}";
+    if ($server->checkPermission('addNewProfile')) 
+        $title .= "&#160;".$view->editBtnSm('/hr/updateprofile?id='.$_REQUEST['id'],true);
+    if ($server->checkPermission('initiateReview')) 
+        $title .= "&#160;".$view->linkButton('/hr/initiatereview?id='.$_REQUEST['id'],'Initate Review','info',true);
+    $view->h2($title);    
     
     if (!empty($emp->Profile['image'])) {
         $view->responsiveTableStart(['Image','Start Date','End Date','Status']);

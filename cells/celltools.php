@@ -59,9 +59,9 @@ function editView () {
         </a>"
     );
     $view->hr();
-    $view->responsiveTableStart(['Description','Category','Remove'],true);
+    $view->responsiveTableStart(['Qty.','Description','Category','Remove'],true);
     foreach($cell->Tools as $row) {
-        echo "<tr><td>{$row['description']}</td><td>{$row['category']}</td>";
+        echo "<tr><td>{$row['qty']}</td><td>{$row['description']}</td><td>{$row['category']}</td>";
         echo "<td><a href='?action=remove&toolid={$row['id']}&cellid={$_REQUEST['id']}' class='btn btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>";
     }
     $view->responsiveTableClose(true);
