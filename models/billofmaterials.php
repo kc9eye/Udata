@@ -237,7 +237,7 @@ class BillOfMaterials {
         $sql = 'SELECT count(*) FROM material WHERE number = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$number]);
+            if (!$pntr->execute([$number])) throw new Exception("Select faile: {$sql}");
             if ($pntr->fetch(PDO::FETCH_ASSOC)['count'] == 0) return true;
             else return false;
         }
