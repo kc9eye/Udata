@@ -17,7 +17,7 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-$server->userMustHavePermission('accessMaintenance');
+$server->userMustHavePermission('maintenanceAccess');
 
 if (empty($_REQUEST['cellid'])) {
     $server->newEndUserDialog('No cell ID given, unable to handle request.',DIALOG_FAILURE,$server->config['application-root'].'/');

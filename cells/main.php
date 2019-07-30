@@ -150,7 +150,7 @@ function displayCell () {
     $view->beginBtnCollapse('Show/Hide Tooling');
     $tool_heading = "Tooling ";
     if ($server->checkPermission('editWorkCell')) $tool_heading .= $view->editBtnSm("/cells/celltools?id={$_REQUEST['id']}",true);
-    if ($server->checkRole('Maintenance')) 
+    if ($server->checkPermission('maintenanceAccess')) 
         $tool_heading .= " <a href='{$view->PageData['approot']}/maintenance/toolpicklist?cellid={$_REQUEST['id']}' class='btn btn-sm btn-default' role='button' target='_blank'>Export Pick List</a>"; 
     $view->h3($tool_heading);
     if (!empty($cell->Tools)) {
