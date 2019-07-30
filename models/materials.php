@@ -439,4 +439,17 @@ class Materials {
             return false;
         }
     }
+
+    public function getWorkCellsFromMaterial ($partid) {
+        $sql = 
+        'SELECT 
+            (SELECT  description FROM products WHERE product_key = a.prokey) AS product,
+            a.cell_name AS work_cell,
+            cell_material.qty AS qty
+        FROM work_cell AS a
+        INNER JOIN cell_material ON cell_material.cellid = a.id
+        INNER JOIN bom ON bom.id = cell_material.bomid
+        WHERE bom.partid = ?
+        ORDER BY product ASC';
+    }
 }
