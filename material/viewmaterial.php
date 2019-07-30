@@ -21,12 +21,15 @@ $server->userMustHavePermission('viewMaterial');
 
 $part = new Material($server->pdo,null,$_REQUEST['id']);
 $products = new Products($server->pdo);
+
 $view = $server->getViewer("Material: View Material");
 $view->sideDropDownMenu($submenu);
+
 $view->h1("<small>Material:</small> {$part->material['number']}");
 $view->h2("<small>Description:</small> {$part->material['description']}");
 $view->hr();
 
+//Receiveing info data
 $view->h3("Receiving Info");
 if (!is_null($part->receiving)) {
     $view->responsiveTableStart(null);
@@ -36,6 +39,7 @@ if (!is_null($part->receiving)) {
 else 
     $view->bold("No receiving data found");
 
+//Inventory data info
 $view->hr();
 $view->h3("Inventory");
 if (!is_null($part->inventory)) {
@@ -46,6 +50,7 @@ if (!is_null($part->inventory)) {
 else
     $view->bold("No active product inventory found.");
 
+//Descrepancy data info
 $view->hr();
 $view->h3("Discrepancies");
 if (!is_null($part->discrepancies)) {
@@ -62,4 +67,18 @@ if (!is_null($part->discrepancies)) {
 else
     $view->bold("No active product discrepancies found");
 
+//Workcell data info
+$view->hr();
+$view->h3("Workcells");
+$view->beginBtnCollapse();
+if (!is_null($part->workcells)) {
+    $view->responsiveTableStart(['Product','Cell','Qty']);
+    foreach($part->workcells as $row) {
+        echo "<tr><td>{$row['product']}</td>";
+        echo "<td><a href='{$view->PageData['approot']}/cells/main?action=view&id={$row['id']}'>{$row['work_cell']}</a></td>";
+        echo "<td>{$row['qty']}</td></tr>\n";
+    }
+    $view->responsiveTableClose();
+}
+$view->endBtnCollapse();
 $view->footer();

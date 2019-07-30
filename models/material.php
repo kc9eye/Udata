@@ -81,7 +81,7 @@ class Material {
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
-            
+            return false;
         }
     }
 
@@ -98,6 +98,7 @@ class Material {
                 if (!empty(($rtn = $pntr->fetchAll(PDO::FETCH_ASSOC)))) $this->setData([$store=>$rtn]);
                 else $this->setData([$store=>NULL]);
             }
+            $this->setData(['workcells'=>$this->getWorkCellsFromMaterial($this->id)]);
         }
         catch (PDOException $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
@@ -106,6 +107,35 @@ class Material {
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             
+        }
+    }
+
+    private function getWorkCellsFromMaterial ($partid) {
+        $sql = 
+        'SELECT
+            a.id as id, 
+            (SELECT  description FROM products WHERE product_key = a.prokey) AS product,
+            a.cell_name AS work_cell,
+            cell_material.qty AS qty
+        FROM work_cell AS a
+        INNER JOIN cell_material ON cell_material.cellid = a.id
+        INNER JOIN bom ON bom.id = cell_material.bomid
+        INNER JOIN products ON products.product_key = bom.prokey
+        WHERE bom.partid = ?
+        AND products.active IS TRUE
+        ORDER BY product ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$partid])) throw new Exception("Select failed: {$sql}; for partid: {$partid}");
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return null;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return null;
         }
     }
 
