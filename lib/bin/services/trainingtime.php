@@ -64,7 +64,7 @@ class trainingtime implements Service {
             (
                 reoccur_time_frame != '00:00:00' AND
                 CURRENT_DATE >= (emp_training.train_date + training.reoccur_time_frame)
-            )";
+            ) ORDER BY name ASC";
         try {
             $pntr = $this->server->pdo->prepare($sql);
             if (!$pntr->execute()) throw new Exception("SELECT failed: {$sql}");
