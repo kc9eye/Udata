@@ -29,7 +29,7 @@ $view->bold("UData Framework v4.0");
 $view->br();
 
 $form->inlineButtonGroup([
-    'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/index.html\",\"_blank\")",
+    'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/api/index.html\",\"_blank\")",
     'Framework'=>"window.open(\"{$view->PageData['approot']}/docs/UData_Database_Structure.html\",\"_blank\")"
 ]);
 
