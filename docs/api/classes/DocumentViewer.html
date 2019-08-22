@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">453</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1151853459"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1151853459" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Service.html">Service</a></li>
+                                                    <li class="interface"><a href="../classes/ViewWidgets.html">ViewWidgets</a></li>
+                                                                                                    <li class="class"><a href="../classes/AccountCreator.html">AccountCreator</a></li>
+                                                    <li class="class"><a href="../classes/Application.html">Application</a></li>
+                                                    <li class="class"><a href="../classes/Autoloader.html">Autoloader</a></li>
+                                                    <li class="class"><a href="../classes/BillOfMaterials.html">BillOfMaterials</a></li>
+                                                    <li class="class"><a href="../classes/CellTransfer.html">CellTransfer</a></li>
+                                                    <li class="class"><a href="../classes/DBObjects.html">DBObjects</a></li>
+                                                    <li class="class"><a href="../classes/DocumentViewer.html">DocumentViewer</a></li>
+                                                    <li class="class"><a href="../classes/Employee.html">Employee</a></li>
+                                                    <li class="class"><a href="../classes/Employees.html">Employees</a></li>
+                                                    <li class="class"><a href="../classes/Errorhandler.html">Errorhandler</a></li>
+                                                    <li class="class"><a href="../classes/FileIndexer.html">FileIndexer</a></li>
+                                                    <li class="class"><a href="../classes/FileUpload.html">FileUpload</a></li>
+                                                    <li class="class"><a href="../classes/FormWidgets.html">FormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Indexer.html">Indexer</a></li>
+                                                    <li class="class"><a href="../classes/Injuries.html">Injuries</a></li>
+                                                    <li class="class"><a href="../classes/InlineFormWidgets.html">InlineFormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Inspection.html">Inspection</a></li>
+                                                    <li class="class"><a href="../classes/inspectionoverdue.html">inspectionoverdue</a></li>
+                                                    <li class="class"><a href="../classes/Instance.html">Instance</a></li>
+                                                    <li class="class"><a href="../classes/Mailer.html">Mailer</a></li>
+                                                    <li class="class"><a href="../classes/Maintenance.html">Maintenance</a></li>
+                                                    <li class="class"><a href="../classes/Material.html">Material</a></li>
+                                                    <li class="class"><a href="../classes/MaterialDiscrepancy.html">MaterialDiscrepancy</a></li>
+                                                    <li class="class"><a href="../classes/Materials.html">Materials</a></li>
+                                                    <li class="class"><a href="../classes/Notification.html">Notification</a></li>
+                                                    <li class="class"><a href="../classes/outofservice.html">outofservice</a></li>
+                                                    <li class="class"><a href="../classes/Product.html">Product</a></li>
+                                                    <li class="class"><a href="../classes/Products.html">Products</a></li>
+                                                    <li class="class"><a href="../classes/Profiles.html">Profiles</a></li>
+                                                    <li class="class"><a href="../classes/SafetyBoardMinutes.html">SafetyBoardMinutes</a></li>
+                                                    <li class="class"><a href="../classes/SafetyMedia.html">SafetyMedia</a></li>
+                                                    <li class="class"><a href="../classes/SDSHandler.html">SDSHandler</a></li>
+                                                    <li class="class"><a href="../classes/SearchStringFormater.html">SearchStringFormater</a></li>
+                                                    <li class="class"><a href="../classes/Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/SupervisorComments.html">SupervisorComments</a></li>
+                                                    <li class="class"><a href="../classes/Tool.html">Tool</a></li>
+                                                    <li class="class"><a href="../classes/Training.html">Training</a></li>
+                                                    <li class="class"><a href="../classes/trainingtime.html">trainingtime</a></li>
+                                                    <li class="class"><a href="../classes/UploadException.html">UploadException</a></li>
+                                                    <li class="class"><a href="../classes/User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/UserAdministrator.html">UserAdministrator</a></li>
+                                                    <li class="class"><a href="../classes/UserReset.html">UserReset</a></li>
+                                                    <li class="class"><a href="../classes/ViewMaker.html">ViewMaker</a></li>
+                                                    <li class="class"><a href="../classes/WorkCell.html">WorkCell</a></li>
+                                                    <li class="class"><a href="../classes/WorkCells.html">WorkCells</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>DocumentViewer</h1>
+                    <p><em>Represents an interface that delivers a document.</em></p>
+                    <p>This class is designed for delivering an interface
+for a specific document and giving users a method for
+doing different things with that document. It is designed to
+be used with a special class of controller, a document controller.</p>
+                    
+                                                                        <h3>Examples</h3>
+                                                                            <h4>On proper document controller syntax</h4>
+                            <pre class="pre-scrollable">&lt;?php
+/* This file is part of UData.
+ * Copyright (C) 2018 Paul W. Lane &lt;kc9eye@outlook.com&gt;
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+require_once(dirname(__DIR__).&#039;/lib/init.php&#039;);
+include(&#039;submenu.php&#039;);
+
+$doc = new DocumentViewer($server-&gt;pdo, $server-&gt;security, $server-&gt;mailer, $server-&gt;config);
+
+$doc-&gt;docURL = $server-&gt;config[&#039;application-root&#039;].&#039;/safety/hazcomdoc&#039;;
+$doc-&gt;access = [DocumentViewer::EDIT_ACCESS_NAME=&gt;[&#039;editHazcom&#039;],DocumentViewer::APPROVE_ACCESS_NAME=&gt;[&#039;approveHazcom&#039;]];
+$doc-&gt;setDocument(&#039;Hazcom Document&#039;);
+
+if (!empty($_REQUEST)) {
+    switch($_REQUEST[&#039;action&#039;]) {
+        case &#039;edit&#039;: 
+            $doc-&gt;editDisplay($submenu) or $server-&gt;notAuthorized(); 
+        break;
+        case &#039;approve&#039;: 
+            $doc-&gt;approveDisplay($submenu) or $server-&gt;notAuthorized(); 
+        break;
+        case &#039;submit&#039;: 
+            $doc-&gt;submitForApproval($_REQUEST)
+            &amp;&amp; $server-&gt;newEndUserDialog(&#039;Document submitted for approval&#039;,DIALOG_SUCCESS,$doc-&gt;docURL)
+            or $server-&gt;newEndUserDialog(&#039;Something went wrong, you may not have access to do this&#039;,DIALOG_FAILURE,$doc-&gt;docURL);
+        break;
+        case &#039;submitapproval&#039;: 
+            $doc-&gt;approvalGranted($_REQUEST)
+            &amp;&amp; $server-&gt;newEndUserDialog(&#039;Document edition was approved&#039;,DIALOG_SUCCESS,$doc-&gt;docURL)
+            or $server-&gt;newEndUserDialog(&#039;Something went wrong, you may not have access to do this&#039;,DIALOG_FAILURE,$doc-&gt;docURL);
+        break;
+        case &#039;reject&#039;: $doc-&gt;rollBack($_REQUEST[&#039;id&#039;])
+            &amp;&amp; $server-&gt;newEndUserDialog(&#039;Document was rejected&#039;,DIALOG_SUCCESS,$doc-&gt;docURL)
+            or $server-&gt;newEndUserDialog(&#039;Something went wrong, you may not have access to do this&#039;,DIALOG_FAILURE,$doc-&gt;docURL);
+        break;
+        default: 
+            $doc-&gt;displayDoc($submenu); 
+        break;
+    }
+}
+else {
+    $doc-&gt;displayDoc($submenu);
+}</pre>
+                                                                
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/DocumentViewer.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_header" class="">header()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_footer" class="">footer()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_navBar" class="">navBar()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_offCanvasSideNav" class="">offCanvasSideNav()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_preDebug" class="">preDebug()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_sideDropDownMenu" class="">sideDropDownMenu()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_getFileIcon" class="">getFileIcon()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_addScrollTopBtn" class="">addScrollTopBtn()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_insertTab" class="">insertTab()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_hr" class="">hr()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_br" class="">br()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_h1" class="">h1()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_h2" class="">h2()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_h3" class="">h3()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_bold" class="">bold()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_bgInfoParagraph" class="">bgInfoParagraph()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_editBtnSm" class="">editBtnSm()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_trashBtnSm" class="">trashBtnSm()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_responsiveTableStart" class="">responsiveTableStart()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_responsiveTableClose" class="">responsiveTableClose()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_linkButton" class="">linkButton()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_beginBtnCollapse" class="">beginBtnCollapse()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_endBtnCollapse" class="">endBtnCollapse()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_wrapInWell" class="">wrapInWell()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_wrapInPre" class="">wrapInPre()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_responsiveImage" class="">responsiveImage()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_imageThumbnail" class="">imageThumbnail()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_setDocument" class="">setDocument()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_displayDoc" class="">displayDoc()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_editDisplay" class="">editDisplay()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_approveDisplay" class="">approveDisplay()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_submitForApproval" class="">submitForApproval()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_emailReview" class="">emailReview()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_approvalGranted" class="">approvalGranted()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_rollBack" class="">rollBack()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/ViewMaker.html#property_ViewData" class="">$ViewData</a><br />
+                                                                    <a href="../classes/ViewMaker.html#property_PageData" class="">$PageData</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_docURL" class="">$docURL</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_approved" class="">$approved</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_seeking" class="">$seeking</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_access" class="">$access</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DocumentViewer.html#constant_APPROVED" class="">APPROVED</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#constant_SEEKING" class="">SEEKING</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#constant_OBSOLETE" class="">OBSOLETE</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#constant_EDITING" class="">EDITING</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#constant_EDIT_ACCESS_NAME" class="">EDIT_ACCESS_NAME</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#constant_APPROVE_ACCESS_NAME" class="">APPROVE_ACCESS_NAME</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/DocumentViewer.html#method_getDocument" class="">getDocument()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/ViewMaker.html#property_security" class="">$security</a><br />
+                                                                    <a href="../classes/ViewMaker.html#property_sideNav" class="">$sideNav</a><br />
+                                                                    <a href="../classes/ViewMaker.html#property_config" class="">$config</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_dbh" class="">$dbh</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_mailer" class="">$mailer</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_docName" class="">$docName</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_rights" class="">$rights</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_states" class="">$states</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#property_mailperms" class="deprecated">$mailperms</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/DocumentViewer.html#method_setAccessRights" class="">setAccessRights()</a><br />
+                                                                    <a href="../classes/DocumentViewer.html#method_isDocumentOwner" class="">isDocumentOwner()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/framework.documentviewer.html"><div class="path-wrapper">framework\documentviewer.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Database\Postgres</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/ViewMaker.html">\ViewMaker</a></div>
+                                                                                                    <div class="namespace-wrapper">\DocumentViewer</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                uses
+                            </th>
+                            <td>
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>Paul W. Lane</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                license
+                            </th>
+                            <td>
+                                                                    <p>GPLv2</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                todo
+                            </th>
+                            <td>
+                                                                    <p>Rewrite the controller into a method call from a controller</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_APPROVED" name="constant_APPROVED" class="anchor"></a>
+            <article id="constant_APPROVED" class="constant">
+                <h3 class="">APPROVED</h3>
+                <pre class="signature">APPROVED</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_SEEKING" name="constant_SEEKING" class="anchor"></a>
+            <article id="constant_SEEKING" class="constant">
+                <h3 class="">SEEKING</h3>
+                <pre class="signature">SEEKING</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_OBSOLETE" name="constant_OBSOLETE" class="anchor"></a>
+            <article id="constant_OBSOLETE" class="constant">
+                <h3 class="">OBSOLETE</h3>
+                <pre class="signature">OBSOLETE</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_EDITING" name="constant_EDITING" class="anchor"></a>
+            <article id="constant_EDITING" class="constant">
+                <h3 class="">EDITING</h3>
+                <pre class="signature">EDITING</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_EDIT_ACCESS_NAME" name="constant_EDIT_ACCESS_NAME" class="anchor"></a>
+            <article id="constant_EDIT_ACCESS_NAME" class="constant">
+                <h3 class="">EDIT_ACCESS_NAME</h3>
+                <pre class="signature">EDIT_ACCESS_NAME</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_APPROVE_ACCESS_NAME" name="constant_APPROVE_ACCESS_NAME" class="anchor"></a>
+            <article id="constant_APPROVE_ACCESS_NAME" class="constant">
+                <h3 class="">APPROVE_ACCESS_NAME</h3>
+                <pre class="signature">APPROVE_ACCESS_NAME</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_ViewData" name="property_ViewData" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$ViewData</h3>
+                <pre class="signature">$ViewData : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; Contains an array of strings used in th ecurrent view. Typically used by a model
+to push data to an interface.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_PageData" name="property_PageData" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$PageData</h3>
+                <pre class="signature">$PageData : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; Contains an array of strings which are typically used on a per page basis                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_docURL" name="property_docURL" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$docURL</h3>
+                <pre class="signature">$docURL : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The URL of the current document interface                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_approved" name="property_approved" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$approved</h3>
+                <pre class="signature">$approved : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The ID of the current document in an approved state                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_seeking" name="property_seeking" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$seeking</h3>
+                <pre class="signature">$seeking : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The ID of the current document in a seeking approval state                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_access" name="property_access" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$access</h3>
+                <pre class="signature">$access : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; An indexed array of security permissions for editing the document 
+and approving the document.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_security" name="property_security" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$security</h3>
+                <pre class="signature">$security : \Security</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Security.html">\Security</a>
+                &mdash; Contains the security object given from the server Instance.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Security.html"><span class="namespace-wrapper">\Security</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_sideNav" name="property_sideNav" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$sideNav</h3>
+                <pre class="signature">$sideNav : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                &mdash; Switch used to deteremine if the current interface view has a side navigation bar.
+`true` if side navigation is present, `false` otherwise.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_sideDropDownMenu"><span class="namespace-wrapper">\ViewMaker::sideDropDownMenu()</span></a></dd>
+                                            <dd><a href="../classes/ViewMaker.html#method_offCanvasSideNav"><span class="namespace-wrapper">\ViewMaker::offCanvasSideNav()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_config" name="property_config" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$config</h3>
+                <pre class="signature">$config : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; Contains the configuration variables array received from the main Instance                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_dbh" name="property_dbh" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$dbh</h3>
+                <pre class="signature">$dbh : \PDO</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \PDO
+                &mdash; The application PDO object                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mailer" name="property_mailer" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$mailer</h3>
+                <pre class="signature">$mailer : \Mailer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Mailer.html">\Mailer</a>
+                &mdash; The application mailer                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_docName" name="property_docName" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$docName</h3>
+                <pre class="signature">$docName : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The current document name                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_rights" name="property_rights" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$rights</h3>
+                <pre class="signature">$rights : Int</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Int
+                &mdash; The current users access rights to the document                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_states" name="property_states" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$states</h3>
+                <pre class="signature">$states : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; Array of document ID&#039;s representing the documents different states                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mailperms" name="property_mailperms" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected deprecated">$mailperms</h3>
+                <pre class="signature">$mailperms : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    
+                </aside>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\PDO  <span class="argument">$dbh</span>, \Security  <span class="argument">$security</span>, \Mailer  <span class="argument">$mailer</span>, Array  <span class="argument">$config</span>) : \DocumentViewer</pre>
+                <p><em>Class Constructor</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\PDO</td>
+                                <td>$dbh </td>
+                                <td><p>The current database access PDO</p></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Security.html">\Security</a></td>
+                                <td>$security </td>
+                                <td><p>The current security model</p></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Mailer.html">\Mailer</a></td>
+                                <td>$mailer </td>
+                                <td><p>The mailer object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$config </td>
+                                <td><p>The current configuration variables</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/DocumentViewer.html">\DocumentViewer</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_header" name="method_header" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">header()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">header() : Void</pre>
+                <p><em>The interface header.</em></p>
+                <p>Ouputs the beginning of the interface view to the stream.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker::sideNav</dd>
+                                            <dd>ViewMaker::navBar()</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>rewrite to use <code>echo</code> instead of hard coded html</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_footer" name="method_footer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">footer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">footer(Array  <span class="argument">$script_links = null</span>) : Void</pre>
+                <p><em>Outputs the interface view footer.</em></p>
+                <p>Closes the interface content section, once the view is complete.
+You are responsible for closing the view after your content.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$script_links </td>
+                                <td><p>Optional array of hyperlinks to add as script files
+that may be required for you content.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker::sideNav</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_navBar" name="method_navBar" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">navBar()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">navBar() : Void</pre>
+                <p><em>Generates the upper interface view navigation bar.</em></p>
+                <p>This method should not be called standalone as the <code>ViewMaker::header()</code>
+method calls it as part of the standard interface. It is a seperate method
+only as it would make the header method overly complex.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker::PageData</dd>
+                                            <dd>ViewMaker::ViewData</dd>
+                                            <dd>ViewMaker::security</dd>
+                                            <dd>ViewMaker::config</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_offCanvasSideNav" name="method_offCanvasSideNav" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">offCanvasSideNav()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">offCanvasSideNav(Array  <span class="argument">$navLinks = null</span>) : Void</pre>
+                <p><em>Generates an off canvas sliding navigation bar.</em></p>
+                <p>This method of navigation is optional and has been given up
+for the cleaner looking, on mobile, method of ViewMaker::sideDropDownMenu().
+it can however still be used per preference.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$navLinks </td>
+                                <td><p>Optional indexed string array of navigation links.
+The array should be indexed as such: <code>link_text=&gt;link_address</code>.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker::sideNav</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_preDebug" name="method_preDebug" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">preDebug()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">preDebug(  <span class="argument">$debug</span>) : Void</pre>
+                <p><em>Simple debugging interface method</em></p>
+                <p>Generates a scrollable <code>&lt;pre&gt;</code> section to the output
+stream with whatever string is given to the <code>$debug</code>
+variable.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$debug </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_sideDropDownMenu" name="method_sideDropDownMenu" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">sideDropDownMenu()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">sideDropDownMenu(Array  <span class="argument">$links</span>) : Void</pre>
+                <p><em>Generates the left side drop down navigation menu.</em></p>
+                <p>Outputs a side navaigation drop down menu to the stream.
+Same parameters as ViewMaker::offCanvasSideNav(). Cleaner look
+on mobile than off canvas though.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$links </td>
+                                <td><p>An indexed array in the form <code>link_text=&gt;link_address</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_offCanvasSideNav"><span class="namespace-wrapper">\ViewMaker::offCanvasSideNav()</span></a></dd>
+                                                                                                <dt>Uses</dt>
+                                                                <dd>ViewMaker::sideNav</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFileIcon" name="method_getFileIcon" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFileIcon()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFileIcon(String  <span class="argument">$file_name</span>, String  <span class="argument">$icon_root = null</span>) : Void</pre>
+                <p><em>Outputs a file icon image to screen.</em></p>
+                <p>Based on the filename extension given as parameter
+will output an image link to the stream. The images
+icons are the open source icons that are included
+with the Apache Web Server.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$file_name </td>
+                                <td><p>The file name to use to retrieve an icon for.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$icon_root </td>
+                                <td><p>If not null, taken as the standard apache /icons root</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addScrollTopBtn" name="method_addScrollTopBtn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">addScrollTopBtn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addScrollTopBtn() : Void</pre>
+                <p><em>Outputs a scrolltopbutton to the stream</em></p>
+                <p>Generates a button upon view scrolling that allows the
+user to immediately reach the top of the current view scroll</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_insertTab" name="method_insertTab" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">insertTab()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">insertTab(Int  <span class="argument">$num = 1</span>, Boolean  <span class="argument">$return = false</span>) : Void</pre>
+                <p><em>Outputs a standard tab to the stream.</em></p>
+                <p>Inserts a standardized tab to the stream in the form
+of HTML nonbreaking spaces.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Int</td>
+                                <td>$num </td>
+                                <td><p>Optional, the number of tabs to insert.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>If true output is returned instead of output to the stream</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hr" name="method_hr" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hr()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hr() : Void</pre>
+                <p><em>Outputs an HTML horizontal rule to the stream</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_br" name="method_br" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">br()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">br() : Void</pre>
+                <p><em>Outputs an HTML line break to the stream</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_h1" name="method_h1" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">h1()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">h1(String  <span class="argument">$content</span>,   <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Encapsulates `$content` in an HTML heading.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The string to encapsulate.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$centered </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_h2" name="method_h2" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">h2()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">h2(String  <span class="argument">$content</span>,   <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Ecapsulates `$content` in an HTML heading.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The string to encapsulate</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$centered </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_h3" name="method_h3" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">h3()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">h3(String  <span class="argument">$content</span>,   <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Encapsulates `$content` in an HTML heading.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The string to encasulate</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$centered </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bold" name="method_bold" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">bold()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bold(String  <span class="argument">$content</span>) : Void</pre>
+                <p><em>Encapsulates `$content` in an HTML strong section.</em></p>
+                <p>This is an inline method bolding.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The string to encapsulate.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bgInfoParagraph" name="method_bgInfoParagraph" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">bgInfoParagraph()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bgInfoParagraph(String  <span class="argument">$content</span>,   <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Encapsulate `$content` in an HTML paragraph section in the bg-info bootstrap style.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The string to be in the paragraph.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$centered </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_editBtnSm" name="method_editBtnSm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">editBtnSm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">editBtnSm(String  <span class="argument">$addr</span>, Boolean  <span class="argument">$return = false</span>, Boolean  <span class="argument">$passthru = false</span>) : Mixed</pre>
+                <p><em>Outputs an edit button that when clicked goes to the given application centric addtress</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$addr </td>
+                                <td><p>The application centric API address the user should be sent to.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>If true the method returns the string instead of echoing it</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$passthru </td>
+                                <td><p>If true the address is passed through with alteration.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_trashBtnSm" name="method_trashBtnSm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">trashBtnSm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">trashBtnSm(String  <span class="argument">$addr</span>, Boolean  <span class="argument">$return = false</span>, Boolean  <span class="argument">$passthru = false</span>) : Mixed</pre>
+                <p><em>Outputs a delete button to the stream that when clicked opens the API given</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$addr </td>
+                                <td><p>The application centric API address the user should be sent to.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>If true the method returns the string instead of echoing it</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$passthru </td>
+                                <td><p>If true the address is passed through with alteration.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_responsiveTableStart" name="method_responsiveTableStart" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">responsiveTableStart()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">responsiveTableStart(Array  <span class="argument">$columnHeadings = null</span>, Boolean  <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Ouputs the beginnig responsive table preamable to stream.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$columnHeadings </td>
+                                <td><p>The headings for the table columns if any</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$centered </td>
+                                <td><p>Whether or not to include Bootstrap centering</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_responsiveTableClose" name="method_responsiveTableClose" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">responsiveTableClose()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">responsiveTableClose(Boolean  <span class="argument">$centered = false</span>) </pre>
+                <p><em>Ouputs the closing responsive table to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$centered </td>
+                                <td><p>Whether to center the table with Bootstrap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_linkButton" name="method_linkButton" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">linkButton()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">linkButton(String  <span class="argument">$link</span>, String  <span class="argument">$name</span>, String  <span class="argument">$type = null</span>, Boolean  <span class="argument">$return = false</span>, String  <span class="argument">$target = &#039;_self&#039;</span>, Boolean  <span class="argument">$passthru = false</span>) : Mixed</pre>
+                <p><em>Outputs a link formatted as a Bootstrap info button</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$link </td>
+                                <td><p>Application centric link for the button</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name to display on the button</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$type </td>
+                                <td><p>Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optional, if set true then the output is returned and not output to the stream buffer</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$target </td>
+                                <td><p>Optional target argument to launch new window, default is '_self'</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$passthru </td>
+                                <td><p>Optional, if set true then the link is passed through unaltered.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Either a String if $return is true or Void otherwise</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_beginBtnCollapse" name="method_beginBtnCollapse" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">beginBtnCollapse()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">beginBtnCollapse(String  <span class="argument">$name = &#039;Show/Hide Content&#039;</span>, String  <span class="argument">$id = null</span>) : Void</pre>
+                <p><em>Outputs a button and beginning preamble for a collapse section.</em></p>
+                <p>Everything after this method call output to the stream will
+be wrapped in a collapse division until the subsequent <code>ViewMaker::endBtnCollapse()</code>
+is called.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The label name of the collapse button.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>The collapse ID for the button</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>This method outputs to the stream and returns nothing.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_endBtnCollapse" name="method_endBtnCollapse" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">endBtnCollapse()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">endBtnCollapse() : Void</pre>
+                <p><em>Outputs the closing button collapse division</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>All out put is directed to the stream and returns no value.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_beginBtnCollapse"><span class="namespace-wrapper">\ViewMaker::beginBtnCollapse()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_wrapInWell" name="method_wrapInWell" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">wrapInWell()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">wrapInWell(String  <span class="argument">$content</span>, Boolean  <span class="argument">$centered = false</span>) : Void</pre>
+                <p><em>Inserts a bootstrap well into the stream</em></p>
+                <p>Adds content encapsulated in a bootstrap well.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The content to wrapped in a well</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$centered </td>
+                                <td><p>Centers the well on page</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>Output is sent directly to the stream and nothing is returned</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_wrapInPre" name="method_wrapInPre" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">wrapInPre()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">wrapInPre(String  <span class="argument">$content</span>) : Void</pre>
+                <p><em>Inserts content wrapped in a bootstrap scrollable &#039;&lt;pre&gt;&#039; section</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The content to wrap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>Outputs directly to the stream and returns nothing</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_responsiveImage" name="method_responsiveImage" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">responsiveImage()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">responsiveImage(String  <span class="argument">$file</span>, Boolean  <span class="argument">$return = false</span>) </pre>
+                <p><em>Inserts a responsive image into the buffer stream, or returns as such.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$file </td>
+                                <td><p>The URI of the image file to insert</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optional true if the method should return the image instead of inserting to the stream</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_imageThumbnail" name="method_imageThumbnail" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">imageThumbnail()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">imageThumbnail(String  <span class="argument">$file</span>, Boolean  <span class="argument">$return = false</span>) </pre>
+                <p><em>Inserts an image thumbnail to stream, or returns as such</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$file </td>
+                                <td><p>The URI of the image file to insert</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optional true if the method should return the image instead of inserting to the stream</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setDocument" name="method_setDocument" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setDocument()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setDocument(String  <span class="argument">$name</span>) : Boolean</pre>
+                <p><em>Sets the current document for the current interface.</em></p>
+                <p>The document given by name to the parameter is used in the
+interface</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The document name to dsiplay in the interface.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>If the document is not empty returns true, otherwise false</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_displayDoc" name="method_displayDoc" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">displayDoc()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">displayDoc(Array  <span class="argument">$submenu = null</span>, Array  <span class="argument">$queryString = null</span>) : Void</pre>
+                <p><em>Displays the requested document in an interface</em></p>
+                <p>An entire interface is output to the stream that
+contains the requested document taking into account
+the current users access permissions.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$submenu </td>
+                                <td><p>An optional indexed array of links to display in the side navigation</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$queryString </td>
+                                <td><p>An optional array of additional query string variables</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_sideDropDownMenu"><span class="namespace-wrapper">\ViewMaker::sideDropDownMenu()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_editDisplay" name="method_editDisplay" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">editDisplay()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">editDisplay(Array  <span class="argument">$submenu = null</span>,   <span class="argument">$blank_template = &#039;&#039;</span>, Array  <span class="argument">$queryString = null</span>) : Void</pre>
+                <p><em>Outputs an editable version of the selected document inside an interface.</em></p>
+                <p>An entire interface with an editable version of the
+selected document is output to the stream.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$submenu </td>
+                                <td><p>An optional indexed array of links for the side navigation menu</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$blank_template </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$queryString </td>
+                                <td><p>An optional array of additional query string variables</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_sideDropDownMenu"><span class="namespace-wrapper">\ViewMaker::sideDropDownMenu()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_approveDisplay" name="method_approveDisplay" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">approveDisplay()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">approveDisplay(Array  <span class="argument">$submenu = null</span>, Array  <span class="argument">$queryString = null</span>) : Void</pre>
+                <p><em>Outputs a document that is seeking approval encapsulated in an enitire interface</em></p>
+                <p>An interface with an editted document that is seeking approval
+is display. The user has options to approve or disapprove of the
+document.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$submenu </td>
+                                <td><p>An optional indexed navigation array</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$queryString </td>
+                                <td><p>An optional array of query string parameters in the form <code>['variable'=&gt;'value',...]</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/ViewMaker.html#method_sideDropDownMenu"><span class="namespace-wrapper">\ViewMaker::sideDropDownMenu()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_submitForApproval" name="method_submitForApproval" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">submitForApproval()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">submitForApproval(Array  <span class="argument">$data</span>) : Boolean</pre>
+                <p><em>Submits an edited document to the database seeking approval.</em></p>
+                <p>When a document is edited it is submitted for approval through this method.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$data </td>
+                                <td><p>The required data given from the <code>DocumentViewer::editDisplay()</code> method.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/DocumentViewer.html#method_editDisplay"><span class="namespace-wrapper">\DocumentViewer::editDisplay()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_emailReview" name="method_emailReview" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">emailReview()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">emailReview(Array  <span class="argument">$data</span>) : Boolean</pre>
+                <p><em>Sends email to approvers that a document is seeking approval</em></p>
+                <p>This method sends an email to users with permissions to approve the
+document that has been submitted.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$data </td>
+                                <td><p>Data submitted to DocumentViewer::submitForApproval()</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/DocumentViewer.html#method_submitForApproval"><span class="namespace-wrapper">\DocumentViewer::submitForApproval()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_approvalGranted" name="method_approvalGranted" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">approvalGranted()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">approvalGranted(Array  <span class="argument">$data</span>) : Boolean</pre>
+                <p><em>Approves a document edit and marks the document approved</em></p>
+                <p>Used by the <code>DocumentViewer::approveDisplay()</code> to turn an
+edited document into an approved document.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$data </td>
+                                <td><p>Data submitted by the <code>DocumentViewer::approveDisplay()</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/DocumentViewer.html#method_approveDisplay"><span class="namespace-wrapper">\DocumentViewer::approveDisplay()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_rollBack" name="method_rollBack" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">rollBack()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">rollBack(String  <span class="argument">$id</span>) : Boolean</pre>
+                <p><em>Database rollback method for transactions</em></p>
+                <p>A public rollback method for database transaction that fail
+either in this class or the calling controller.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>The document ID to rollback</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getDocument" name="method_getDocument" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">getDocument()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getDocument(String  <span class="argument">$id</span>) : Array</pre>
+                <p><em>Retreives a document form the database by it&#039;s ID</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>The document iD</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>The document information</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setAccessRights" name="method_setAccessRights" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setAccessRights()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setAccessRights() : Void</pre>
+                <p><em>Determines the current users access</em></p>
+                <p>Sets the $rights property determined by the current users permission set
+and the access permissions given in the $access property</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_isDocumentOwner" name="method_isDocumentOwner" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">isDocumentOwner()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">isDocumentOwner() : Boolean</pre>
+                <p><em>Determines whether the current user is the current document owner.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>Security</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">documentviewer.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/framework\documentviewer.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on August 22nd, 2019 at 18:16.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

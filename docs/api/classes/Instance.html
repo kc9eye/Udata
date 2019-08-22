@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">453</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-812401644"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-812401644" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Service.html">Service</a></li>
+                                                    <li class="interface"><a href="../classes/ViewWidgets.html">ViewWidgets</a></li>
+                                                                                                    <li class="class"><a href="../classes/AccountCreator.html">AccountCreator</a></li>
+                                                    <li class="class"><a href="../classes/Application.html">Application</a></li>
+                                                    <li class="class"><a href="../classes/Autoloader.html">Autoloader</a></li>
+                                                    <li class="class"><a href="../classes/BillOfMaterials.html">BillOfMaterials</a></li>
+                                                    <li class="class"><a href="../classes/CellTransfer.html">CellTransfer</a></li>
+                                                    <li class="class"><a href="../classes/DBObjects.html">DBObjects</a></li>
+                                                    <li class="class"><a href="../classes/DocumentViewer.html">DocumentViewer</a></li>
+                                                    <li class="class"><a href="../classes/Employee.html">Employee</a></li>
+                                                    <li class="class"><a href="../classes/Employees.html">Employees</a></li>
+                                                    <li class="class"><a href="../classes/Errorhandler.html">Errorhandler</a></li>
+                                                    <li class="class"><a href="../classes/FileIndexer.html">FileIndexer</a></li>
+                                                    <li class="class"><a href="../classes/FileUpload.html">FileUpload</a></li>
+                                                    <li class="class"><a href="../classes/FormWidgets.html">FormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Indexer.html">Indexer</a></li>
+                                                    <li class="class"><a href="../classes/Injuries.html">Injuries</a></li>
+                                                    <li class="class"><a href="../classes/InlineFormWidgets.html">InlineFormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Inspection.html">Inspection</a></li>
+                                                    <li class="class"><a href="../classes/inspectionoverdue.html">inspectionoverdue</a></li>
+                                                    <li class="class"><a href="../classes/Instance.html">Instance</a></li>
+                                                    <li class="class"><a href="../classes/Mailer.html">Mailer</a></li>
+                                                    <li class="class"><a href="../classes/Maintenance.html">Maintenance</a></li>
+                                                    <li class="class"><a href="../classes/Material.html">Material</a></li>
+                                                    <li class="class"><a href="../classes/MaterialDiscrepancy.html">MaterialDiscrepancy</a></li>
+                                                    <li class="class"><a href="../classes/Materials.html">Materials</a></li>
+                                                    <li class="class"><a href="../classes/Notification.html">Notification</a></li>
+                                                    <li class="class"><a href="../classes/outofservice.html">outofservice</a></li>
+                                                    <li class="class"><a href="../classes/Product.html">Product</a></li>
+                                                    <li class="class"><a href="../classes/Products.html">Products</a></li>
+                                                    <li class="class"><a href="../classes/Profiles.html">Profiles</a></li>
+                                                    <li class="class"><a href="../classes/SafetyBoardMinutes.html">SafetyBoardMinutes</a></li>
+                                                    <li class="class"><a href="../classes/SafetyMedia.html">SafetyMedia</a></li>
+                                                    <li class="class"><a href="../classes/SDSHandler.html">SDSHandler</a></li>
+                                                    <li class="class"><a href="../classes/SearchStringFormater.html">SearchStringFormater</a></li>
+                                                    <li class="class"><a href="../classes/Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/SupervisorComments.html">SupervisorComments</a></li>
+                                                    <li class="class"><a href="../classes/Tool.html">Tool</a></li>
+                                                    <li class="class"><a href="../classes/Training.html">Training</a></li>
+                                                    <li class="class"><a href="../classes/trainingtime.html">trainingtime</a></li>
+                                                    <li class="class"><a href="../classes/UploadException.html">UploadException</a></li>
+                                                    <li class="class"><a href="../classes/User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/UserAdministrator.html">UserAdministrator</a></li>
+                                                    <li class="class"><a href="../classes/UserReset.html">UserReset</a></li>
+                                                    <li class="class"><a href="../classes/ViewMaker.html">ViewMaker</a></li>
+                                                    <li class="class"><a href="../classes/WorkCell.html">WorkCell</a></li>
+                                                    <li class="class"><a href="../classes/WorkCells.html">WorkCells</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Instance</h1>
+                    <p><em>Main server instance. Is the first object instantiated from *lib/init.php*</em></p>
+                    <p>This class handles the spool of the PDO, Security model, and other methods
+that make it easier to construct concise controllers.</p>
+                    
+                                                                        <h3>Examples</h3>
+                                                                            <h4></h4>
+                            <pre class="pre-scrollable">** File not found : ../docs/example_ui.php **</pre>
+                                                                
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Instance.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Instance.html#method_getViewer" class="">getViewer()</a><br />
+                                                                    <a href="../classes/Instance.html#method_getDebugViewer" class="">getDebugViewer()</a><br />
+                                                                    <a href="../classes/Instance.html#method_newEndUserDialog" class="">newEndUserDialog()</a><br />
+                                                                    <a href="../classes/Instance.html#method_processingDialog" class="">processingDialog()</a><br />
+                                                                    <a href="../classes/Instance.html#method_mustBeValidUser" class="">mustBeValidUser()</a><br />
+                                                                    <a href="../classes/Instance.html#method_userMustHavePermission" class="">userMustHavePermission()</a><br />
+                                                                    <a href="../classes/Instance.html#method_userMustHaveRole" class="">userMustHaveRole()</a><br />
+                                                                    <a href="../classes/Instance.html#method_checkRole" class="">checkRole()</a><br />
+                                                                    <a href="../classes/Instance.html#method_checkPermission" class="">checkPermission()</a><br />
+                                                                    <a href="../classes/Instance.html#method_checkPermsArray" class="">checkPermsArray()</a><br />
+                                                                    <a href="../classes/Instance.html#method_notAuthorized" class="">notAuthorized()</a><br />
+                                                                    <a href="../classes/Instance.html#method_pageNotFound" class="">pageNotFound()</a><br />
+                                                                    <a href="../classes/Instance.html#method_redirect" class="">redirect()</a><br />
+                                                                    <a href="../classes/Instance.html#method_loginRedirectHere" class="">loginRedirectHere()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Instance.html#property_config" class="">$config</a><br />
+                                                                    <a href="../classes/Instance.html#property_pdo" class="">$pdo</a><br />
+                                                                    <a href="../classes/Instance.html#property_security" class="">$security</a><br />
+                                                                    <a href="../classes/Instance.html#property_mailer" class="">$mailer</a><br />
+                                                                    <a href="../classes/Instance.html#property_currentUserID" class="">$currentUserID</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Instance.html#constant_DIALOG_UNFINISHED" class="">DIALOG_UNFINISHED</a><br />
+                                                                    <a href="../classes/Instance.html#constant_DIALOG_FINISHED" class="">DIALOG_FINISHED</a><br />
+                                                                    <a href="../classes/Instance.html#constant_DIALOG_ERROR" class="">DIALOG_ERROR</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Instance.html#method_getAuthority" class="">getAuthority()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/framework.instance.html"><div class="path-wrapper">framework\instance.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">UData\FrameWork</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Instance</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                                            <dt>See also</dt>
+                                                                                        <dd><a href=""><span class="namespace-wrapper">\etc/config.php</span></a></dd>
+                                                    
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                param
+                            </th>
+                            <td>
+                                                                    <p>Should contain an array for comfiguration options.</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                return
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DIALOG_UNFINISHED" name="constant_DIALOG_UNFINISHED" class="anchor"></a>
+            <article id="constant_DIALOG_UNFINISHED" class="constant">
+                <h3 class="">DIALOG_UNFINISHED</h3>
+                <pre class="signature">DIALOG_UNFINISHED</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DIALOG_FINISHED" name="constant_DIALOG_FINISHED" class="anchor"></a>
+            <article id="constant_DIALOG_FINISHED" class="constant">
+                <h3 class="">DIALOG_FINISHED</h3>
+                <pre class="signature">DIALOG_FINISHED</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DIALOG_ERROR" name="constant_DIALOG_ERROR" class="anchor"></a>
+            <article id="constant_DIALOG_ERROR" class="constant">
+                <h3 class="">DIALOG_ERROR</h3>
+                <pre class="signature">DIALOG_ERROR</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_config" name="property_config" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$config</h3>
+                <pre class="signature">$config : Array</pre>
+                <p><em>Contains the publicly accessible configuraiton array</em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_pdo" name="property_pdo" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$pdo</h3>
+                <pre class="signature">$pdo : \PDO</pre>
+                <p><em>Contains the publicly accessible PDO object</em></p>
+                
+
+                                <h4>Type</h4>
+                \PDO
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_security" name="property_security" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$security</h3>
+                <pre class="signature">$security : \Security</pre>
+                <p><em>Contains the publicly accessible security object</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Security.html">\Security</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mailer" name="property_mailer" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$mailer</h3>
+                <pre class="signature">$mailer : \Mailer</pre>
+                <p><em>Contains the publicly accessible mailer object</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Mailer.html">\Mailer</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_currentUserID" name="property_currentUserID" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$currentUserID</h3>
+                <pre class="signature">$currentUserID : String</pre>
+                <p><em>Contains the current user ID</em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; Null if no valid users                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(Array  <span class="argument">$config</span>) : Object</pre>
+                <p><em>The class constructor</em></p>
+                <p>Creates the most needed objects for models and controllers and stores them
+in properties</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$config </td>
+                                <td><p>Should be the configuration array.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Object
+                                            &mdash; <p>Instance</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\config.php</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getViewer" name="method_getViewer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getViewer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getViewer(String  <span class="argument">$pagetitle = null</span>, Array  <span class="argument">$pagedata = null</span>) : Object</pre>
+                <p><em>Instantiates the ViewMaker object and outputs UI controller interface stub.</em></p>
+                <p>Initializes the ViewMaker object with all the required objects and outputs
+the initial framework UI interface. It is up to you to end that interface stub
+with a <code>$myobjectvar-&gt;footer()</code> method call. This method also returns the
+ViewMaker object. It should be called thusly: <code>$view = $server-&gt;getViewer('My Page Title')</code>.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$pagetitle </td>
+                                <td><p>Optional pagetitle for the browser page. Defaults to configuration option
+<code>$config['company-name']</code>.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$pagedata </td>
+                                <td><p>Optional array of PageData for content manipulation.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Object
+                                            &mdash; <p>ViewMaker</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getDebugViewer" name="method_getDebugViewer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getDebugViewer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getDebugViewer(String  <span class="argument">$debug = &#039;&#039;</span>) : void</pre>
+                <p><em>Outputs an entire HTML interface with debugging information.</em></p>
+                <p>This method will ouput string given encapsulated in a scrollable <code>&lt;pre&gt;</code>
+section, wrapped in an entire standard framework interface to the output stream.
+It is intended to be used for debugging controllers.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$debug </td>
+                                <td><p>Optional, anything passed in this variable as string will be output
+to the stream.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_newEndUserDialog" name="method_newEndUserDialog" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">newEndUserDialog()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">newEndUserDialog(String  <span class="argument">$message</span>, Boolean  <span class="argument">$success = DIALOG_FAILURE</span>, String  <span class="argument">$target_link = null</span>) </pre>
+                <p><em>Outputs a message to the stream for the end user wrapped in an interface.</em></p>
+                <p>Outputs a standard interface message the end user via the <code>$message</code> paramater.
+The interface can be styled in one of two ways using the <code>$success</code> parameter. The interface
+will also display a click button that will redirect the user to any hyperlink given
+using the <code>$target_link</code> parameter.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$message </td>
+                                <td><p>The message to be displayed to the user.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$success </td>
+                                <td><p>Optional, defaults to <code>FALSE</code> indicating a failure styling.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$target_link </td>
+                                <td><p>Optional, hyperlink to redirect the user to,
+defaults to <code>$config['application-root']</code>.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_processingDialog" name="method_processingDialog" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">processingDialog()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">processingDialog(Mixed  <span class="argument">$handler = null</span>, Array  <span class="argument">$args = null</span>, String  <span class="argument">$click = null</span>, String  <span class="argument">$feedback = null</span>) : Void</pre>
+                <p><em>Produces a processing dialog for the user while a background handler is called.</em></p>
+                <p>This method produces a feedback dialog while the given handler is initiated to
+process users request. It essentially lets your handler run in the background
+preventing the users from clicky, clicky while their request is processed by the
+handler. The given handler must return <code>boolean true</code> upon successful completion.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$handler </td>
+                                <td><p>The handler given should be in the form as would be given to
+the <code>call_user_func_array</code> ({@link <a href="http://php.net/manual/en/function.call-user-func-array.php">http://php.net/manual/en/function.call-user-func-array.php</a>}).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$args </td>
+                                <td><p>The arguments to the handler in the same form as given to
+<code>call_user_func_array</code> ({@link <a href="http://php.net/manual/en/function.call-user-func-array.php">http://php.net/manual/en/function.call-user-func-array.php</a>}).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$click </td>
+                                <td><p>The URL of the API to give the user once the end dialog is reached.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$feedback </td>
+                                <td><p>Optional, The feedback to display to the user during the dialog.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>The process ends with either a successful dialog or failure dialog,
+depending on the return of the handler. The user will return to the API given in
+the <code>$click</code> parameter or the main API URL by default.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_mustBeValidUser" name="method_mustBeValidUser" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">mustBeValidUser()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">mustBeValidUser() : Mixed</pre>
+                <p><em>Determines if the current user is valid and logged in.</em></p>
+                <p>This method is used in controllers to determine whether the current
+user is logged in and that the log in is valid. It returns true if the
+user is logged in and valid or outputs the <code>notAuthorized</code> interface
+and returns false otherwise. This is a must have method. This method
+can not return false as execution is halted if it fails.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Boolean|Void</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Instance.html#method_notAuthorized"><span class="namespace-wrapper">\Instance::notAuthorized()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_userMustHavePermission" name="method_userMustHavePermission" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">userMustHavePermission()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">userMustHavePermission(String  <span class="argument">$perm</span>) : Mixed</pre>
+                <p><em>Checks whether or not the user has a specific permission.</em></p>
+                <p>The <code>Security</code> model is queried and a boolean is returned
+to indicate whether of not the current user has the given
+permission. The method outputs the <code>notAuthorized()</code> interface
+to the stream on failure. This is a must have method. It can not
+return false as execution is halted if it fails.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$perm </td>
+                                <td><p>The permission to check against the current user</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Boolean|Void</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Instance.html#method_notAuthorized"><span class="namespace-wrapper">\Instance::notAuthorized()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_userMustHaveRole" name="method_userMustHaveRole" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">userMustHaveRole()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">userMustHaveRole(String  <span class="argument">$role</span>) : Mixed</pre>
+                <p><em>Checks whether the current user has the given role.</em></p>
+                <p>The <code>Security</code> model is queried as to whether the current user
+has the specified role. Returns true if the user has the
+specified role or the user has the role of 'Administrator'.
+Otherwise returns false and outputs the <code>notAuthorized()</code> interface
+to the stream. This is a must have method. It can not return false
+as execution is halted if it fails.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$role </td>
+                                <td><p>The role to check the current user against</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Boolean|Void</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Instance.html#method_notAuthorized"><span class="namespace-wrapper">\Instance::notAuthorized()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkRole" name="method_checkRole" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">checkRole()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkRole(String  <span class="argument">$role</span>) : Boolean</pre>
+                <p><em>Determines if the current user has a role.</em></p>
+                <p>If the current user has the given role or has the role
+of Adminstrator; returns true, otherwise false.
+This is a shortcut method to the Security model.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$role </td>
+                                <td><p>The role to check if the users has.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True if user has the role, false otherwise.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Security.html#method_userHasRole"><span class="namespace-wrapper">\Security::userHasRole()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkPermission" name="method_checkPermission" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">checkPermission()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkPermission(String  <span class="argument">$permission</span>) : Boolean</pre>
+                <p><em>Checks whether the current user has the given permission</em></p>
+                <p>Check whether or not the current user has the given permission
+and returns true on success, or false on failure. Unlike the
+must have methods, this method does not terminate execution.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$permission </td>
+                                <td><p>The permission to check the user for</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkPermsArray" name="method_checkPermsArray" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">checkPermsArray()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkPermsArray(Array  <span class="argument">$perms</span>, Boolean  <span class="argument">$and = false</span>) : Boolean</pre>
+                <p><em>Checks a given array of strings against the current users permissions</em></p>
+                <p>Given an unindexed array of permission strings, with the optional <code>$and</code>
+parameter set to true then <em>all</em> permissions in the given array must be in the
+users permission set. Otherwise, will only succeed if <em>any</em> of the permissions
+are in the users permission set.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$perms </td>
+                                <td><p>The unindexed array of permissions to check</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$and </td>
+                                <td><p>If set to true requires all given permissions in the array be present in the
+users permission set.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_notAuthorized" name="method_notAuthorized" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">notAuthorized()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">notAuthorized() : Void</pre>
+                <p><em>Stops script execution and outputs a not authorized interface to the stream.</em></p>
+                <p>This method stops current script execution after ouputing an interface to the
+stream styled as not authorized.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pageNotFound" name="method_pageNotFound" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">pageNotFound()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pageNotFound() : Void</pre>
+                <p><em>Outputs a 404 error to the stream.</em></p>
+                <p>Method outputs a 404 error styled interface to the stream and
+stops script execution.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_redirect" name="method_redirect" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">redirect()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">redirect(String  <span class="argument">$link</span>, Boolean  <span class="argument">$offsite = false</span>) : Void</pre>
+                <p><em>Represents a sane way to redirect to other links.</em></p>
+                <p>This method is used to redirect to other links in a sane manner,
+with little code. It must be called prior to any other output
+to the stream. Given a relative path link it uses the <code>$config['application-root']</code>
+configuration variable as preamble to the <code>$link</code> parameter. Otherwise setting the
+optional paramter of <code>$offsite</code> to <code>true</code> will cause the link given to be untouched.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$link </td>
+                                <td><p>The link to redirect to.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$offsite </td>
+                                <td><p>Whether or not the <code>$link</code> should be preambled with the <code>$config['application-root']</code> variable.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_loginRedirectHere" name="method_loginRedirectHere" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">loginRedirectHere()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">loginRedirectHere(String  <span class="argument">$url = null</span>) : Boolean</pre>
+                <p><em>Used by user/login to redirect back to a requested previously unauthorized page</em></p>
+                <p>This method is used by <code>Instance-&gt;notAuthorized()</code> to return a redirect URL
+to <code>user/login</code>, so the user will be returned to a previously unauthorized
+request after a succesful login.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$url </td>
+                                <td><p>Optional url to give to the <code>user/login</code> controller</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>Always returns <code>true</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getAuthority" name="method_getAuthority" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getAuthority()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getAuthority() : Object</pre>
+                <p><em>Is called by the constructor to instantiate the `Security` model and object</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Object
+                                            &mdash; <p>Security</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Paul W. Lane</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">instance.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/framework\instance.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on August 22nd, 2019 at 18:16.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

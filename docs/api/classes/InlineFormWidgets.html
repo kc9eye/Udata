@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">453</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1728472024"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1728472024" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Service.html">Service</a></li>
+                                                    <li class="interface"><a href="../classes/ViewWidgets.html">ViewWidgets</a></li>
+                                                                                                    <li class="class"><a href="../classes/AccountCreator.html">AccountCreator</a></li>
+                                                    <li class="class"><a href="../classes/Application.html">Application</a></li>
+                                                    <li class="class"><a href="../classes/Autoloader.html">Autoloader</a></li>
+                                                    <li class="class"><a href="../classes/BillOfMaterials.html">BillOfMaterials</a></li>
+                                                    <li class="class"><a href="../classes/CellTransfer.html">CellTransfer</a></li>
+                                                    <li class="class"><a href="../classes/DBObjects.html">DBObjects</a></li>
+                                                    <li class="class"><a href="../classes/DocumentViewer.html">DocumentViewer</a></li>
+                                                    <li class="class"><a href="../classes/Employee.html">Employee</a></li>
+                                                    <li class="class"><a href="../classes/Employees.html">Employees</a></li>
+                                                    <li class="class"><a href="../classes/Errorhandler.html">Errorhandler</a></li>
+                                                    <li class="class"><a href="../classes/FileIndexer.html">FileIndexer</a></li>
+                                                    <li class="class"><a href="../classes/FileUpload.html">FileUpload</a></li>
+                                                    <li class="class"><a href="../classes/FormWidgets.html">FormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Indexer.html">Indexer</a></li>
+                                                    <li class="class"><a href="../classes/Injuries.html">Injuries</a></li>
+                                                    <li class="class"><a href="../classes/InlineFormWidgets.html">InlineFormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Inspection.html">Inspection</a></li>
+                                                    <li class="class"><a href="../classes/inspectionoverdue.html">inspectionoverdue</a></li>
+                                                    <li class="class"><a href="../classes/Instance.html">Instance</a></li>
+                                                    <li class="class"><a href="../classes/Mailer.html">Mailer</a></li>
+                                                    <li class="class"><a href="../classes/Maintenance.html">Maintenance</a></li>
+                                                    <li class="class"><a href="../classes/Material.html">Material</a></li>
+                                                    <li class="class"><a href="../classes/MaterialDiscrepancy.html">MaterialDiscrepancy</a></li>
+                                                    <li class="class"><a href="../classes/Materials.html">Materials</a></li>
+                                                    <li class="class"><a href="../classes/Notification.html">Notification</a></li>
+                                                    <li class="class"><a href="../classes/outofservice.html">outofservice</a></li>
+                                                    <li class="class"><a href="../classes/Product.html">Product</a></li>
+                                                    <li class="class"><a href="../classes/Products.html">Products</a></li>
+                                                    <li class="class"><a href="../classes/Profiles.html">Profiles</a></li>
+                                                    <li class="class"><a href="../classes/SafetyBoardMinutes.html">SafetyBoardMinutes</a></li>
+                                                    <li class="class"><a href="../classes/SafetyMedia.html">SafetyMedia</a></li>
+                                                    <li class="class"><a href="../classes/SDSHandler.html">SDSHandler</a></li>
+                                                    <li class="class"><a href="../classes/SearchStringFormater.html">SearchStringFormater</a></li>
+                                                    <li class="class"><a href="../classes/Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/SupervisorComments.html">SupervisorComments</a></li>
+                                                    <li class="class"><a href="../classes/Tool.html">Tool</a></li>
+                                                    <li class="class"><a href="../classes/Training.html">Training</a></li>
+                                                    <li class="class"><a href="../classes/trainingtime.html">trainingtime</a></li>
+                                                    <li class="class"><a href="../classes/UploadException.html">UploadException</a></li>
+                                                    <li class="class"><a href="../classes/User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/UserAdministrator.html">UserAdministrator</a></li>
+                                                    <li class="class"><a href="../classes/UserReset.html">UserReset</a></li>
+                                                    <li class="class"><a href="../classes/ViewMaker.html">ViewMaker</a></li>
+                                                    <li class="class"><a href="../classes/WorkCell.html">WorkCell</a></li>
+                                                    <li class="class"><a href="../classes/WorkCells.html">WorkCells</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>InlineFormWidgets</h1>
+                    <p><em>Adds inline form elements to the standard FormWidgets</em></p>
+                    <p>This class contains methods for creating standard framework styled
+horizontal forms with simple PHP calls. Includes a validation model, utilizing
+the jquery.validate() plugin.</p>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/InlineFormWidgets.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_newMultipartForm" class="">newMultipartForm()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_newForm" class="">newForm()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_endForm" class="">endForm()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_emailCapture" class="">emailCapture()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_passwordCapture" class="">passwordCapture()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_inputCapture" class="">inputCapture()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_labelContent" class="">labelContent()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_submitForm" class="">submitForm()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_radioButtons" class="">radioButtons()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_hiddenInput" class="">hiddenInput()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_fileUpload" class="">fileUpload()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_checkBox" class="">checkBox()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_h2" class="">h2()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_selectBox" class="">selectBox()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_searchBox" class="">searchBox()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_textArea" class="">textArea()</a><br />
+                                                                    <a href="../classes/FormWidgets.html#method_standardFileUpload" class="">standardFileUpload()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_newInlineForm" class="">newInlineForm()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_newInlineMultipartForm" class="">newInlineMultipartForm()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineInputCapture" class="">inlineInputCapture()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineFileUpload" class="">inlineFileUpload()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineSubmit" class="">inlineSubmit()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_endInlineForm" class="">endInlineForm()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineCheckbox" class="">inlineCheckbox()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_fullPageSearchBar" class="">fullPageSearchBar()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineButtonGroup" class="">inlineButtonGroup()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineSelectBox" class="">inlineSelectBox()</a><br />
+                                                                    <a href="../classes/InlineFormWidgets.html#method_inlineTextArea" class="">inlineTextArea()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/FormWidgets.html#property_formid" class="">$formid</a><br />
+                                                                    <a href="../classes/FormWidgets.html#property_scripts" class="">$scripts</a><br />
+                                                                    <a href="../classes/FormWidgets.html#property_third_party" class="">$third_party</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/FormWidgets.html#method_addValidation" class="">addValidation()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/FormWidgets.html#property_validate" class="">$validate</a><br />
+                                                                    <a href="../classes/FormWidgets.html#property_rules" class="">$rules</a><br />
+                                                                    <a href="../classes/FormWidgets.html#property_uploadhack" class="">$uploadhack</a><br />
+                                                                    <a href="../classes/FormWidgets.html#property_wysiwyg" class="">$wysiwyg</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/framework.inlineformwidgets.html"><div class="path-wrapper">framework\inlineformwidgets.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">UI\Bootstrap3</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/FormWidgets.html">\FormWidgets</a></div>
+                                                                                                    <div class="namespace-wrapper">\InlineFormWidgets</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                                            <dt>See also</dt>
+                                                                                        <dd><a href="../classes/FormWidgets.html"><span class="namespace-wrapper">\FormWidgets</span></a></dd>
+                                                    
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>Paul W. Lane</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_formid" name="property_formid" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$formid</h3>
+                <pre class="signature">$formid : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The forms ID atrribute, auto generated if not given in newForm()                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_scripts" name="property_scripts" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$scripts</h3>
+                <pre class="signature">$scripts : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The base file path to script files called                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_third_party" name="property_third_party" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$third_party</h3>
+                <pre class="signature">$third_party : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; The URL to the third-party apps storage                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_validate" name="property_validate" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$validate</h3>
+                <pre class="signature">$validate : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                &mdash; Whether the jquery.validate() plugin is required                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_rules" name="property_rules" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$rules</h3>
+                <pre class="signature">$rules : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                &mdash; Array eventually encoded to JSON for the jquery.validate() plugin                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_uploadhack" name="property_uploadhack" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$uploadhack</h3>
+                <pre class="signature">$uploadhack : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                &mdash; Whether to add the file upload hack script                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wysiwyg" name="property_wysiwyg" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wysiwyg</h3>
+                <pre class="signature">$wysiwyg : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                &mdash; Whether to include the textArea &#039;tinymce&#039; editor                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(String  <span class="argument">$scripts</span>) : \InlineFromWidgets</pre>
+                <p><em>Class constructor</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$scripts </td>
+                                <td><p>The base URL path to script files
+like the jquery.validate() plugin</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \InlineFromWidgets
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_newMultipartForm" name="method_newMultipartForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">newMultipartForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">newMultipartForm(String  <span class="argument">$header = null</span>, String  <span class="argument">$uri = null</span>, String  <span class="argument">$id = null</span>) : Void</pre>
+                <p><em>Generates a new multipart form heading to the stream</em></p>
+                <p>Required to handle file uploads</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$header </td>
+                                <td><p>Optional string to use a header to the form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uri </td>
+                                <td><p>Optional link to the handler for this form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>Optional ID attribute. Autogenerated if not supplied</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite using php instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_newForm" name="method_newForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">newForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">newForm(String  <span class="argument">$header = null</span>, String  <span class="argument">$uri = null</span>, String  <span class="argument">$method = &#039;post&#039;</span>, String  <span class="argument">$id = null</span>) : Void</pre>
+                <p><em>Outputs a new form header to the stream</em></p>
+                <p>Required for new forms</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$header </td>
+                                <td><p>Optional header for the form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uri </td>
+                                <td><p>Optional URI to a handler for the form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$method </td>
+                                <td><p>Optional method the form is returned, one of 'post' or 'get'. Post is default.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>Optional ID attribute. Autogenerated if not supplied</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite with PHP instead fo HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_endForm" name="method_endForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">endForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">endForm() : Void</pre>
+                <p><em>Outputs the closing of the form</em></p>
+                <p>Required at the end of the form</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_emailCapture" name="method_emailCapture" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">emailCapture()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">emailCapture(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Email&#039;</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs a standard styled email form entry</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name the data will have in the <code>$_REQUEST</code> array</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional name used in the label for the user</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional data to prepopulate the entry with</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional array of jquery.validate() properties or <code>true</code> if simply required</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string to put in a help block for the entry</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite with PHP instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_passwordCapture" name="method_passwordCapture" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">passwordCapture()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">passwordCapture(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Password&#039;</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) </pre>
+                <p><em>Outputs a standard styled password form entry</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code> for the entry</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional label for the user of the entry</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional value to prepopulate the entry with</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string for user helpblock</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite with PHP instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inputCapture" name="method_inputCapture" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inputCapture()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inputCapture(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Entry&#039;</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs a standarn styled input entry form element</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional label for the user</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional data to prepopulate the entry with</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string for user helpblock</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite with PHP instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_labelContent" name="method_labelContent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">labelContent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">labelContent(String  <span class="argument">$label</span>, String  <span class="argument">$content = &#039;Default Content&#039;</span>) : Void</pre>
+                <p><em>Outputs a standarized label element to the stream</em></p>
+                <p>Keeps the format of the form, yet allows you to place a
+label where it is needed. Any content can be label keeping
+the form styling.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The content if any being labeled.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_submitForm" name="method_submitForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">submitForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">submitForm(String  <span class="argument">$label = &#039;Submit&#039;</span>, Boolean  <span class="argument">$reset = false</span>, Mixed  <span class="argument">$cancel = null</span>) : Void</pre>
+                <p><em>Outputs a form submittal to the stream</em></p>
+                <p>Generates the submit buttons and optional reset and cancel buttons</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional name for the submit button default is 'Submit'</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$reset </td>
+                                <td><p>Optional to include a form reset button</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$cancel </td>
+                                <td><p>Optional hyperlink to use for a cancel button, or optional array of
+<code>['label'=&gt;'btn_label','url'=&gt;'onlcick_url',type'=&gt;'default|primary|info|warning|danger|success']</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_radioButtons" name="method_radioButtons" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">radioButtons()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">radioButtons(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Select&#039;</span>, Array  <span class="argument">$value = null</span>, Boolean  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs a radio button selection to the stream</em></p>
+                <p>Generates radio buttons in the standard style based on the <code>$value</code>
+array. The value array should be indexed thusly: <code>button_label=&gt;button_value</code></p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label for the user for the buttons</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$value </td>
+                                <td><p>The array containing labels and values for the buttons</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or <code>false</code> if validation is required</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional helpblock text for the user</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hiddenInput" name="method_hiddenInput" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hiddenInput()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hiddenInput(String  <span class="argument">$name</span>, String  <span class="argument">$value</span>) : Void</pre>
+                <p><em>Outputs a hidden form value to the stream</em></p>
+                <p>A PHP centric wat to add a hidden value to a form</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name givne to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>The value for the name</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrtie in PHP instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fileUpload" name="method_fileUpload" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">fileUpload()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fileUpload(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;File&#039;</span>, String  <span class="argument">$value = null</span>, Boolean  <span class="argument">$multiple = false</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) </pre>
+                <p><em>Outputs a form upload dialog entry to the stream</em></p>
+                <p>A file upload entry stylized for Bootstrap and the
+standard framework.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label for the form field</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>This parameter is not used. If you require this parameter consider using <code>standardFileUpload</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$multiple </td>
+                                <td><p>Whether or not to accept multiple files for upload</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>A string of optional help text for the field</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>rewrite for PHP instead of HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkBox" name="method_checkBox" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">checkBox()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkBox(String  <span class="argument">$name</span>, Array  <span class="argument">$label</span>, String  <span class="argument">$value</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>, String  <span class="argument">$default = null</span>) : Void</pre>
+                <p><em>Outputs a styled form checkbox to the stream.</em></p>
+                <p>If you require a default value for your checkbox, simply call
+<code>FormWidgets::hiddenInput</code> prior to calling this method. Use the
+same <code>$name</code> for the hidden input as this checkbox. Unchecked
+checkboxes will always have the value given in the hidden input
+<code>$value</code> parameter.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$label </td>
+                                <td><p>Unindexed array of string labels, the first
+for the label of the section describing the checkbox, the second
+for the checkbox itself.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>The value of the element if the checkbox is checked</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional helpblock message for the user</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$default </td>
+                                <td><p>An optional default value for the unchecked checkbox.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_h2" name="method_h2" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">h2()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">h2(String  <span class="argument">$content</span>) : Void</pre>
+                <p><em>Outputs a standard stylized heading to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$content </td>
+                                <td><p>The heading content</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Rewrite for PHP and not HTML</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_selectBox" name="method_selectBox" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">selectBox()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">selectBox(String  <span class="argument">$name</span>, String  <span class="argument">$label</span>, Array  <span class="argument">$value</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>,   <span class="argument">$default = null</span>) </pre>
+                <p><em>Outputs a stylized select box to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to $_REQUEST</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label for the element</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$value </td>
+                                <td><p>A mulitdimensional array in the form <code>[['opt_val','opt_label'],...]</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional, either true if required or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string to output as help block.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_searchBox" name="method_searchBox" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">searchBox()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">searchBox(String  <span class="argument">$name</span>, String  <span class="argument">$label</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Adds a search box input capture to the form</em></p>
+                <p>Outputs a search box complete with search button to the form,
+styled in the centered form style. This search box is it's own form.
+This method outputs a completely new form and is intended to be used
+as a stand alone search box, separate from any other forms on the page.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The <code>$_REQUEST</code> name given to the handler.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The UI display name for the widget.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional pre-inserted value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optionally either true or an indexed array of jQuery.validate() options</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string of help text for the widget</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>Output is directed to the stream, and this widget returns no value</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_textArea" name="method_textArea" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">textArea()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">textArea(String  <span class="argument">$name</span>, String  <span class="argument">$id = null</span>, String  <span class="argument">$value = &#039;&#039;</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>,   <span class="argument">$wysiwyg = false</span>) : Void</pre>
+                <p><em>Outputs a formated textarea to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The <code>$_REQUEST</code> name given to the handler.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>The UI display name for the widget.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional pre-inserted value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optionally either true or an indexed array of jQuery.validate() options</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string of help text for the widget</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$wysiwyg </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>Output is directed to the stream, and this widget returns no value</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_standardFileUpload" name="method_standardFileUpload" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">standardFileUpload()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">standardFileUpload(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;File&#039;</span>, String  <span class="argument">$value = null</span>, Boolean  <span class="argument">$multiple = false</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) </pre>
+                <p><em>Outputs a non bootstrap standard HTML 5 file upload to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to the $_REQUEST variable</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label for the form group</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Any pre loaded value for the upload</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$multiple </td>
+                                <td><p>Default false, whether to accept multiple file or not</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Either true if validatation required, or array of jquery validate rules</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Help block information default is null</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_newInlineForm" name="method_newInlineForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">newInlineForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">newInlineForm(String  <span class="argument">$header = null</span>, String  <span class="argument">$uri = null</span>, String  <span class="argument">$method = &#039;post&#039;</span>, String  <span class="argument">$id = null</span>) : Void</pre>
+                <p><em>Outputs a new inline form element to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$header </td>
+                                <td><p>Optional header for the form.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uri </td>
+                                <td><p>Optional URI to a handler for the form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$method </td>
+                                <td><p>Optional method for submitting, 'post' or 'get'. Default is 'post'</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>Optional form ID, auto generated if not given.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_newInlineMultipartForm" name="method_newInlineMultipartForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">newInlineMultipartForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">newInlineMultipartForm(String  <span class="argument">$header = null</span>, String  <span class="argument">$uri = null</span>, String  <span class="argument">$id = null</span>) : Void</pre>
+                <p><em>Outputs a new inline multipart form to the stream</em></p>
+                <p>Required for file uploads.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$header </td>
+                                <td><p>Optional header for the form.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uri </td>
+                                <td><p>Optional URI for a handler of the form</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>Optional ID for the form, autogenerated if not given.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineInputCapture" name="method_inlineInputCapture" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineInputCapture()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineInputCapture(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Data Input&#039;</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs an inline text entry to the stream.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional label for the entry</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional value to populate the entry with</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or an array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional user help text</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineFileUpload" name="method_inlineFileUpload" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineFileUpload()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineFileUpload(String  <span class="argument">$name</span>, Boolean  <span class="argument">$multiple = false</span>, Mixed  <span class="argument">$required = false</span>) : Void</pre>
+                <p><em>Outputs an inline file upload entry to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to <code>$_REQUEST</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$multiple </td>
+                                <td><p>Whether or not this entry accepts multiple files</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineSubmit" name="method_inlineSubmit" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineSubmit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineSubmit(String  <span class="argument">$label = &#039;Submit&#039;</span>, Boolean  <span class="argument">$reset = false</span>, String  <span class="argument">$cancel = null</span>) : Void</pre>
+                <p><em>Outputs an inline form submit button to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>An optional label for the button</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$reset </td>
+                                <td><p>An optional switch to also output a reset button</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$cancel </td>
+                                <td><p>An optional full length hyperlink to disregard the form</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_endInlineForm" name="method_endInlineForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">endInlineForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">endInlineForm() : Void</pre>
+                <p><em>Outputs the end of the form to the stream.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineCheckbox" name="method_inlineCheckbox" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineCheckbox()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineCheckbox(String  <span class="argument">$name</span>, String  <span class="argument">$label</span>, String  <span class="argument">$value</span>, Mixed  <span class="argument">$required = false</span>) : Void</pre>
+                <p><em>Adds an inline checkbox element to the stream.</em></p>
+                <p>Outputs to the stream an inline stylized checkbox.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to $_REQUEST</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The user seen label to the checkbox</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>The value of the checkbox if checked</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties if required</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fullPageSearchBar" name="method_fullPageSearchBar" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">fullPageSearchBar()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fullPageSearchBar(String  <span class="argument">$name</span>, String  <span class="argument">$label = &#039;Search&#039;</span>, String  <span class="argument">$value = null</span>, Mixed  <span class="argument">$required = false</span>,   <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs a full page width search bar to the stream</em></p>
+                <p>This method will output a search bar the will extend the
+full width of the element it is called within.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to $_REQUEST</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>Optional placeholder label for the bar, default is 'Search'</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional value to intialize in the bar</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional <code>true</code> or array of jquery.validate() properties if required</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$helpBlock </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineButtonGroup" name="method_inlineButtonGroup" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineButtonGroup()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineButtonGroup(Array  <span class="argument">$btns</span>) : Void</pre>
+                <p><em>Outputs an inline button group to the stream</em></p>
+                <p>The array given should be in the form
+<code>['btn_label'=&gt;'onclick_action',...]</code>.
+You do not typically need to call <code>InlineFormWidgets::newInlineForm()</code>
+to use this method. However, wif the clickable actions are functions
+for a form you will have to.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$btns </td>
+                                <td><p>An array of the form <code>['btn_label'=&gt;'onclick_action']</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineSelectBox" name="method_inlineSelectBox" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineSelectBox()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineSelectBox(String  <span class="argument">$name</span>, String  <span class="argument">$label</span>, Array  <span class="argument">$value</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) </pre>
+                <p><em>Outputs an inline stylized select box to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name given to $_REQUEST</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The label for the element</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$value </td>
+                                <td><p>A mulitdimensional array in the form <code>[['opt_val','opt_label'],...]</code></p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optional, either true if required or array of jquery.validate() properties</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string to output as help block.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inlineTextArea" name="method_inlineTextArea" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineTextArea()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineTextArea(String  <span class="argument">$name</span>, String  <span class="argument">$label = null</span>, String  <span class="argument">$value = &#039;&#039;</span>, Mixed  <span class="argument">$required = false</span>, String  <span class="argument">$helpBlock = null</span>) : Void</pre>
+                <p><em>Outputs an inline formated textarea to the stream</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The <code>$_REQUEST</code> name given to the handler.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$label </td>
+                                <td><p>The UI display name for the widget.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td><p>Optional pre-inserted value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$required </td>
+                                <td><p>Optionally either true or an indexed array of jQuery.validate() options</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$helpBlock </td>
+                                <td><p>Optional string of help text for the widget</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                            &mdash; <p>Output is directed to the stream, and this widget returns no value</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addValidation" name="method_addValidation" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">addValidation()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addValidation(String  <span class="argument">$name</span>, Array  <span class="argument">$rules</span>) : Void</pre>
+                <p><em>Adds the required jquery.validate() validation properties for the form</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$name </td>
+                                <td><p>The name of the element requiring validation.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$rules </td>
+                                <td><p>The jquery.validate() rules for the named element</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/FormWidgets.html"><div class="path-wrapper">\FormWidgets</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">inlineformwidgets.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/framework\inlineformwidgets.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on August 22nd, 2019 at 18:16.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
