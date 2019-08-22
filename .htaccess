@@ -1,8 +1,8 @@
 #Prevents directory listings
 Options -Indexes
 
-ErrorDocument 404 http://127.0.0.1:1234/wwwroot/templates/error/404
-ErrorDocument 403 http://127.0.0.1:1234/user/login
+ErrorDocument 404 /wwwroot/templates/error/404
+ErrorDocument 403 /user/login
 
 RewriteEngine on
 
