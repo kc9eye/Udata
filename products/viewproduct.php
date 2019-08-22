@@ -82,6 +82,7 @@ if ($server->checkPermission('viewProductStats')) {
     echo "<form class='form-inline'>\n";
     echo "<input type='hidden' name='prokey' value='{$_REQUEST['prokey']}' />\n";
     echo "<strong>Date Range Lookup:</strong>\n";
+    $view->linkButton("/products/viewproduct?prokey={$_REQUEST['prokey']}&begin=".date('Y/m/d')."&end=".date('Y/m/d'),"Today Only",'info');
     echo "<div class='input-group input-daterange'>\n";
     echo "<input class='form-control' type='text' name='begin' value='{$beginDate}' />\n";
     echo "<span class='input-group-addon'>to</span>\n";
