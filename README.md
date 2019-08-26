@@ -1,3 +1,3 @@
 # UData Production Management
-## API Documentation
-* https://kc9eye.github.io/UData
+## Documentation
+* http://kc9eye.github.io/udata.html
