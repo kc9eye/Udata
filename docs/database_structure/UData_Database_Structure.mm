@@ -393,8 +393,8 @@
 <node CREATED="1541430823431" ID="ID_1491311392" MODIFIED="1541430826116" TEXT="_date"/>
 <node CREATED="1542814420857" ID="ID_30846828" MODIFIED="1542814437565" TEXT="category"/>
 </node>
-<node CREATED="1550503071981" ID="ID_1709010619" MODIFIED="1558020109607" TEXT="For cell safety, see Virtual Documents description.">
-<arrowlink DESTINATION="ID_1935350342" ENDARROW="Default" ENDINCLINATION="1512;0;" ID="Arrow_ID_1798631880" STARTARROW="None" STARTINCLINATION="1970;61;"/>
+<node CREATED="1550503071981" ID="ID_1709010619" MODIFIED="1566842804445" TEXT="For cell safety, see Virtual Documents description.">
+<arrowlink DESTINATION="ID_1935350342" ENDARROW="Default" ENDINCLINATION="1536;0;" ID="Arrow_ID_1798631880" STARTARROW="None" STARTINCLINATION="1952;-131;"/>
 </node>
 </node>
 <node CREATED="1542040095121" ID="ID_1803342962" MODIFIED="1560954528433" TEXT="Triggers">
@@ -708,8 +708,8 @@
 </node>
 <node CREATED="1545055055030" ID="ID_1236848254" MODIFIED="1560954528464" POSITION="left" TEXT="Virtual Documents">
 <node CREATED="1545055071168" ID="ID_754521820" MODIFIED="1560954528464" TEXT="Description">
-<node CREATED="1550502549264" ID="ID_1935350342" MODIFIED="1558020109637" TEXT="Safety documents are stored by name. Work cell safety assessments&#xa;are stored by the cellid within the &apos;name&apos; column. All other site safety documents&#xa;are stored by their respective name (title).">
-<linktarget COLOR="#ff0000" DESTINATION="ID_1935350342" ENDARROW="Default" ENDINCLINATION="1512;0;" ID="Arrow_ID_1798631880" SOURCE="ID_1709010619" STARTARROW="None" STARTINCLINATION="1970;61;"/>
+<node CREATED="1550502549264" ID="ID_1935350342" MODIFIED="1566842804498" TEXT="Safety documents are stored by name. Work cell safety assessments&#xa;are stored by the cellid within the &apos;name&apos; column. All other site safety documents&#xa;are stored by their respective name (title).">
+<linktarget COLOR="#ff0000" DESTINATION="ID_1935350342" ENDARROW="Default" ENDINCLINATION="1536;0;" ID="Arrow_ID_1798631880" SOURCE="ID_1709010619" STARTARROW="None" STARTINCLINATION="1952;-131;"/>
 </node>
 </node>
 <node CREATED="1545055077916" ID="ID_1279168132" MODIFIED="1560954528464" TEXT="Tables">
