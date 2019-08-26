@@ -32,6 +32,14 @@ if (!empty($_REQUEST['action'])) {
         case 'edit':
             editAttendanceDisplay();
         break;
+        case 'delete':
+            $handler = new Employees($server->pdo);
+            $server->processingDialog(
+                [$handler,'removeAttendanceRecord'],
+                [$_REQUEST['id']],
+                $server->config['application-root'].'/hr/attendance?id='.$_REQUEST['uid']
+            );
+        break;
         case 'amend':
             $handler = new Employees($server->pdo);
             $server->processingDialog(
@@ -77,7 +85,7 @@ function attendanceDisplay () {
         "<div class='input-group input-daterange'>\n
         <input class='form-control' type='text' name='begin_date' />\n
         <span class='input-group-addon'>to</span>\n
-        <input class='form-control' type='text' name='end_end' />\n
+        <input class='form-control' type='text' name='end_date' />\n
         </div>\n"
     );
     $form->inputCapture('arrive_time','Time Arrived','00:00');
@@ -94,7 +102,7 @@ function attendanceDisplay () {
             $excused = ($row['excused'] == 'true') ? 'Yes' : 'No';
             echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td>";
             echo "<td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td><td>";
-            $view->editBtnSm('/hr/attendance?action=edit&id='.$row['id']);
+            $view->editBtnSm('/hr/attendance?action=edit&id='.$row['id'].'&uid='.$_REQUEST['id']);
             echo "</td></tr>\n";
         }
     }
@@ -118,7 +126,10 @@ function editAttendanceDisplay() {
     $row = $handler->getAttendanceByID($_REQUEST['id']);
     $view = $server->getViewer("HR:Attendace Amend");
     $view->sideDropDownMenu($submenu);
-    $view->h1("<small>Amend Record#:</small> {$_REQUEST['id']}");
+    $view->h1(
+        "<small>Amend Record#:</small> {$_REQUEST['id']}&#160;".
+        $view->trashBtnSm('/hr/attendance?action=delete&id='.$_REQUEST['id'].'&uid='.$_REQUEST['uid'],true)
+    );
     $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
     $form->newForm();
     $form->hiddenInput('action','amend');
@@ -129,7 +140,7 @@ function editAttendanceDisplay() {
     $form->checkBox('absent',['Absent','Yes'],'true',false,null,$row['absent']);
     $form->checkBox('excused',['Excused','Yes'],'true',false,null,$row['excused']);
     $form->textArea('description',null,$row['description'],true);
-    $form->submitForm('Add',false,$view->PageData['approot'].'/hr/main');
+    $form->submitForm('Add',false,$view->PageData['approot'].'/hr/attendance?id='.$_REQUEST['uid']);
     $form->endForm();
     $view->footer();
 }

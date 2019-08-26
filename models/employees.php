@@ -150,19 +150,64 @@ class Employees extends Profiles {
             )';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $insert = [
-                ':id'=>uniqid(),
-                ':eid'=>$data['eid'],
-                ':occ_date'=>$data['occ_date'],
-                ':arrive_time'=>$data['arrive_time'],
-                ':leave_time'=>$data['leave_time'],
-                ':absent'=>$data['absent'],
-                ':description'=>$data['description'],
-                ':uid'=>$data['uid'],
-                ':excused'=>$data['excused']
-            ];
-            if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
-            return true;
+            //For issue #57
+            if (!empty($data['begin_date']) && !empty($data['end_date'])) {
+                $begin = new DateTime($data['begin_date']);
+                $end = new DateTime($data['end_date']);
+                $end = $end->modify( '+1 day' );
+                $interval = new DateInterval('P1D');
+                $period = new DatePeriod($begin,$interval,$end);
+                $this->dbh->beginTransaction();
+                foreach($period as $date) {
+                    $insert = [
+                        ':id'=>uniqid(),
+                        ':eid'=>$data['eid'],
+                        ':occ_date'=>$date->format('Y/m/d'),
+                        ':arrive_time'=>$data['arrive_time'],
+                        ':leave_time'=>$data['leave_time'],
+                        ':absent'=>$data['absent'],
+                        ':description'=>$data['description'],
+                        ':uid'=>$data['uid'],
+                        ':excused'=>$data['excused']
+                    ];
+                    $pntr->execute($insert);
+                }
+                $this->dbh->commit();
+                return true;
+            }
+            elseif (!empty($data['begin_date'])) {
+                $insert = [
+                    ':id'=>uniqid(),
+                    ':eid'=>$data['eid'],
+                    ':occ_date'=>$data['begin_date'],
+                    ':arrive_time'=>$data['arrive_time'],
+                    ':leave_time'=>$data['leave_time'],
+                    ':absent'=>$data['absent'],
+                    ':description'=>$data['description'],
+                    ':uid'=>$data['uid'],
+                    ':excused'=>$data['excused']
+                ];
+                if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
+                return true;
+            }
+            elseif (!empty($data['end_date'])) {
+                $insert = [
+                    ':id'=>uniqid(),
+                    ':eid'=>$data['eid'],
+                    ':occ_date'=>$data['end_date'],
+                    ':arrive_time'=>$data['arrive_time'],
+                    ':leave_time'=>$data['leave_time'],
+                    ':absent'=>$data['absent'],
+                    ':description'=>$data['description'],
+                    ':uid'=>$data['uid'],
+                    ':excused'=>$data['excused']
+                ];
+                if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
+                return true;
+            }
+            else {
+                throw new Exception('Missing date data value');
+            }
         }
         catch (PDOException $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
@@ -225,6 +270,26 @@ class Employees extends Profiles {
         catch (PDOException $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Removes an attendance record from the database table
+     * 
+     * Removes attendance record from the attendance table
+     * @param String $id The ID of the record to remove
+     * @return Boolean True on success, false otherwise
+     */
+    public function removeAttendanceRecord ($id) {
+        $sql = 'DELETE FROM missed_time WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$id])) throw new Exception('Failed to remove record: '.$id);
+            return true;
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
