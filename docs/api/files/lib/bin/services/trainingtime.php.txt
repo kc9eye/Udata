@@ -63,7 +63,8 @@ class trainingtime implements Service {
         WHERE 
             (
                 reoccur_time_frame != '00:00:00' AND
-                CURRENT_DATE >= (emp_training.train_date + training.reoccur_time_frame)
+                CURRENT_DATE >= (emp_training.train_date + training.reoccur_time_frame) AND
+                a.end_date IS NULL
             ) ORDER BY name ASC";
         try {
             $pntr = $this->server->pdo->prepare($sql);
