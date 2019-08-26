@@ -54,7 +54,15 @@ function attendanceDisplay () {
     
     $emp = new Employee($server->pdo,$_REQUEST['id']);
 
-    $view = $server->getViewer("HR: Attendance");
+    //View header options for adding the Boostrap DatePicker
+    $pageOptions = [
+        'headinserts'=> [
+            '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>',
+            '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>'
+        ]
+    ];
+
+    $view = $server->getViewer("HR: Attendance",$pageOptions);
     $view->sideDropDownMenu($submenu);
     $view->h1("<small>Add Attendance Record:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']}".
         $view->linkButton("/hr/viewemployee?id={$_REQUEST['id']}","<span class='glyphicon glyphicon-arrow-left'></span> Back",'info',true)
@@ -64,7 +72,14 @@ function attendanceDisplay () {
     $form->hiddenInput('action','add');
     $form->hiddenInput('uid',$server->currentUserID);
     $form->hiddenInput('eid',$_REQUEST['id']);
-    $form->inputCapture('occ_date','Date',date('Y/m/d'),['dateISO'=>'true']);
+    $form->labelContent(
+        'Date',
+        "<div class='input-group input-daterange'>\n
+        <input class='form-control' type='text' name='begin_date' />\n
+        <span class='input-group-addon'>to</span>\n
+        <input class='form-control' type='text' name='end_end' />\n
+        </div>\n"
+    );
     $form->inputCapture('arrive_time','Time Arrived','00:00');
     $form->inputCapture('leave_time','Time Left','00:00');
     $form->checkBox('absent',['Absent','Yes'],'true',false,null,'false');
@@ -84,6 +99,15 @@ function attendanceDisplay () {
         }
     }
     $view->responsiveTableClose();
+    echo "<script>$(document).ready(function(){
+        var options = {
+            format:'yyyy/mm/dd',
+            autoclose: true
+        };
+        $('.input-group input').each(function(){
+            $(this).datepicker(options);
+        });
+    });\n</script>";
     $view->footer();
 }
 
