@@ -35,4 +35,4 @@ define('DIALOG_SUCCESS', true);
  */
 define('DIALOG_FAILURE', false);
 
-define('APP_VERSION', '1.0.4');
+define('APP_VERSION', '1.0.6');
