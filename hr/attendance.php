@@ -45,7 +45,7 @@ if (!empty($_REQUEST['action'])) {
             $server->processingDialog(
                 [$handler,'amendAttendanceRecord'],
                 [$_REQUEST],
-                $server->config['application-root'].'/hr/main'
+                $server->config['application-root'].'/hr/attendance?id='.$_REQUEST['eid']
             );
         break;
         case 'print':
@@ -122,8 +122,10 @@ function attendanceDisplay () {
 function editAttendanceDisplay() {
     global $server;
     include('submenu.php');
+
     $handler = new Employees($server->pdo);
     $row = $handler->getAttendanceByID($_REQUEST['id']);
+
     $view = $server->getViewer("HR:Attendace Amend");
     $view->sideDropDownMenu($submenu);
     $view->h1(
@@ -134,13 +136,20 @@ function editAttendanceDisplay() {
     $form->newForm();
     $form->hiddenInput('action','amend');
     $form->hiddenInput('uid',$server->currentUserID);
+    $form->hiddenInput('eid',$_REQUEST['uid']);
     $form->inputCapture('occ_date','Date',$row['occ_date'],['dateISO'=>'true']);
     $form->inputCapture('arrive_time','Time Arrived',$row['arrive_time']);
     $form->inputCapture('leave_time','Time Left',$row['leave_time']);
-    $form->checkBox('absent',['Absent','Yes'],'true',false,null,$row['absent']);
-    $form->checkBox('excused',['Excused','Yes'],'true',false,null,$row['excused']);
+    if ($row['absent']) 
+        $form->checkBox('absent',['Absent','No'],'false',false,null,'true');
+    else
+        $form->checkBox('absent',['Absent','Yes'],'true',false,null,'false');
+    if ($row['excused'])
+        $form->checkBox('excused',['Excused','No'],'false',false,null,'true');
+    else
+        $form->checkBox('excused',['Excused','Yes'],'true',false,null,'false');
     $form->textArea('description',null,$row['description'],true);
-    $form->submitForm('Add',false,$view->PageData['approot'].'/hr/attendance?id='.$_REQUEST['uid']);
+    $form->submitForm('Amend',false,$view->PageData['approot'].'/hr/attendance?id='.$_REQUEST['uid']);
     $form->endForm();
     $view->footer();
 }
