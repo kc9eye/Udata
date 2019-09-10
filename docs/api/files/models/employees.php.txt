@@ -248,10 +248,11 @@ class Employees extends Profiles {
      * @return Boolean True on success, false otherwise.
      */
     public function amendAttendanceRecord (Array $data) {
-        $sql = 'UPDATE missed_time 
-            SET occ_date=:occ_date,absent=:absent::boolean,arrive_time=:arrive_time::time,
-            leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid
-            WHERE id = :id';
+        $sql = 
+            'UPDATE missed_time 
+             SET occ_date=:occ_date,absent=:absent::boolean,arrive_time=:arrive_time::time,
+             leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid
+             WHERE id = :id';
         try {
             $pntr = $this->dbh->prepare($sql);
             $insert = [
