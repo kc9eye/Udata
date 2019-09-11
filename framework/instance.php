@@ -86,6 +86,7 @@ Class Instance {
         $this->security = $this->getAuthority();
         $this->mailer = new Mailer($this->config);
         $this->currentUserID = $this->security->secureUserID;
+        if ($config['services-run'] == 'onaccess') $this->runservice();
     }
 
     /**
@@ -585,4 +586,26 @@ Class Instance {
         return true;
     }
 
+    private function runservice () {
+        try {
+            foreach(new DirectoryIterator(\INCLUDE_ROOT.'/lib/bin/services') as $fileinfo) {
+                if (!$fileinfo->isDot() && !$fileinfo->isDir() && $fileinfo->getFilename() != '.git' && $fileinfo->isFile()) {
+                        $servicename = basename($fileinfo->getFilename(),".php");
+                        $service = new $servicename($this);
+                        if (!$service->cronjob()) {
+                            if (!$service->run()) {
+                                $service->kill();
+                                throw new Exception("{$servicename} failed to complete succesfully.");
+                            }
+                            unset($service);
+                        }
+                        else
+                            continue;
+                }
+            }
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+        }
+    }
 }

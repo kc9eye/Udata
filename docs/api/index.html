@@ -88,10 +88,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2131049864"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1749340493"></a>
                                 <a href="namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-2131049864" class="accordion-body collapse in">
+            <div id="namespace-1749340493" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -587,21 +587,24 @@
             <article class="method">
                 <h3 class=" ">addNewPDIH()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">addNewPDIH(  <span class="argument">$materials</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">addNewPDIH(\Materials  <span class="argument">$materials</span>) : Boolean</pre>
+                <p><em>Inserts a new PDIH record</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td><a href="classes/Materials.html">\Materials</a></td>
                                 <td>$materials </td>
-                                <td></td>
+                                <td><p>The Materials model object</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise.</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -630,26 +633,29 @@
             <article class="method">
                 <h3 class=" ">addNewPDN()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">addNewPDN(  <span class="argument">$materials</span>,   <span class="argument">$file</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">addNewPDN(\Materials  <span class="argument">$materials</span>, \FileUpload  <span class="argument">$file</span>) : Boolean</pre>
+                <p><em>Inserts a new PDN record with file handling</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td><a href="classes/Materials.html">\Materials</a></td>
                                 <td>$materials </td>
-                                <td></td>
+                                <td><p>The Materials model object</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td><a href="classes/FileUpload.html">\FileUpload</a></td>
                                 <td>$file </td>
-                                <td></td>
+                                <td><p>The FileUpload framework object, containing the PDN file upload data</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -721,21 +727,26 @@
             <article class="method">
                 <h3 class=" ">errorCheckInput()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">errorCheckInput(  <span class="argument">$materials</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">errorCheckInput(\Materials  <span class="argument">$materials</span>) : Mixed</pre>
+                <p><em>Checks discrepancy inputs for errors and files</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td><a href="classes/Materials.html">\Materials</a></td>
                                 <td>$materials </td>
-                                <td></td>
+                                <td><p>The materials model object</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>If the upload is a material PDN, it returns the FileUpload object.
+Otherwise it returns null. In case of input errors it returns VOID and outputs the
+HTML error message to the stream.</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -764,8 +775,8 @@
             <article class="method">
                 <h3 class=" ">fileIndexFailed()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">fileIndexFailed() </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">fileIndexFailed() : void</pre>
+                <p><em>Outputs the file indexing failed to the stream</em></p>
                 
 
                 
@@ -837,8 +848,8 @@ opposed to being an object, however it is not a controller</p>
             <article class="method">
                 <h3 class=" ">nAN()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">nAN() </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">nAN() : void</pre>
+                <p><em>Outputs the not a number dialog to the stream.</em></p>
                 
 
                 
@@ -872,8 +883,8 @@ opposed to being an object, however it is not a controller</p>
             <article class="method">
                 <h3 class=" ">noMultiplesDialog()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">noMultiplesDialog() </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">noMultiplesDialog() : void</pre>
+                <p><em>Outputs the no mulitple file uploads dialog to the stream</em></p>
                 
 
                 
@@ -907,8 +918,8 @@ opposed to being an object, however it is not a controller</p>
             <article class="method">
                 <h3 class=" ">notOnBOM()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">notOnBOM() </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">notOnBOM() : void</pre>
+                <p><em>outputs the number not on the BOM dialog to the stream</em></p>
                 
 
                 
@@ -1000,8 +1011,8 @@ optional argument <code>$precision</code>.</p>
             <article class="method">
                 <h3 class=" ">requiredPhoto()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">requiredPhoto() </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">requiredPhoto() : void</pre>
+                <p><em>Outputs the photo required dialog to the stream</em></p>
                 
 
                 
@@ -1198,7 +1209,7 @@ optional argument <code>$precision</code>.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on September 10th, 2019 at 12:02.
+                    on September 11th, 2019 at 11:46.
                 </section>
             </section>
         </section>
