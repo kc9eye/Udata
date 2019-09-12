@@ -15,8 +15,13 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+/**
+ * New databases are initialized from this template.
+ * @todo 'Finish this initial template
+ */
+$update_version = 0.1;
 
- $objects = [
+ $sql = [
      'CREATE TABLE auth_tokens (
         id varchar primary key,
         _date timestamp with time zone default NOW(),
@@ -107,5 +112,11 @@
         search tsvector);
         CREATE INDEX docs_index on documents USING GIN (search_index);
         CREATE TRIGGER docs_update BEFORE INSERT OR UPDATE ON documents FOR EACH ROW EXECUTE PROCEDURE
-        tsvector_update_trigger(search,\'pg_catalog.english\',name,body)'
+        tsvector_update_trigger(search,\'pg_catalog.english\',name,body)' #....
  ];
+
+ $inserts = [
+     'insert into perms values (:id,:name)' => [
+         [':id'=>uniqid(),':name'=>'adminAll']#....
+     ]
+ ]

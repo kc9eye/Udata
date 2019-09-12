@@ -35,60 +35,68 @@ class UpdateDatabase implements Service {
     }
 
     public function run () {
-        @include(self::DB_VERSION_FILE);
+        if (file_exists(self::DB_VERSION_FILE)) {
+            include(self::DB_VERSION_FILE);
+        }
+        else {
+            //This is the first run of the applicaiton, build the database
+            $current_version = 0;            
+        }
         if (file_exists(self::UPDATE_FILE_NAME)) {
             include(self::UPDATE_FILE_NAME);
-            if ($update_version > $current_version) {
-                echo "Database being updated from version {$current_version} to {$update_version}, please wait...";
-                if (!empty($sql)) {
-                    foreach($sql as $statement) {
-                        try {
-                            $pntr = $this->server->pdo->prepare($statement);
-                            if (!$pntr->execute()) throw new Exception("{$statement} failed: ".print_r($pntr->errorInfo(),true));
-                        }
-                        catch (Exception $e) {
-                            echo "update failed!";
-                            trigger_error($e->getMessage(),E_USER_WARNING);
-                            return false;
-                        }
+        }
+        else {
+            include(\INCLUDE_ROOT.'/install/requiredobjects.php');
+        }
+        if ($update_version > $current_version) {
+            echo "Database being updated from version {$current_version} to {$update_version}, please wait...";
+            if (!empty($sql)) {
+                foreach($sql as $statement) {
+                    try {
+                        $pntr = $this->server->pdo->prepare($statement);
+                        if (!$pntr->execute()) throw new Exception("{$statement} failed: ".print_r($pntr->errorInfo(),true));
                     }
-                }
-                if (!empty($inserts)) {
-                    foreach($inserts as $sql => $data) {
-                        try {
-                            $pntr = $this->server->pdo->prepare($sql);
-                            $this->server->pdo->beginTransaction();
-                            foreach($data as $insert) {
-                                if (!$pntr->execute($insert)) throw new Exception("{$sql} failed: ".print_r($pntr->errorInfo(),true));
-                            }
-                            $this->server->pdo->commit();
-                        }
-                        catch (Exception $e) {
-                            $this->server->pdo->rollBack();
-                            echo "Update failed!";
-                            trigger_error($e->getMessage(),E_USER_WARNING);
-                            return false;
-                        }
+                    catch (Exception $e) {
+                        echo "update failed!";
+                        trigger_error($e->getMessage(),E_USER_WARNING);
+                        return false;
                     }
-                }
-                try {
-                    $fh = fopen(self::DB_VERSION_FILE, 'w');
-                    $result = fwrite($fh,'<?php $current_version = '.$update_version.';');
-                    if ($result === false) throw new Exception("Update succeeded, but file write failed");
-                    fclose($fh);
-                    echo " Succeeded!";
-                    return true;
-                }
-                catch (Exception $e) {
-                    echo " Failed!";
-                    trigger_error($e->getMessage(),E_USER_WARNING);
-                    return false;
                 }
             }
-            else {
+            if (!empty($inserts)) {
+                foreach($inserts as $sql => $data) {
+                    try {
+                        $pntr = $this->server->pdo->prepare($sql);
+                        $this->server->pdo->beginTransaction();
+                        foreach($data as $insert) {
+                            if (!$pntr->execute($insert)) throw new Exception("{$sql} failed: ".print_r($pntr->errorInfo(),true));
+                        }
+                        $this->server->pdo->commit();
+                    }
+                    catch (Exception $e) {
+                        $this->server->pdo->rollBack();
+                        echo "Update failed!";
+                        trigger_error($e->getMessage(),E_USER_WARNING);
+                        return false;
+                    }
+                }
+            }
+            try {
+                $fh = fopen(self::DB_VERSION_FILE, 'w');
+                $result = fwrite($fh,'<?php $current_version = '.$update_version.';');
+                if ($result === false) throw new Exception("Update succeeded, but file write failed");
+                fclose($fh);
+                echo " Succeeded!";
                 return true;
             }
+            catch (Exception $e) {
+                echo " Failed!";
+                trigger_error($e->getMessage(),E_USER_WARNING);
+                return false;
+            }
+        }
+        else {
+            return true;
         }
     }
-
 }
