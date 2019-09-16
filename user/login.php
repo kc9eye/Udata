@@ -61,6 +61,21 @@ if (!empty($_POST)) {
                 <div class='col-md-3'></div>\n
             </div>\n";
     }
+    elseif (is_set($_SESSION['user_privilege_escalation'])) {
+        unset($_SESSION['user_privilege_escalation']);
+        echo "<div class='row'></div>
+                <div class='col-md-3'></div>
+                    <div class='col-xs-12 col-md-6'>
+                        <h4 class='bg-danger text-danger'>
+                            Warning:
+                            <small>
+                                The current account does not have sufficient privileges to access this page.
+                            </small>
+                        </h4>
+                    </div>
+                </div class='col-md-3'></div>
+            </div>\n";
+    }
 ?>
 <form method='post' class='form-horizontal'>
     <div class='row'>

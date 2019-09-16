@@ -119,4 +119,4 @@ $update_version = 0.1;
      'insert into perms values (:id,:name)' => [
          [':id'=>uniqid(),':name'=>'adminAll']#....
      ]
- ]
+];

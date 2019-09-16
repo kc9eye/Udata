@@ -42,6 +42,8 @@ function employeeViewDisplay () {
     $title = "<small>Name:</small> ".$emp->getFullName();
     if ($server->checkPermission('addNewProfile')) 
         $title .= "&#160;".$view->editBtnSm('/hr/updateprofile?id='.$_REQUEST['id'],true);
+    if ($server->checkPermsArray(['initEmployeeReview','reviewEmployee']))
+        $title .= "&#160;".$view->linkButton('/hr/employeereview?eid='.$emp->eid, 'Employee Review', 'info', true);
     $view->h2($title);    
     
     if (!empty($emp->Profile['image'])) {
