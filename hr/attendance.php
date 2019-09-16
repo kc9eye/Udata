@@ -26,7 +26,7 @@ if (!empty($_REQUEST['action'])) {
             $server->processingDialog(
                 [$handler,'addAttendanceRecord'],
                 [$_REQUEST],
-                $server->config['application-root'].'/hr/viewemployee?id='.$_REQUEST['eid']
+                $server->config['application-root'].'/hr/attendance?id='.$_REQUEST['eid']
             );
         break;
         case 'edit':
