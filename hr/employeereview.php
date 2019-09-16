@@ -48,6 +48,14 @@ function displayOngoingReview (Review $review) {
     $view->h3("<small>Began: ".$review->getStartDate());
     $view->h3("<small>Ends: ".$review->getEndDate());
     echo "<span class='bg-info'>The following data represents this timeframe: <mark>".Review::DATA_TIMEFRAME."</mark></span>";
+    $view->bgInfoParagraph(
+        "The purpose of conducting the Performace Appraisal is to:
+        <ol>
+            <li>Develop better <i>communication</i> between the employee and the supervisor</li>
+            <li>Improve the <i>quality</i> of work and safety</li>
+            <li>Increase productivity and promote employee development</li>
+        </ol>"
+    );
 
     //Training data
     $view->hr();
@@ -87,5 +95,17 @@ function displayOngoingReview (Review $review) {
     $view->endBtnCollapse();
 
     //Review Comments
-    
+    $view->hr();
+    $view->h2("Appraisals");
+    $view->bgInfoParagraph(
+        "When creating your appraisal, the following 6 points should be considered and touched upon:
+        <ol>
+            <li><strong>Safety Orientation</strong>: <i>Considers the safety of self as well as co-workers</i></li>
+            <li><strong>Attendance</strong>: <i>Has acceptable attendance record; arrives on time and completes scheduled work hours</i></li>
+            <li><strong>Work Ethic</strong>: <i>Follows directions promptly and accurately; is flexible; demonstrates initiative; works with minimal supervision</i></li>
+            <li><strong>Judgement/Descision Making</strong>: <i>Has good communication skills.</i></li>
+            <li><strong>Attitude</strong>: <i>Presents a positive attitude; demonstrates honesty and integrity; polite"
+    )
+    $view->beginBtnCollapse("Show/Hide Other's Appraisals");
+
 }
