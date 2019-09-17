@@ -118,7 +118,7 @@ function discrepancyDisplay (MaterialDiscrepancy $dis) {
             echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'png':
-            echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file='{$dis->file}' />\n";
+            echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         default:
             $view->linkButton('/data/files?dis=inline&file='.$dis->file,'Download File','info');
