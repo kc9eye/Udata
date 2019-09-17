@@ -25,6 +25,8 @@
  */
 class Employees extends Profiles {
 
+    const REVIEW_TIMEFRAME = '7 days';
+
     public function __construct (PDO $dbh) {
         parent::__construct($dbh);
     }
@@ -295,6 +297,32 @@ class Employees extends Profiles {
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
+        }
+    }
+
+    /**
+     * Initializes a new employee review event email notifications
+     * 
+     * Starts a new review process for the given employee (by UID)
+     * @param Mailer $mailer The system mailer object.
+     * @param String $eid The employees ID to begin the process
+     * @param String $uid The user ID initiating the review
+     * @return Boolean True on success, false otherwise
+     */
+    public function initiateReview (Mailer $mailer, $eid, $uid) {
+        $sql = "INSERT INTO reviews VALUES (:id,:eid,now(),(now() + :timeframe),:meeting_date,:uid)";
+        $insert = [
+            ':id'=>uniqid(),
+            ':eid'=>$eid,
+            ':timeframe'=>self::REVIEW_TIMEFRAME,
+            ':meeting_date'=>'',
+            ':uid'=>$uid
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            $notifier = new Notification($this->dbh,$mailer);
+            return $notifier->notify('Review Started',)
         }
     }
 }

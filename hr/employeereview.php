@@ -42,7 +42,8 @@ function main () {
 function displayOngoingReview (Review $review) {
     global $server;
     include('submenu.php');
-    $view = $server->getViewer();
+    $view = $server->getViewer('Review: '.$review->getFullName());
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
     $view->h1("<small>Ongoing Review for:</small> ".$review->getFullName());
     $view->h3("<small>Began: ".$review->getStartDate());
@@ -96,7 +97,7 @@ function displayOngoingReview (Review $review) {
 
     //Review Comments
     $view->hr();
-    $view->h2("Appraisals");
+    $view->h2("Appraisal");
     $view->bgInfoParagraph(
         "When creating your appraisal, the following 6 points should be considered and touched upon:
         <ol>
@@ -104,8 +105,55 @@ function displayOngoingReview (Review $review) {
             <li><strong>Attendance</strong>: <i>Has acceptable attendance record; arrives on time and completes scheduled work hours</i></li>
             <li><strong>Work Ethic</strong>: <i>Follows directions promptly and accurately; is flexible; demonstrates initiative; works with minimal supervision</i></li>
             <li><strong>Judgement/Descision Making</strong>: <i>Has good communication skills.</i></li>
-            <li><strong>Attitude</strong>: <i>Presents a positive attitude; demonstrates honesty and integrity; polite"
-    )
+            <li><strong>Attitude</strong>: <i>Presents a positive attitude; demonstrates honesty and integrity; polite and approachable; works well with others; is team orientated.</i></li>
+            <li><strong>Housekeeping</strong>: <i>5S orientated; makes effort to maintain a safe and clean work area, on a consistent basis.</i></li>
+        </ol>"
+    );
+    //Others appraisals
     $view->beginBtnCollapse("Show/Hide Other's Appraisals");
+    echo "<div class='panel-group'>\n";
+    $otherappraisals = $review->getOthersAppraisals($server->currentUserID);
+    if ($otherappraisals === false) {
+        $view->bold("No other appraisals found.");
+    }
+    else {
+        foreach($otherappraisals as $row) {
+            echo "<div class='panel panel-primary'>\n";
+            echo "  <div class='panel-heading'>Reviewers Appraisal</div>\n";
+            echo "  <div class='panel-body'>{$row['comments']}</div>\n";
+            echo "</div>\n";
+        }
+        echo "</div>";
+    }
+    $view->endBtnCollapse();
+    //Your appraisal
+    $myappraisal = ($review->getUserAppraisal($server->currentUserID) === false) ? '': $review->getUserAppraisal($server->currentUserID);
+    $form->newForm('My Appraisal');
+    $form->hiddenInput('action','update_appraisal');
+    $form->hiddenInput('uid',$server->currentUserID);
+    $form->hiddenInput('revid',$review->getReviewID());
+    $form->textArea('appraisal','myappraisal',$myappraisal,true,null,true);
+    $form->submitForm('Submit',true,$view->PageData['approot'].'/hr/viewemployee?id='.$review->eid);
+    $form->endForm();
 
+    $view->footer();
+}
+
+function displayInitReview ($review) {
+    global $server;
+    include('submenu.php');
+    $view = $server->getViewer('Review: '.$review->getFullName());
+    $view->sideDropDownMenu($submenu);
+    $view->h2($review->getFullName()." <small class='bg-danger'>Is currently not in review</small>");
+    if ($server->checkPermission('initEmployeeReview')) {
+        $view->h3(
+            'You can <i class=\'bg-primary\'>initiate</i> the review process here: '.$view->linkButton('/hr/employeereview?eid='.$review->eid.'&action=initreview','Begin Review Process','danger',true)
+        );
+        $view->hr();
+        $view->h3(
+            'You can <i class=\'bg-primary\'>view</i> the last review here: '.$view->linkButton('/hr/employeereview?eid='.$review->eid.'&action=viewlast', 'View Last Review','info',true)
+        );
+    }
+
+    $view->footer();
 }

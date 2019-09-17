@@ -25,6 +25,16 @@ $inserts = [
         [
             ':id'=>uniqid(),
             ':name'=>'initEmployeeReview'
+        ],
+        [
+            ':id'=>uniqid(),
+            ':name'=>'reviewEmployee'
         ]
-    ]
+    ],
+    "insert into notifications values (:id,:desciption,'EMAIL',now(),'5bc4c8a517238')"=>[
+        [
+            ':id'=>uniqid(),
+            ':description'=>'Review Started'
+        ]
+    ]    
 ];

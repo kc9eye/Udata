@@ -104,6 +104,14 @@ class Review extends Employee {
     }
 
     /**
+     * @return The active review ID, false otherwise
+     */
+    public function getReviewID () {
+        if (empty($this->review['raw_review']['id'])) return false;
+        else return $this->review['raw_review']['id'];
+    }
+
+    /**
      * Returns the review start date;
      * @return String The review start data.
      */
@@ -136,5 +144,34 @@ class Review extends Employee {
      */
     public function getReviewManagementComments () {
         return $this->review['comments'];
+    }
+
+    /**
+     * Returns appraisals which are not from the given UID
+     * @param String $uid The UID of the user to exclude
+     * @return Array In the form 
+     * `['id'=>string,'uid'=>string,'revid'=>string,'comments'=>string,'_date'=>string]`,
+     * or false if nothing found.
+     */
+    public function getOthersAppraisals ($uid) {
+        $return = array();
+        foreach($this->review['review_comments'] as $row) {
+            if ($row['uid'] != $uid) array_push($return,$row);
+        }
+        if (empty($return)) return false;
+    }
+
+    /**
+     * Returns only the appraisal from the users UID specified
+     * @param String $uid The users UID of the appraisal to return
+     * @return Array In the form :
+     * `['id'=>string,'uid'=>string,'revid'=>string,'comments'=>string,'_date'=>string]`,
+     * or false if nothing found
+     */
+    public function getUserAppraisal ($uid) {
+        foreach($this->review['review_comments'] as $row) {
+            if ($row['uid'] == $uid) return $row;
+        }
+        return false;
     }
 }
