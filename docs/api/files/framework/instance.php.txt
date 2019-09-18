@@ -329,7 +329,7 @@ Class Instance {
      */
     public function mustBeValidUser () {
         if (is_null($this->security->user)) {
-            $this->notAuthorized();
+            $this->notAuthorized(true);
         }
         else {
             return true;
@@ -358,7 +358,7 @@ Class Instance {
             return true;
         }
         else {
-            $this->notAuthorized();
+            $this->notAuthorized(true);
          }
     }
 
@@ -386,7 +386,7 @@ Class Instance {
             return true;
         }
         else {
-            $this->notAuthorized();
+            $this->notAuthorized(true);
         }
     }
 
@@ -494,13 +494,14 @@ Class Instance {
      * 
      * This method stops current script execution after ouputing an interface to the 
      * stream styled as not authorized.
-     * 
+     * @param Boolean $escalation Optional boolean indicating that this is an attempted user privilege escalation
      * @return Void
      * @author Paul W. Lane 
      */
-    public function notAuthorized () {
+    public function notAuthorized ($escalation = false) {
         $buff = ob_get_contents();
         ob_clean();
+        if ($escalation) $_SESSION['user_privilege_escalation'] = true;
         $this->loginRedirectHere();
         $this->redirect('/user/login');
     }

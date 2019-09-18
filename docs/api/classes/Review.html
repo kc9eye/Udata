@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">472</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-471584916"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-471584916" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Service.html">Service</a></li>
+                                                    <li class="interface"><a href="../classes/ViewWidgets.html">ViewWidgets</a></li>
+                                                                                                    <li class="class"><a href="../classes/AccountCreator.html">AccountCreator</a></li>
+                                                    <li class="class"><a href="../classes/Application.html">Application</a></li>
+                                                    <li class="class"><a href="../classes/Autoloader.html">Autoloader</a></li>
+                                                    <li class="class"><a href="../classes/BillOfMaterials.html">BillOfMaterials</a></li>
+                                                    <li class="class"><a href="../classes/CellTransfer.html">CellTransfer</a></li>
+                                                    <li class="class"><a href="../classes/DBObjects.html">DBObjects</a></li>
+                                                    <li class="class"><a href="../classes/DocumentViewer.html">DocumentViewer</a></li>
+                                                    <li class="class"><a href="../classes/Employee.html">Employee</a></li>
+                                                    <li class="class"><a href="../classes/Employees.html">Employees</a></li>
+                                                    <li class="class"><a href="../classes/Errorhandler.html">Errorhandler</a></li>
+                                                    <li class="class"><a href="../classes/FileIndexer.html">FileIndexer</a></li>
+                                                    <li class="class"><a href="../classes/FileUpload.html">FileUpload</a></li>
+                                                    <li class="class"><a href="../classes/FormWidgets.html">FormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Indexer.html">Indexer</a></li>
+                                                    <li class="class"><a href="../classes/Injuries.html">Injuries</a></li>
+                                                    <li class="class"><a href="../classes/InlineFormWidgets.html">InlineFormWidgets</a></li>
+                                                    <li class="class"><a href="../classes/Inspection.html">Inspection</a></li>
+                                                    <li class="class"><a href="../classes/inspectionoverdue.html">inspectionoverdue</a></li>
+                                                    <li class="class"><a href="../classes/Instance.html">Instance</a></li>
+                                                    <li class="class"><a href="../classes/Mailer.html">Mailer</a></li>
+                                                    <li class="class"><a href="../classes/Maintenance.html">Maintenance</a></li>
+                                                    <li class="class"><a href="../classes/Material.html">Material</a></li>
+                                                    <li class="class"><a href="../classes/MaterialDiscrepancy.html">MaterialDiscrepancy</a></li>
+                                                    <li class="class"><a href="../classes/Materials.html">Materials</a></li>
+                                                    <li class="class"><a href="../classes/Notification.html">Notification</a></li>
+                                                    <li class="class"><a href="../classes/outofservice.html">outofservice</a></li>
+                                                    <li class="class"><a href="../classes/Product.html">Product</a></li>
+                                                    <li class="class"><a href="../classes/Products.html">Products</a></li>
+                                                    <li class="class"><a href="../classes/Profiles.html">Profiles</a></li>
+                                                    <li class="class"><a href="../classes/Review.html">Review</a></li>
+                                                    <li class="class"><a href="../classes/SafetyBoardMinutes.html">SafetyBoardMinutes</a></li>
+                                                    <li class="class"><a href="../classes/SafetyMedia.html">SafetyMedia</a></li>
+                                                    <li class="class"><a href="../classes/SDSHandler.html">SDSHandler</a></li>
+                                                    <li class="class"><a href="../classes/SearchStringFormater.html">SearchStringFormater</a></li>
+                                                    <li class="class"><a href="../classes/Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/SupervisorComments.html">SupervisorComments</a></li>
+                                                    <li class="class"><a href="../classes/Tool.html">Tool</a></li>
+                                                    <li class="class"><a href="../classes/Training.html">Training</a></li>
+                                                    <li class="class"><a href="../classes/trainingtime.html">trainingtime</a></li>
+                                                    <li class="class"><a href="../classes/UpdateDatabase.html">UpdateDatabase</a></li>
+                                                    <li class="class"><a href="../classes/UploadException.html">UploadException</a></li>
+                                                    <li class="class"><a href="../classes/User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/UserAdministrator.html">UserAdministrator</a></li>
+                                                    <li class="class"><a href="../classes/UserReset.html">UserReset</a></li>
+                                                    <li class="class"><a href="../classes/ViewMaker.html">ViewMaker</a></li>
+                                                    <li class="class"><a href="../classes/WorkCell.html">WorkCell</a></li>
+                                                    <li class="class"><a href="../classes/WorkCells.html">WorkCells</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Review</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Review.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getImageFilename" class="">getImageFilename()</a><br />
+                                                                    <a href="../classes/Employee.html#method___set" class="">__set()</a><br />
+                                                                    <a href="../classes/Employee.html#method___get" class="">__get()</a><br />
+                                                                    <a href="../classes/Employee.html#method___isset" class="">__isset()</a><br />
+                                                                    <a href="../classes/Employee.html#method___unset" class="">__unset()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getFullName" class="">getFullName()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getFullAddress" class="">getFullAddress()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getPhoneNumbers" class="">getPhoneNumbers()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getEmergencyContact" class="">getEmergencyContact()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getEID" class="">getEID()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getEmployment" class="">getEmployment()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getAttendance" class="">getAttendance()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getInjuries" class="">getInjuries()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getTraining" class="">getTraining()</a><br />
+                                                                    <a href="../classes/Employee.html#method_getComments" class="">getComments()</a><br />
+                                                                    <a href="../classes/Review.html#method_reviewStatus" class="">reviewStatus()</a><br />
+                                                                    <a href="../classes/Review.html#method_getReviewID" class="">getReviewID()</a><br />
+                                                                    <a href="../classes/Review.html#method_getStartDate" class="">getStartDate()</a><br />
+                                                                    <a href="../classes/Review.html#method_getEndDate" class="">getEndDate()</a><br />
+                                                                    <a href="../classes/Review.html#method_getReviewAttendance" class="">getReviewAttendance()</a><br />
+                                                                    <a href="../classes/Review.html#method_getReviewManagementComments" class="">getReviewManagementComments()</a><br />
+                                                                    <a href="../classes/Review.html#method_getOthersAppraisals" class="">getOthersAppraisals()</a><br />
+                                                                    <a href="../classes/Review.html#method_getUserAppraisal" class="">getUserAppraisal()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Review.html#property_status" class="">$status</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Employee.html#constant_OPEN_REVIEW" class="">OPEN_REVIEW</a><br />
+                                                                    <a href="../classes/Review.html#constant_IN_REVIEW" class="">IN_REVIEW</a><br />
+                                                                    <a href="../classes/Review.html#constant_NOT_IN_REVIEW" class="">NOT_IN_REVIEW</a><br />
+                                                                    <a href="../classes/Review.html#constant_DATA_TIMEFRAME" class="">DATA_TIMEFRAME</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Employee.html#method_setData" class="">setData()</a><br />
+                                                                    <a href="../classes/Review.html#method_setReviewData" class="">setReviewData()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Employee.html#property_dbh" class="">$dbh</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Employee.html#method_setEmployeeData" class="">setEmployeeData()</a><br />
+                                                                    <a href="../classes/Employee.html#method_setProfileData" class="">setProfileData()</a><br />
+                                                                    <a href="../classes/Employee.html#method_setAttendanceData" class="">setAttendanceData()</a><br />
+                                                                    <a href="../classes/Employee.html#method_setTrainingData" class="">setTrainingData()</a><br />
+                                                                    <a href="../classes/Employee.html#method_setInjuriesData" class="">setInjuriesData()</a><br />
+                                                                    <a href="../classes/Employee.html#method_setCommentsData" class="">setCommentsData()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Employee.html#property_data" class="">$data</a><br />
+                                                                    <a href="../classes/Review.html#property_review" class="">$review</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/models.review.html"><div class="path-wrapper">models\review.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/Employee.html">\Employee</a></div>
+                                                                                                    <div class="namespace-wrapper">\Review</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_OPEN_REVIEW" name="constant_OPEN_REVIEW" class="anchor"></a>
+            <article id="constant_OPEN_REVIEW" class="constant">
+                <h3 class="">OPEN_REVIEW</h3>
+                <pre class="signature">OPEN_REVIEW</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_IN_REVIEW" name="constant_IN_REVIEW" class="anchor"></a>
+            <article id="constant_IN_REVIEW" class="constant">
+                <h3 class="">IN_REVIEW</h3>
+                <pre class="signature">IN_REVIEW</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_NOT_IN_REVIEW" name="constant_NOT_IN_REVIEW" class="anchor"></a>
+            <article id="constant_NOT_IN_REVIEW" class="constant">
+                <h3 class="">NOT_IN_REVIEW</h3>
+                <pre class="signature">NOT_IN_REVIEW</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DATA_TIMEFRAME" name="constant_DATA_TIMEFRAME" class="anchor"></a>
+            <article id="constant_DATA_TIMEFRAME" class="constant">
+                <h3 class="">DATA_TIMEFRAME</h3>
+                <pre class="signature">DATA_TIMEFRAME</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_status" name="property_status" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$status</h3>
+                <pre class="signature">$status : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_dbh" name="property_dbh" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$dbh</h3>
+                <pre class="signature">$dbh : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_data" name="property_data" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$data</h3>
+                <pre class="signature">$data : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_review" name="property_review" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$review</h3>
+                <pre class="signature">$review : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\PDO  <span class="argument">$dbh</span>, String  <span class="argument">$eid</span>) : \Employee</pre>
+                <p><em>Retrieves dat given the Employee ID</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\PDO</td>
+                                <td>$dbh </td>
+                                <td><p>The instance PDO object, database access handle</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$eid </td>
+                                <td><p>The employee ID to retrieve</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Employee.html">\Employee</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getImageFilename" name="method_getImageFilename" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getImageFilename()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getImageFilename() : String</pre>
+                <p><em>Returns the image file name of the employee</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The image's disk filename</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___set" name="method___set" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__set(  <span class="argument">$name</span>,   <span class="argument">$value</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___get" name="method___get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__get(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___isset" name="method___isset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__isset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__isset(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___unset" name="method___unset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__unset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__unset(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFullName" name="method_getFullName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFullName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFullName() : String</pre>
+                <p><em>Returns the employees full name as a string</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The employees full profile name.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFullAddress" name="method_getFullAddress" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFullAddress()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFullAddress() : String</pre>
+                <p><em>Returns the employees full address</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The employees full address</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPhoneNumbers" name="method_getPhoneNumbers" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPhoneNumbers()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPhoneNumbers() : String</pre>
+                <p><em>Returns the employees phone numbers</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>Phone #'s</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getEmergencyContact" name="method_getEmergencyContact" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getEmergencyContact()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getEmergencyContact() : String</pre>
+                <p><em>Returns the employees emergency contact</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>Emergency contact</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getEID" name="method_getEID" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getEID()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getEID() : String</pre>
+                <p><em>Returns the employees EID number</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>EID</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getEmployment" name="method_getEmployment" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getEmployment()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getEmployment() : Array</pre>
+                <p><em>Returns the employee employment data</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>An array containing the employment data in the form:
+<code>['id'=&gt;string,'status'=&gt;string,'pid'=&gt;string,'start_date'=&gt;string,'end_date'=&gt;string,'photo_id'=&gt;string,'_date'=&gt;string,'uid'=&gt;string]</code>
+_date is the date the entry was made, uid is the UID of the user making the entry.
+pid is the profile id number, status is their employment status, and id is their EID</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getAttendance" name="method_getAttendance" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getAttendance()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getAttendance() : Array</pre>
+                <p><em>Returns the employee attendance data</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>An array of missed time occurrences in the form:
+<code>['id'=string,'eid'=&gt;string,'occ_date'=&gt;string,'absent'=&gt;bool,'arrive_time'=&gt;string,'leave_time'=&gt;string,'description'=&gt;string,'excused'=&gt;bool,'uid'=&gt;string,'_date'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getInjuries" name="method_getInjuries" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getInjuries()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getInjuries() : Array</pre>
+                <p><em>Returns employee injuries data</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form:
+<code>['id'=&gt;string,'eid'=&gt;string,'injury_date'=&gt;string,'injury_description'=&gt;string,'witnesses'=&gt;string,'recordable'=&gt;bool,'followup_medical'=&gt;bool,'record_date'=&gt;string,'recorder'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTraining" name="method_getTraining" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getTraining()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTraining() : Array</pre>
+                <p><em>Returns the employees training data</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form :
+<code>['training'=&gt;string,'train_date'=&gt;string,'trainer'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getComments" name="method_getComments" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getComments()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getComments() : Array</pre>
+                <p><em>Returns any supervisor comments about the employee</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form :
+<code>['id'=&gt;string,'author'=&gt;string,'date'=&gt;string,'comments'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_reviewStatus" name="method_reviewStatus" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">reviewStatus()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">reviewStatus() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getReviewID" name="method_getReviewID" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getReviewID()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getReviewID() : \The</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \The
+                                            &mdash; <p>active review ID, false otherwise</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStartDate" name="method_getStartDate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStartDate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStartDate() : String</pre>
+                <p><em>Returns the review start date;</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The review start data.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getEndDate" name="method_getEndDate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getEndDate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getEndDate() : String</pre>
+                <p><em>Returns the review end date;</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The review end date</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getReviewAttendance" name="method_getReviewAttendance" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getReviewAttendance()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getReviewAttendance() : Array</pre>
+                <p><em>Returns an array of attendance data in the Review::DATA_TIMEFRAME timeframe</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form
+<code>['id'=&gt;string,'eid'=&gt;string,'occ_date'=&gt;string,'absent'=&gt;bool,'arrive_time'=&gt;string, 'leave_time'=&gt;string,'description'=&gt;string,'excused'=&gt;bool,'uid'=&gt;string,'_date'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getReviewManagementComments" name="method_getReviewManagementComments" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getReviewManagementComments()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getReviewManagementComments() : Array</pre>
+                <p><em>Returns an array of management comment data</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form:
+<code>['id'=&gt;string,'author'=&gt;string,'_date'=&gt;string,'comments'=&gt;string]</code></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getOthersAppraisals" name="method_getOthersAppraisals" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getOthersAppraisals()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getOthersAppraisals(String  <span class="argument">$uid</span>) : Array</pre>
+                <p><em>Returns appraisals which are not from the given UID</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uid </td>
+                                <td><p>The UID of the user to exclude</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form
+<code>['id'=&gt;string,'uid'=&gt;string,'revid'=&gt;string,'comments'=&gt;string,'_date'=&gt;string]</code>,
+or false if nothing found.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getUserAppraisal" name="method_getUserAppraisal" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getUserAppraisal()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getUserAppraisal(String  <span class="argument">$uid</span>) : Array</pre>
+                <p><em>Returns only the appraisal from the users UID specified</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$uid </td>
+                                <td><p>The users UID of the appraisal to return</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>In the form :
+<code>['id'=&gt;string,'uid'=&gt;string,'revid'=&gt;string,'comments'=&gt;string,'_date'=&gt;string]</code>,
+or false if nothing found</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setData" name="method_setData" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">setData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setReviewData" name="method_setReviewData" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">setReviewData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setReviewData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setEmployeeData" name="method_setEmployeeData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setEmployeeData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setEmployeeData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setProfileData" name="method_setProfileData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setProfileData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setProfileData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setAttendanceData" name="method_setAttendanceData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setAttendanceData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setAttendanceData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setTrainingData" name="method_setTrainingData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setTrainingData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setTrainingData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setInjuriesData" name="method_setInjuriesData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setInjuriesData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setInjuriesData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setCommentsData" name="method_setCommentsData" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setCommentsData()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setCommentsData() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Employee.html"><div class="path-wrapper">\Employee</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">review.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/models\review.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on September 18th, 2019 at 12:53.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
