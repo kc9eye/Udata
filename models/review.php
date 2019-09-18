@@ -36,7 +36,7 @@ class Review extends Employee {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$this->eid])) throw new Exception(print_r($pntr->errorInfo(),true));
             $result = $pntr->fetchAll(PDO::FETCH_ASSOC)[0]['count'];
-            if ($result != self::IN_REVIEW || $result != self::NOT_IN_REVIEW) throw new Exception("Result returned an invalid value");
+            if ($result != self::IN_REVIEW && $result != self::NOT_IN_REVIEW) throw new Exception("Result returned an invalid value");
             return $result;
         }
         catch (Exception $e) {
@@ -59,7 +59,7 @@ class Review extends Employee {
         }
 
         //Get the review attendance data
-        $sql = 'SELECT * FROM missed_time WHERE eid = :eid AND occ_date >= (now() - :timeframe) ORDER BY occ_date DESC';
+        $sql = 'SELECT * FROM missed_time WHERE eid = :eid AND (occ_date >= (now() - :timeframe::interval)) ORDER BY occ_date DESC';
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':eid'=>$this->eid,':timeframe'=>self::DATA_TIMEFRAME])) throw new Exception(print_r($pntr->errorInfo(),true));
@@ -78,7 +78,7 @@ class Review extends Employee {
                 _date as date,
                 comments
             FROM supervisor_comments as a
-            WHERE eid = :eid AND _date >= (now() - :timeframe)
+            WHERE eid = :eid AND (_date >= (now() - :timeframe::interval))
             ORDER BY _date DESC";
         try {
             $pntr = $this->dbh->prepare($sql);
@@ -90,11 +90,11 @@ class Review extends Employee {
             return false;
         }
 
-        //Get others reviews
+        //Get review appraisals
         $sql = 'SELECT * FROM review_comments WHERE revid = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$this->review['raw_review']['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
+            if (!$pntr->execute([$this->review['raw_review'][0]['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
             $this->review['review_comments'] = $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (Exception $e) {
@@ -107,8 +107,8 @@ class Review extends Employee {
      * @return The active review ID, false otherwise
      */
     public function getReviewID () {
-        if (empty($this->review['raw_review']['id'])) return false;
-        else return $this->review['raw_review']['id'];
+        if (empty($this->review['raw_review'][0]['id'])) return false;
+        else return $this->review['raw_review'][0]['id'];
     }
 
     /**
@@ -116,7 +116,7 @@ class Review extends Employee {
      * @return String The review start data.
      */
     public function getStartDate () {
-        return $this->review['raw_review']['start_date'];
+        return $this->review['raw_review'][0]['start_date'];
     }
 
     /**
@@ -124,7 +124,7 @@ class Review extends Employee {
      * @return String The review end date
      */
     public function getEndDate () {
-        return $this->review['raw_review']['end_date'];
+        return $this->review['raw_review'][0]['end_date'];
     }
 
     /**

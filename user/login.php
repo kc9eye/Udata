@@ -63,7 +63,7 @@ if (!empty($_POST)) {
     }
     elseif (isset($_SESSION['user_privilege_escalation'])) {
         unset($_SESSION['user_privilege_escalation']);
-        echo "<div class='row'></div>
+        echo "<div class='row'>
                 <div class='col-md-3'></div>
                     <div class='col-xs-12 col-md-6'>
                         <h4 class='bg-danger text-danger'>
@@ -73,7 +73,7 @@ if (!empty($_POST)) {
                             </small>
                         </h4>
                     </div>
-                </div class='col-md-3'></div>
+                <div class='col-md-3'></div>
             </div>\n";
     }
 ?>

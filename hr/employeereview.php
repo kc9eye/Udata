@@ -23,11 +23,20 @@ if (!$server->checkPermsArray(['initEmployeeReview','reviewEmployee'])) {
 
 if (!empty($_REQUEST['action'])) {
    switch($_REQUEST['action']) {
-       default: main(); break;
+        case 'initreview':
+            $server->userMustHavePermission('initEmployeeReview');
+            $handler = new Employees($server->pdo);
+            $server->processingDialog(
+                [$handler,'initiateReview'],
+                [$server,$_REQUEST['eid']],
+                $server->config['application-root'].'/hr/employeereview?eid='.$_REQUEST['eid']
+            );
+        break;
+        default: main(); break;
    }
 }
 else {
-   main();
+    main();
 }
 
 function main () {
@@ -43,11 +52,11 @@ function displayOngoingReview (Review $review) {
     global $server;
     include('submenu.php');
     $view = $server->getViewer('Review: '.$review->getFullName());
-    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
     $view->h1("<small>Ongoing Review for:</small> ".$review->getFullName());
-    $view->h3("<small>Began: ".$review->getStartDate());
-    $view->h3("<small>Ends: ".$review->getEndDate());
+    $view->h3("<small>Began:</small> ".$review->getStartDate());
+    $view->h3("<small>Ends:</small> ".$review->getEndDate());
     echo "<span class='bg-info'>The following data represents this timeframe: <mark>".Review::DATA_TIMEFRAME."</mark></span>";
     $view->bgInfoParagraph(
         "The purpose of conducting the Performace Appraisal is to:
@@ -90,7 +99,7 @@ function displayOngoingReview (Review $review) {
     $view->h2("Management Comments");
     $view->responsiveTableStart(['Date','Author','Comments']);
     foreach($review->getReviewManagementComments() as $row) {
-        echo "<tr><td>{$row['_date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+        echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
     }
     $view->responsiveTableClose();
     $view->endBtnCollapse();
@@ -111,29 +120,31 @@ function displayOngoingReview (Review $review) {
     );
     //Others appraisals
     $view->beginBtnCollapse("Show/Hide Other's Appraisals");
-    echo "<div class='panel-group'>\n";
-    $otherappraisals = $review->getOthersAppraisals($server->currentUserID);
+    $otherappraisals = $review->getOthersAppraisals($server->currentUserID);   
     if ($otherappraisals === false) {
         $view->bold("No other appraisals found.");
     }
     else {
+        echo "<div class='panel-group'>\n"; 
         foreach($otherappraisals as $row) {
-            echo "<div class='panel panel-primary'>\n";
-            echo "  <div class='panel-heading'>Reviewers Appraisal</div>\n";
-            echo "  <div class='panel-body'>{$row['comments']}</div>\n";
-            echo "</div>\n";
+            echo "  <div class='panel panel-primary'>\n";
+            echo "      <div class='panel-heading'>Reviewers Appraisal</div>\n";
+            echo "      <div class='panel-body'>{$row['comments']}</div>\n";
+            echo "  </div>\n";
         }
         echo "</div>";
     }
     $view->endBtnCollapse();
     //Your appraisal
-    $myappraisal = ($review->getUserAppraisal($server->currentUserID) === false) ? '': $review->getUserAppraisal($server->currentUserID);
+    $myappraisal = $review->getUserAppraisal($server->currentUserID);
+    if ($myappraisal === false) $myappraisal = '';
+
     $form->newForm('My Appraisal');
     $form->hiddenInput('action','update_appraisal');
     $form->hiddenInput('uid',$server->currentUserID);
     $form->hiddenInput('revid',$review->getReviewID());
-    $form->textArea('appraisal','myappraisal',$myappraisal,true,null,true);
-    $form->submitForm('Submit',true,$view->PageData['approot'].'/hr/viewemployee?id='.$review->eid);
+    $form->inlineTextArea('appraisal', null, $myappraisal, true, null, true);
+    $form->submitForm('Submit',true, $view->PageData['approot'].'/hr/viewemployee?id='.$review->eid);
     $form->endForm();
 
     $view->footer();

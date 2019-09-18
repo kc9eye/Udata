@@ -304,25 +304,36 @@ class Employees extends Profiles {
      * Initializes a new employee review event email notifications
      * 
      * Starts a new review process for the given employee (by UID)
-     * @param Mailer $mailer The system mailer object.
+     * @param Instance $server The system Instance object.
      * @param String $eid The employees ID to begin the process
      * @param String $uid The user ID initiating the review
      * @return Boolean True on success, false otherwise
      */
-    public function initiateReview (Mailer $mailer, $eid, $uid) {
-        $sql = "INSERT INTO reviews VALUES (:id,:eid,now(),(now() + :timeframe),:meeting_date,:uid)";
+    public function initiateReview (Instance $server, $eid) {
+        $sql = "INSERT INTO reviews (id,eid,start_date,end_date,uid) VALUES (:id,:eid,now(),(now() + :timeframe::interval),:uid)";
         $insert = [
             ':id'=>uniqid(),
             ':eid'=>$eid,
             ':timeframe'=>self::REVIEW_TIMEFRAME,
-            ':meeting_date'=>'',
-            ':uid'=>$uid
+            ':uid'=>$server->currentUserID
         ];
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
-            $notifier = new Notification($this->dbh,$mailer);
-            return $notifier->notify('Review Started',)
+            $employee = new Employee($this->dbh,$eid);
+            $notifier = new Notification($this->dbh,$server->mailer);
+            $body = file_get_contents($server->config['template-root'].'/email/reviewinitialized.html');
+            $body .= "<a href='{$server->config['application-root']}/hr/employeereview?eid={$eid}'>".$employee->getFullName()."</a>";
+            if (!$notifier->notify('Review Started','Review Process Initialized',$body)) {
+                $sql = "DELETE FROM reviews WHERE id = '{$insert[':id']}'";
+                $pntr = $this->dbh->query($sql);
+                return false;
+            }
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
         }
     }
 }
