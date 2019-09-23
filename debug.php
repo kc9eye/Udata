@@ -16,14 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once('lib/init.php');
-$replace = explode('/',$server->config['application-root']);
-array_push($replace,'//');
-$uri = str_replace($replace,'',$_SERVER['REQUEST_URI']);
 
-$debug = array(
-    'replace_var'=>$replace,
-    'request_uri'=>$_SERVER['REQUEST_URI'],
-    'app_root'=>$server->config['application-root'],
-    'session_uri'=>$uri
-);
-$server->getDebugViewer(var_export($debug,true));
+$handler = new Employees($server->pdo);
+$review = new Review($server->pdo,$handler->getOngoingReviewID('5d0a20b87f7bf'));
+
+$view = $server->getViewer('DEBUG');
+$view->wrapInPre(var_export($review,true));
+$view->footer();
