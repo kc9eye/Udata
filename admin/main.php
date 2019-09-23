@@ -17,6 +17,7 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 $server->userMustHavePermission('adminAll');
+include(UpdateDatabase::DB_VERSION_FILE);
 
 $app = new Application($server->pdo);
 $notify = new Notification($server->pdo,$server->mailer);
@@ -25,7 +26,9 @@ $view = $server->getViewer("Application Settings");
 $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
 
 $view->h1("Application Settings");
-$view->bold("UData Framework v4.0");
+$view->bold("UData Framework v".\APP_VERSION);
+$view->br();
+$view->bold("Database Structure v{$current_version}");
 $view->br();
 
 $form->inlineButtonGroup([

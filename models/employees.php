@@ -25,6 +25,8 @@
  */
 class Employees extends Profiles {
 
+    const REVIEW_TIMEFRAME = '7 days';
+
     public function __construct (PDO $dbh) {
         parent::__construct($dbh);
     }
@@ -291,6 +293,148 @@ class Employees extends Profiles {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$id])) throw new Exception('Failed to remove record: '.$id);
             return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Initializes a new employee review event email notifications
+     * 
+     * Starts a new review process for the given employee (by UID)
+     * @param Instance $server The system Instance object.
+     * @param String $eid The employees ID to begin the process
+     * @param String $uid The user ID initiating the review
+     * @return Boolean True on success, false otherwise
+     */
+    public function initiateReview (Instance $server, $eid) {
+        $sql = "INSERT INTO reviews (id,eid,start_date,end_date,uid) VALUES (:id,:eid,now(),(now() + :timeframe::interval),:uid)";
+        $insert = [
+            ':id'=>uniqid(),
+            ':eid'=>$eid,
+            ':timeframe'=>self::REVIEW_TIMEFRAME,
+            ':uid'=>$server->currentUserID
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            $employee = new Employee($this->dbh,$eid);
+            $notifier = new Notification($this->dbh,$server->mailer);
+            $body = file_get_contents($server->config['template-root'].'/email/reviewinitialized.html');
+            $body .= "<a href='{$server->config['application-root']}/hr/employeereview?eid={$eid}'>".$employee->getFullName()."</a>";
+            if (!$notifier->notify('Review Started','Review Process Initialized',$body)) {
+                $sql = "DELETE FROM reviews WHERE id = '{$insert[':id']}'";
+                $pntr = $this->dbh->query($sql);
+                return false;
+            }
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Inserts a new appraisal for an employee
+     * @param Array $data The data to insert in the form :
+     * `['revid'=>string,'uid'=>string,'appraisal'=>string]`
+     * @return Boolean True on success, false otherwise
+     */
+    public function insertUserAppraisal (Array $data) {
+        $sql = 'INSERT INTO review_comments VALUES (:id,:uid,:revid,:comments,now())';
+        $insert = [
+            ':id'=>uniqid(),
+            ':uid'=>$data['uid'],
+            ':revid'=>$data['revid'],
+            ':comments'=>$data['appraisal']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Updates an existing appraisal
+     * @param String $id The appraisal ID to update.
+     * @param String $appraisal The updated appraisal
+     * @return Boolean True on success, false otherwise.
+     */
+    public function updateUserAppraisal ($id,$appraisal) {
+        $sql = "UPDATE review_comments SET comments = :appraisal WHERE id = :id";
+        $insert = [
+            ':appraisal'=>$appraisal,
+            ':id'=>$id
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns an array of past reviews references for the given EID
+     * @param String $eid The employees ID to lookup
+     * @return Array Results as multidimensial array (possibly empty) on success, false on error
+     */
+    public function getPastReviews ($eid) {
+        $sql = 'SELECT * FROM reviews WHERE eid = ? AND end_date <= now() ORDER BY end_date DESC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Excecption $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns whether or not the given employee is currently in review
+     * @param String $eid The employees ID
+     * @return Boolean True if in review, false otherwise.
+     */
+    public function getReviewStatus ($eid) {
+        $sql = 'SELECT count(*) FROM reviews WHERE end_date >= now() AND eid = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $result = $pntr->fetchAll(PDO::FETCH_ASSOC)[0]['count'];
+            if ($result != 1 && $result != 0) throw new Exception("Result returned an invalid value");
+            if ($result == 1) return true;
+            else return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns the ID of any ongoing review
+     * @param String $eid The employee ID to find ongoing review ID
+     * @return String The ID of any ongoing review, false on error.
+     */
+    public function getOngoingReviewID ($eid) {
+        $sql = 'SELECT id FROM reviews WHERE eid = ? AND end_date >= now()';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC)[0]['id'];
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);

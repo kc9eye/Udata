@@ -16,6 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 class Employee {
+    const OPEN_REVIEW = 1;
+    
     private $data;
     protected $dbh;
 
@@ -34,8 +36,8 @@ class Employee {
 
     protected function setData () {
         try {
-        if (!$this->setEmployeeData()) throw new Exception("Failed to set employee data, can't continue.");
-        if (!$this->setProfileData()) throw new Exception("Failed to set profile data, can't continue.");
+            if (!$this->setEmployeeData()) throw new Exception("Failed to set employee data, can't continue.");
+            if (!$this->setProfileData()) throw new Exception("Failed to set profile data, can't continue.");
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
@@ -51,7 +53,7 @@ class Employee {
         $sql = 'SELECT * FROM employees WHERE id = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$this->eid])) throw new Exception("Select failed: {$sql}");
+            if (!$pntr->execute([$this->eid])) throw new Exception($pntr->errorInfo());
             $this->Employee = $pntr->fetchAll(PDO::FETCH_ASSOC)[0];
             return true;
         }
@@ -168,7 +170,11 @@ class Employee {
         }
     }
 
-    private function getImageFilename () {
+    /**
+     * Returns the image file name of the employee
+     * @return String The image's disk filename
+     */
+    public function getImageFilename () {
         $indexer = new FileIndexer($this->dbh, null);
         $index = $indexer->getIndexByID($this->Employee['photo_id']);
         return $index[0]['file'];
@@ -190,4 +196,92 @@ class Employee {
     public function __unset ($name) {
         unset($this->data[$name]);
     }
+
+    /**
+     * Returns the employees full name as a string
+     * @return String The employees full profile name.
+     */
+    public function getFullName () {
+        return "{$this->data['Profile']['first']} {$this->data['Profile']['middle']} {$this->data['Profile']['last']} {$this->data['Profile']['other']}";
+    }
+
+    /**
+     * Returns the employees full address
+     * @return String The employees full address
+     */
+    public function getFullAddress () {
+        return "{$this->data['Profile']['address']} {$this->data['Profile']['address_other']} {$this->data['Profile']['city']}, {$this->data['Profile']['state_prov']} {$this->data['Profile']['postal_code']}";
+    }
+
+    /**
+     * Returns the employees phone numbers
+     * @return String Phone #'s
+     */
+    public function getPhoneNumbers () {
+        return "Home: {$this->data['Profile']['home_phone']} Cell: {$this->data['Profile']['cell_phone']} Other: {$this->data['Profile']['alt_phone']}";
+    }
+
+    /**
+     * Returns the employees emergency contact
+     * @return String Emergency contact
+     */
+
+     public function getEmergencyContact () {
+         return "Name: {$this->data['Profile']['e_contact_name']} ({$this->data['Profile']['e_contact_relation']}): {$this->data['Profile']['e_contact_number']}";
+     }
+
+     /**
+      * Returns the employees EID number
+      * @return String EID
+      */
+      public function getEID () {
+          return $this->data['eid'];
+      }
+
+      /**
+       * Returns the employee employment data
+       * @return Array An array containing the employment data in the form:
+       * `['id'=>string,'status'=>string,'pid'=>string,'start_date'=>string,'end_date'=>string,'photo_id'=>string,'_date'=>string,'uid'=>string]`
+       * _date is the date the entry was made, uid is the UID of the user making the entry.
+       * pid is the profile id number, status is their employment status, and id is their EID
+       */
+      public function getEmployment () {
+          return $this->data['Employee'];
+      }
+
+      /**
+       * Returns the employee attendance data
+       * @return Array An array of missed time occurrences in the form:
+       * `['id'=string,'eid'=>string,'occ_date'=>string,'absent'=>bool,'arrive_time'=>string,'leave_time'=>string,'description'=>string,'excused'=>bool,'uid'=>string,'_date'=>string]`
+       */
+      public function getAttendance () {
+          return $this->data['Attendance'];
+      }
+
+      /**
+       * Returns employee injuries data
+       * @return Array In the form:
+       * `['id'=>string,'eid'=>string,'injury_date'=>string,'injury_description'=>string,'witnesses'=>string,'recordable'=>bool,'followup_medical'=>bool,'record_date'=>string,'recorder'=>string]`
+       */
+      public function getInjuries () {
+          return $this->data['Injuries'];
+      }
+
+      /**
+       * Returns the employees training data
+       * @return Array In the form :
+       * `['training'=>string,'train_date'=>string,'trainer'=>string]`
+       */
+      public function getTraining () {
+          return $this->data['Training'];
+      }
+
+      /**
+       * Returns any supervisor comments about the employee
+       * @return Array In the form :
+       * `['id'=>string,'author'=>string,'date'=>string,'comments'=>string]`
+       */
+      public function getComments () {
+          return $this->data['Comments'];
+      }
 }

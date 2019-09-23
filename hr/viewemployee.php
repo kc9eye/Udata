@@ -39,21 +39,23 @@ function employeeViewDisplay () {
     //Main profile data
     $view->hr();
     
-    $title = "<small>Name:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']}";
+    $title = "<small>Name:</small> ".$emp->getFullName();
     if ($server->checkPermission('addNewProfile')) 
         $title .= "&#160;".$view->editBtnSm('/hr/updateprofile?id='.$_REQUEST['id'],true);
+    if ($server->checkPermsArray(['initEmployeeReview','reviewEmployee']))
+        $title .= "&#160;".$view->linkButton('/hr/employeereview?eid='.$emp->eid, 'Employee Review', 'info', true);
     $view->h2($title);    
     
     if (!empty($emp->Profile['image'])) {
         $view->responsiveTableStart(['Image','Start Date','End Date','Status']);
         echo "<tr><td>";
         echo 
-            "<a href='{$server->config['application-root']}/data/files?file={$emp->Profile['image']}'>
+            "<a href='{$server->config['application-root']}/data/files?file=".$emp->getImageFilename()."'>
              <img 
                 class='img-responsive'
-                src='{$server->config['application-root']}/data/files?file={$emp->Profile['image']}'
+                src='{$server->config['application-root']}/data/files?file=".$emp->getImageFilename()."'
                 alt='[IMAGE NOT FOUND]'
-                style='max-width:200px;max-height:200px;'
+                style='max-width:200px;max-height:400px;'
              />
              </a>";
         echo "</td>";
