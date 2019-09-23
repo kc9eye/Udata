@@ -173,6 +173,7 @@ class Review extends Employee {
             if ($row['uid'] != $uid) array_push($return,$row);
         }
         if (empty($return)) return false;
+        else return $return;
     }
 
     /**
