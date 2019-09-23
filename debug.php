@@ -16,10 +16,3 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once('lib/init.php');
-
-$handler = new Employees($server->pdo);
-$review = new Review($server->pdo,$handler->getOngoingReviewID('5d0a20b87f7bf'));
-
-$view = $server->getViewer('DEBUG');
-$view->wrapInPre(var_export($review->getOthersAppraisals($server->currentUserID),true));
-$view->footer();
