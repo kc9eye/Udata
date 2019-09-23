@@ -22,7 +22,7 @@ if (!$server->checkPermsArray(['initEmployeeReview','reviewEmployee'])) {
 }
 
 if (!empty($_REQUEST['action'])) {
-   switch($_REQUEST['action']) {
+    switch($_REQUEST['action']) {
         case 'initreview':
             $server->userMustHavePermission('initEmployeeReview');
             $handler = new Employees($server->pdo);
@@ -32,6 +32,32 @@ if (!empty($_REQUEST['action'])) {
                 $server->config['application-root'].'/hr/employeereview?eid='.$_REQUEST['eid']
             );
         break;
+        case 'update_appraisal':
+            $server->userMustHavePermission('reviewEmployee');
+            $handler = new Employees($server->pdo);
+            $server->processingDialog(
+                [$handler, 'updateUserAppraisal'],
+                [$_REQUEST['id'],$_REQUEST['appraisal']],
+                $server->config['application-root'].'/hr/viewemployee?id='.$_REQUEST['eid']
+            );
+        break;
+        case 'insert_appraisal':
+            $server->userMustHavePermission('reviewEmployee');
+            $handler = new Employees($server->pdo);
+            $server->processingDialog(
+                [$handler,'insertUserAppraisal'],
+                [$_REQUEST],
+                $server->config['application-root'].'/hr/viewemployee?id='.$_REQUEST['eid']
+            );
+        break;
+        case 'viewreview':
+            $server->userMustHavePermission('initEmployeeReview');
+            displayPastReview($_REQUEST['revid']);
+        break;
+        case 'printreview':
+            $server->userMustHavePermission('initEmployeeReview');
+            displayPrintReview($_REQUEST['revid']);
+        break;
         default: main(); break;
    }
 }
@@ -40,17 +66,16 @@ else {
 }
 
 function main () {
-   global $server;
-   $review = new Review($server->pdo,$_REQUEST['eid']);
-   switch($review->status) {
-       case Review::IN_REVIEW: displayOngoingReview($review); break;
-       case Review::NOT_IN_REVIEW: displayInitReview($review); break;
-   }
+    global $server;
+    $handler = new Employees($server->pdo);
+    if ($handler->getReviewStatus($_REQUEST['eid'])) displayOngoingReview($handler->getOngoingReviewID($_REQUEST['eid']));
+    else displayInitReview();
 }
 
-function displayOngoingReview (Review $review) {
+function displayOngoingReview ($revid) {
     global $server;
     include('submenu.php');
+    $review = new Review($server->pdo,$revid);
     $view = $server->getViewer('Review: '.$review->getFullName());
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
@@ -82,26 +107,38 @@ function displayOngoingReview (Review $review) {
     $view->hr();
     $view->beginBtnCollapse('Show/Hide Attendance');
     $view->h2("Review Attendance");
-    $view->responsiveTableStart(['Date','Arrived Late','Left Early','Absent','Excused','Reason']);
-    foreach($review->getReviewAttendance() as $row) {
-        if ($row['absent'] == 'true') $absent = 'Yes';
-        else $absent = 'No';
-        if ($row['excused'] == 'true') $excused = 'Yes';
-        else $excused = 'No';
-        echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+    $attendance = $review->getReviewAttendance();
+    if (empty($attendance)) {
+        $view->bold("No attendance incidents found.");
     }
-    $view->responsiveTableClose();
+    else {
+    $view->responsiveTableStart(['Date','Arrived Late','Left Early','Absent','Excused','Reason']);
+        foreach($review->getReviewAttendance() as $row) {
+            if ($row['absent'] == 'true') $absent = 'Yes';
+            else $absent = 'No';
+            if ($row['excused'] == 'true') $excused = 'Yes';
+            else $excused = 'No';
+            echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+        }
+        $view->responsiveTableClose();
+    }
     $view->endBtnCollapse();
 
     //Supervisor comments
     $view->hr();
     $view->beginBtnCollapse('Show/Hide Management Comments');
     $view->h2("Management Comments");
-    $view->responsiveTableStart(['Date','Author','Comments']);
-    foreach($review->getReviewManagementComments() as $row) {
-        echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+    $supervisor_comments = $review->getReviewManagementComments();
+    if (empty($supervisor_comments)) {
+        $view->bold("No management comments found.");
     }
-    $view->responsiveTableClose();
+    else {
+        $view->responsiveTableStart(['Date','Author','Comments']);
+        foreach($supervisor_comments as $row) {
+            echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+        }
+        $view->responsiveTableClose();
+    }
     $view->endBtnCollapse();
 
     //Review Comments
@@ -136,35 +173,203 @@ function displayOngoingReview (Review $review) {
     }
     $view->endBtnCollapse();
     //Your appraisal
-    $myappraisal = $review->getUserAppraisal($server->currentUserID);
-    if ($myappraisal === false) $myappraisal = '';
-
+    $myArray = $review->getUserAppraisal($server->currentUserID);
     $form->newForm('My Appraisal');
-    $form->hiddenInput('action','update_appraisal');
-    $form->hiddenInput('uid',$server->currentUserID);
-    $form->hiddenInput('revid',$review->getReviewID());
-    $form->inlineTextArea('appraisal', null, $myappraisal, true, null, true);
-    $form->submitForm('Submit',true, $view->PageData['approot'].'/hr/viewemployee?id='.$review->eid);
+    if ($myArray === false) {
+        $myappraisal['comments'] = '';
+        $form->hiddenInput('action','insert_appraisal');
+        $form->hiddenInput('eid',$review->eid);
+        $form->hiddenInput('uid',$server->currentUserID);
+        $form->hiddenInput('revid',$review->getReviewID());
+    }
+    else {
+        $myappraisal = $myArray;
+        $form->hiddenInput('action','update_appraisal');
+        $form->hiddenInput('id',$myArray['id']);
+    }
+
+    $form->inlineTextArea('appraisal', null, $myappraisal['comments'], true, null, true);
+    $form->submitForm('Submit',false, $view->PageData['approot'].'/hr/viewemployee?id='.$review->eid);
     $form->endForm();
 
     $view->footer();
 }
 
-function displayInitReview ($review) {
+function displayPastReview ($revid) {
     global $server;
     include('submenu.php');
-    $view = $server->getViewer('Review: '.$review->getFullName());
+    $review = new Review($server->pdo,$revid);
+    $view = $server->getViewer("Review: ".$review->getFullName());
     $view->sideDropDownMenu($submenu);
-    $view->h2($review->getFullName()." <small class='bg-danger'>Is currently not in review</small>");
+    $view->linkButton("/hr/employeereview?action=printreview&revid={$revid}","Print",'default');
+    $view->h1($review->getFullName());
+    $view->h2("<small>Began:</small> ".$review->getStartDate());
+    $view->h2("<small>Ended:</small> ".$review->getEndDate());
+
+    //Training
+    $view->hr();
+    $view->h3("Training");
+    $view->responsiveTableStart(['Training','Date','Trainer']);
+    foreach($review->getTraining() as $row) {
+        echo "<tr><td>{$row['training']}</td><td>{$row['train_date']}</td><td>{$row['trainer']}</td></tr>\n";
+    }
+    $view->responsiveTableClose();
+
+    //Attendance
+    $view->hr();
+    $view->h3("Attendance");
+    $attendance = $review->getReviewAttendance();
+    if (empty($attendance)) {
+        $view->bold("No attendance incidents found.");
+    }
+    else {
+    $view->responsiveTableStart(['Date','Arrived Late','Left Early','Absent','Excused','Reason']);
+        foreach($attendance as $row) {
+            if ($row['absent'] == 'true') $absent = 'Yes';
+            else $absent = 'No';
+            if ($row['excused'] == 'true') $excused = 'Yes';
+            else $excused = 'No';
+            echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+        }
+        $view->responsiveTableClose();
+    }
+
+    //Supervisor comments
+    $view->hr();
+    $view->h3("Management Comments");
+    $supervisor_comments = $review->getReviewManagementComments();
+    if (empty($supervisor_comments)) {
+        $view->bold("No management comments found.");
+    }
+    else {
+        $view->responsiveTableStart(['Date','Author','Comments']);
+        foreach($supervisor_comments as $row) {
+            echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+        }
+        $view->responsiveTableClose();
+    }
+
+    //Appraisals
+    $view->hr();
+    $view->h3("Appraisals");
+    echo "<div class='panel-group'>\n";
+    foreach($review->getAllAppraisals() as $row) {
+        echo "  <div class='panel panel-primary'>\n";
+            echo "      <div class='panel-heading'>{$row['author']} Appraisal</div>\n";
+            echo "      <div class='panel-body'>{$row['comments']}</div>\n";
+            echo "  </div>\n";
+    }
+    echo "</div>\n";
+    $view->footer();
+}
+
+function displayInitReview () {
+    global $server;
+    include('submenu.php');
+    $employee = new Employee($server->pdo,$_REQUEST['eid']);
+    $handler = new Employees($server->pdo);
+    $view = $server->getViewer('Review: '.$employee->getFullName());
+    $view->sideDropDownMenu($submenu);
+    $view->h2($employee->getFullName()." <small class='bg-danger'>Is currently not in review</small>");
     if ($server->checkPermission('initEmployeeReview')) {
         $view->h3(
-            'You can <i class=\'bg-primary\'>initiate</i> the review process here: '.$view->linkButton('/hr/employeereview?eid='.$review->eid.'&action=initreview','Begin Review Process','danger',true)
+            'You can <i class=\'bg-primary\'>initiate</i> the review process here: '.$view->linkButton('/hr/employeereview?eid='.$employee->eid.'&action=initreview','Begin Review Process','danger',true)
         );
         $view->hr();
-        $view->h3(
-            'You can <i class=\'bg-primary\'>view</i> the last review here: '.$view->linkButton('/hr/employeereview?eid='.$review->eid.'&action=viewlast', 'View Last Review','info',true)
-        );
+        $view->h3("Or Look at Past Reviews");
+        $view->responsiveTableStart(['ID','Start Date','End Date',]);
+        foreach($handler->getPastReviews($employee->eid) as $row) {
+            echo "<tr><td><a href='{$view->PageData['approot']}/hr/employeereview?action=viewreview&revid={$row['id']}'>{$row['id']}</a></td>";
+            echo "<td>{$row['start_date']}</td><td>{$row['end_date']}</td></tr>\n";
+        }
+        $view->responsiveTableClose();
     }
 
     $view->footer();
+}
+
+function displayPrintReview ($revid) {
+    global $server;
+    $review = new Review($server->pdo,$revid);
+    echo "<head>\n";
+    echo "  <title>Review: ".$review->getFullName()."</title>\n";
+    echo "  <link type='text/css' rel='stylesheet' href='{$server->config['application-root']}/wwwroot/css/print.css' />\n";
+    echo "  <script>window.print();</script>\n";
+    echo "  <style>\n";
+    echo "      div.well {\n";
+    echo "          border: 5px solid #000000;\n";
+    echo "          padding: 5px;\n";
+    echo "          }\n";
+    echo "      div.panel {\n";
+    echo "          border: 2px solid #000000;\n";
+    echo "          padding: 1px;\n";
+    echo "          }\n";
+    echo "      div.panel-heading {\n";
+    echo "          border-bottom: 1px inset #000000;\n";
+    echo "          font-weight:bold;\n";
+    echo "          }\n";
+    echo "      div.panel-body {\n";
+    echo "          margin:2px;\n";
+    echo "          padding:1px;\n";
+    echo "          }\n";
+    echo "  </style>\n";
+    echo "</head>\n";
+    echo "<body>\n";
+    echo "  <h1>Review for:".$review->getFullName()."</h1>\n";
+    echo "  <h2>Began: ".$review->getStartDate()."</h2>\n";
+    echo "  <h2>Ended: ".$review->getEndDate()."</h2>\n";
+    echo "  <div class='well'>\n";
+    echo "      <h3>Training</h3>\n";
+    echo "      <table>\n";
+    echo "          <tr><th>Training</th><th>Date</th><th>Trainer</th><tr>\n";
+    foreach($review->getTraining() as $row) {
+        echo "              <tr><td>{$row['training']}</td><td>{$row['train_date']}</td><td>{$row['trainer']}</td></tr>\n";
+    }
+    echo "      </table>\n";
+    echo "  </div>\n";
+    echo "  <div class='well'>\n";
+    echo "      <h3>Attendance</h3>\n";
+    $attendance = $review->getReviewAttendance();
+    if (empty($attendance)) {
+        echo "<strong>No attendance incidents found.</strong>";
+    }
+    else {
+        echo "      <table>\n";
+        echo "          <tr><th>Date</th><th>Arrived Late</th><th>Left Early</th><th>Absent</th><th>Excused</th><th>Reason</th></tr>\n";
+        foreach($attendance as $row) {
+            if ($row['absent'] == 'true') $absent = 'Yes';
+            else $absent = 'No';
+            if ($row['excused'] == 'true') $excused = 'Yes';
+            else $excused = 'No';
+            echo "              <tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+        }
+        echo "      </table>\n";
+    }
+    echo "  </div>\n";
+    echo "  <div class='well'>";
+    echo "      <h3>Management Comments</h3>\n";
+    $supervisor_comments = $review->getReviewManagementComments();
+    if (empty($supervisor_comments)) {
+        echo "<strong>No management comments found.</strong>";
+    }
+    else {
+        echo "      <table>\n";
+        echo "              <tr><th>Date</th><th>Author</th><th>Comments</th></tr>\n";
+        foreach($supervisor_comments as $row) {
+            echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+        }
+        echo "      </table>\n";
+    }
+    echo "  </div>\n";
+    echo "  <div class='well'>\n";
+    echo "      <h3>Appraisals</h3>\n";
+    foreach($review->getAllAppraisals() as $row) {
+            echo "      <div class='panel'>\n";
+            echo "          <div class='panel-heading'>{$row['author']} Appraisal</div>\n";
+            echo "          <div class='panel-body'>{$row['comments']}</div>\n";
+            echo "      </div>\n";
+    }
+    echo "  </div>\n";
+    echo "</body>\n";
+    echo "</html>\n";    
 }
