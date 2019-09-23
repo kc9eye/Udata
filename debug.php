@@ -21,5 +21,5 @@ $handler = new Employees($server->pdo);
 $review = new Review($server->pdo,$handler->getOngoingReviewID('5d0a20b87f7bf'));
 
 $view = $server->getViewer('DEBUG');
-$view->wrapInPre(var_export($review,true));
+$view->wrapInPre(var_export($review->getOthersAppraisals($server->currentUserID),true));
 $view->footer();
