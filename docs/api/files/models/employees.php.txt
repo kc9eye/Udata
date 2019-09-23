@@ -25,6 +25,8 @@
  */
 class Employees extends Profiles {
 
+    const REVIEW_TIMEFRAME = '7 days';
+
     public function __construct (PDO $dbh) {
         parent::__construct($dbh);
     }
@@ -248,10 +250,11 @@ class Employees extends Profiles {
      * @return Boolean True on success, false otherwise.
      */
     public function amendAttendanceRecord (Array $data) {
-        $sql = 'UPDATE missed_time 
-            SET occ_date=:occ_date,absent=:absent::boolean,arrive_time=:arrive_time::time,
-            leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid
-            WHERE id = :id';
+        $sql = 
+            'UPDATE missed_time 
+             SET occ_date=:occ_date,absent=:absent::boolean,arrive_time=:arrive_time::time,
+             leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid
+             WHERE id = :id';
         try {
             $pntr = $this->dbh->prepare($sql);
             $insert = [
@@ -289,6 +292,43 @@ class Employees extends Profiles {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$id])) throw new Exception('Failed to remove record: '.$id);
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Initializes a new employee review event email notifications
+     * 
+     * Starts a new review process for the given employee (by UID)
+     * @param Instance $server The system Instance object.
+     * @param String $eid The employees ID to begin the process
+     * @param String $uid The user ID initiating the review
+     * @return Boolean True on success, false otherwise
+     */
+    public function initiateReview (Instance $server, $eid) {
+        $sql = "INSERT INTO reviews (id,eid,start_date,end_date,uid) VALUES (:id,:eid,now(),(now() + :timeframe::interval),:uid)";
+        $insert = [
+            ':id'=>uniqid(),
+            ':eid'=>$eid,
+            ':timeframe'=>self::REVIEW_TIMEFRAME,
+            ':uid'=>$server->currentUserID
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            $employee = new Employee($this->dbh,$eid);
+            $notifier = new Notification($this->dbh,$server->mailer);
+            $body = file_get_contents($server->config['template-root'].'/email/reviewinitialized.html');
+            $body .= "<a href='{$server->config['application-root']}/hr/employeereview?eid={$eid}'>".$employee->getFullName()."</a>";
+            if (!$notifier->notify('Review Started','Review Process Initialized',$body)) {
+                $sql = "DELETE FROM reviews WHERE id = '{$insert[':id']}'";
+                $pntr = $this->dbh->query($sql);
+                return false;
+            }
             return true;
         }
         catch (Exception $e) {

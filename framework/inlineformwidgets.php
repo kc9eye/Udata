@@ -249,9 +249,11 @@ class InlineFormWidgets extends FormWidgets {
      * @param String $value Optional pre-inserted value.
      * @param Mixed $required Optionally either true or an indexed array of jQuery.validate() options
      * @param String $helpBlock Optional string of help text for the widget
+     * @param Boolean $wysiwyg Optional boolean to make the textarea use the tiny editor.
      * @return Void Output is directed to the stream, and this widget returns no value
      */
-    public function inlineTextArea ($name, $label = null, $value = '', $required = false, $helpBlock = null) {
+    public function inlineTextArea ($name, $label = null, $value = '', $required = false, $helpBlock = null, $wysiwyg = false) {
+        $this->wysiwyg = $wysiwyg;
         if ($required) {
             $this->addValidation($name, $required);
         }

@@ -21,6 +21,7 @@
  * 
  * This is a library file as it uses objects as 
  * opposed to being an object, however it is not a controller
+ * @param Array $_REQUEST Uses the superglobal request for data.
  * @return Void 
  */
 function handleDiscrepancy () {
@@ -35,6 +36,14 @@ function handleDiscrepancy () {
     }          
 }
 
+/**
+ * Checks discrepancy inputs for errors and files
+ * @param Array $_REQUEST Uses the superglobal $_REQUEST for data
+ * @param Materials $materials The materials model object
+ * @return Mixed If the upload is a material PDN, it returns the FileUpload object.
+ * Otherwise it returns null. In case of input errors it returns VOID and outputs the 
+ * HTML error message to the stream.
+ */
 function errorCheckInput ($materials) {
     global $server;
     if (!$materials->verifyMaterial($_REQUEST['number'])) nAN();
@@ -55,6 +64,13 @@ function errorCheckInput ($materials) {
     return $file;
 }
 
+/**
+ * Inserts a new PDN record with file handling
+ * @param Array $_REQUEST Uses the superglobal $_REQUEST for data.
+ * @param Materials $materials The Materials model object
+ * @param FileUpload $file The FileUpload framework object, containing the PDN file upload data
+ * @return Boolean True on success, false otherwise
+ */
 function addNewPDN ($materials,$file) {
     global $server;
     try {
@@ -81,6 +97,12 @@ function addNewPDN ($materials,$file) {
     }
 }
 
+/**
+ * Inserts a new PDIH record
+ * @param Array $_REQUEST uses the superglobal $_REQUEST for data
+ * @param Materials $materials The Materials model object
+ * @return Boolean True on success, false otherwise.
+ */
 function addNewPDIH ($materials) {
     global $server;
     try {
@@ -97,6 +119,10 @@ function addNewPDIH ($materials) {
     }
 }
 
+/**
+ * Outputs the no mulitple file uploads dialog to the stream
+ * @return void
+ */
 function noMultiplesDialog () {
     global $server;
     $server->newEndUserDialog(
@@ -106,6 +132,10 @@ function noMultiplesDialog () {
     );
 }
 
+/**
+ * Outputs the not a number dialog to the stream.
+ * @return void
+ */
 function nAN () {
     global $server;
     $server->newEndUserDialog(
@@ -115,6 +145,10 @@ function nAN () {
     );
 }
 
+/**
+ * outputs the number not on the BOM dialog to the stream
+ * @return void
+ */
 function notOnBOM () {
     global $server;
     $product = new Product($server->pdo,$_REQUEST['prokey']);
@@ -125,6 +159,10 @@ function notOnBOM () {
     );
 }
 
+/**
+ * Outputs the file indexing failed to the stream
+ * @return void
+ */
 function fileIndexFailed () {
     global $server;
     $server->newEndUserDialog(
@@ -134,6 +172,10 @@ function fileIndexFailed () {
     );
 }
 
+/**
+ * Outputs the photo required dialog to the stream
+ * @return void
+ */
 function requiredPhoto () {
     global $server;
     $server->newEndUserDialog(
