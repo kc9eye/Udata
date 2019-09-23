@@ -156,22 +156,22 @@ function displayOngoingReview ($revid) {
         </ol>"
     );
     //Others appraisals
-    $view->beginBtnCollapse("Show/Hide Other's Appraisals");
-    $otherappraisals = $review->getOthersAppraisals($server->currentUserID);   
-    if ($otherappraisals === false) {
-        $view->bold("No other appraisals found.");
-    }
-    else {
-        echo "<div class='panel-group'>\n"; 
-        foreach($otherappraisals as $row) {
-            echo "  <div class='panel panel-primary'>\n";
-            echo "      <div class='panel-heading'>Reviewers Appraisal</div>\n";
-            echo "      <div class='panel-body'>{$row['comments']}</div>\n";
-            echo "  </div>\n";
-        }
-        echo "</div>";
-    }
-    $view->endBtnCollapse();
+    // $view->beginBtnCollapse("Show/Hide Other's Appraisals");
+    // $otherappraisals = $review->getOthersAppraisals($server->currentUserID);   
+    // if ($otherappraisals === false) {
+    //     $view->bold("No other appraisals found.");
+    // }
+    // else {
+    //     echo "<div class='panel-group'>\n"; 
+    //     foreach($otherappraisals as $row) {
+    //         echo "  <div class='panel panel-primary'>\n";
+    //         echo "      <div class='panel-heading'>Reviewers Appraisal</div>\n";
+    //         echo "      <div class='panel-body'>{$row['comments']}</div>\n";
+    //         echo "  </div>\n";
+    //     }
+    //     echo "</div>";
+    // }
+    // $view->endBtnCollapse();
     //Your appraisal
     $myArray = $review->getUserAppraisal($server->currentUserID);
     $form->newForm('My Appraisal');
