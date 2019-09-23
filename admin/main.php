@@ -33,7 +33,7 @@ $view->br();
 
 $form->inlineButtonGroup([
     'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/api/index.html\",\"_blank\")",
-    'Framework'=>"window.open(\"{$view->PageData['approot']}/docs/UData_Database_Structure.html\",\"_blank\")"
+    'Framework'=>"window.open(\"{$view->PageData['approot']}/docs/database_structure/UData_Database_Structure.html\",\"_blank\")"
 ]);
 
 //User Adminstration
