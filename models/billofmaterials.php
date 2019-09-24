@@ -256,4 +256,44 @@ class BillOfMaterials {
         if ($this->verifyMaterialNotEntered($number)) return false;
         return true;
     }
+
+    /**
+     * Returns an array of rows of material.
+     * 
+     * Returns an array of rows from the BOM that are not
+     * presently assigned to a work cell as material from the 
+     * given master product key.
+     * @param String $prokey The master product ID
+     * @return Array An array of rows in the form :
+     * `['id'=>string,'qty'=>string,'number'=>string,'description'=>string]`,
+     * or false on error. This method may also return an empty array, indicating
+     * there were no items found.
+     */
+    public function getUnassignedMaterial ($prokey) {
+        $sql = 
+        'SELECT 
+            a.id AS id,
+            a.qty AS qty,
+            (SELECT number FROM material WHERE id = a.partid) AS number,
+            (SELECT description FROM material WHERE id = a.partid) AS description
+        FROM bom AS a
+        WHERE
+            prokey = :prokey
+            AND
+            id NOT IN (
+                SELECT DISTINCT cell_material.bomid
+                FROM cell_material
+                INNER JOIN work_cell ON work_cell.id = cell_material.cellid
+                WHERE work_cell.prokey = :prokey
+            )';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([':prokey'=>$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }
