@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">472</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">475</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1785076660"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1817364827"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1785076660" class="accordion-body collapse in">
+            <div id="namespace-1817364827" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -241,6 +241,11 @@
                                                                     <a href="../classes/Employees.html#method_amendAttendanceRecord" class="">amendAttendanceRecord()</a><br />
                                                                     <a href="../classes/Employees.html#method_removeAttendanceRecord" class="">removeAttendanceRecord()</a><br />
                                                                     <a href="../classes/Employees.html#method_initiateReview" class="">initiateReview()</a><br />
+                                                                    <a href="../classes/Employees.html#method_insertUserAppraisal" class="">insertUserAppraisal()</a><br />
+                                                                    <a href="../classes/Employees.html#method_updateUserAppraisal" class="">updateUserAppraisal()</a><br />
+                                                                    <a href="../classes/Employees.html#method_getPastReviews" class="">getPastReviews()</a><br />
+                                                                    <a href="../classes/Employees.html#method_getReviewStatus" class="">getReviewStatus()</a><br />
+                                                                    <a href="../classes/Employees.html#method_getOngoingReviewID" class="">getOngoingReviewID()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -833,6 +838,197 @@
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_insertUserAppraisal" name="method_insertUserAppraisal" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">insertUserAppraisal()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">insertUserAppraisal(Array  <span class="argument">$data</span>) : Boolean</pre>
+                <p><em>Inserts a new appraisal for an employee</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$data </td>
+                                <td><p>The data to insert in the form :
+<code>['revid'=&gt;string,'uid'=&gt;string,'appraisal'=&gt;string]</code></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_updateUserAppraisal" name="method_updateUserAppraisal" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">updateUserAppraisal()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">updateUserAppraisal(String  <span class="argument">$id</span>, String  <span class="argument">$appraisal</span>) : Boolean</pre>
+                <p><em>Updates an existing appraisal</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td><p>The appraisal ID to update.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$appraisal </td>
+                                <td><p>The updated appraisal</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPastReviews" name="method_getPastReviews" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPastReviews()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPastReviews(String  <span class="argument">$eid</span>) : Array</pre>
+                <p><em>Returns an array of past reviews references for the given EID</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$eid </td>
+                                <td><p>The employees ID to lookup</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Array
+                                            &mdash; <p>Results as multidimensial array (possibly empty) on success, false on error</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getReviewStatus" name="method_getReviewStatus" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getReviewStatus()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getReviewStatus(String  <span class="argument">$eid</span>) : Boolean</pre>
+                <p><em>Returns whether or not the given employee is currently in review</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$eid </td>
+                                <td><p>The employees ID</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True if in review, false otherwise.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getOngoingReviewID" name="method_getOngoingReviewID" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getOngoingReviewID()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getOngoingReviewID(String  <span class="argument">$eid</span>) : String</pre>
+                <p><em>Returns the ID of any ongoing review</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$eid </td>
+                                <td><p>The employee ID to find ongoing review ID</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The ID of any ongoing review, false on error.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                                                     </div>
     </section>
 
@@ -882,7 +1078,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on September 18th, 2019 at 12:53.
+                    on September 24th, 2019 at 14:54.
                 </section>
             </section>
         </section>
