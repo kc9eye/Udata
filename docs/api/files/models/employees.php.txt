@@ -336,5 +336,110 @@ class Employees extends Profiles {
             return false;
         }
     }
+
+    /**
+     * Inserts a new appraisal for an employee
+     * @param Array $data The data to insert in the form :
+     * `['revid'=>string,'uid'=>string,'appraisal'=>string]`
+     * @return Boolean True on success, false otherwise
+     */
+    public function insertUserAppraisal (Array $data) {
+        $sql = 'INSERT INTO review_comments VALUES (:id,:uid,:revid,:comments,now())';
+        $insert = [
+            ':id'=>uniqid(),
+            ':uid'=>$data['uid'],
+            ':revid'=>$data['revid'],
+            ':comments'=>$data['appraisal']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Updates an existing appraisal
+     * @param String $id The appraisal ID to update.
+     * @param String $appraisal The updated appraisal
+     * @return Boolean True on success, false otherwise.
+     */
+    public function updateUserAppraisal ($id,$appraisal) {
+        $sql = "UPDATE review_comments SET comments = :appraisal WHERE id = :id";
+        $insert = [
+            ':appraisal'=>$appraisal,
+            ':id'=>$id
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns an array of past reviews references for the given EID
+     * @param String $eid The employees ID to lookup
+     * @return Array Results as multidimensial array (possibly empty) on success, false on error
+     */
+    public function getPastReviews ($eid) {
+        $sql = 'SELECT * FROM reviews WHERE eid = ? AND end_date <= now() ORDER BY end_date DESC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Excecption $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns whether or not the given employee is currently in review
+     * @param String $eid The employees ID
+     * @return Boolean True if in review, false otherwise.
+     */
+    public function getReviewStatus ($eid) {
+        $sql = 'SELECT count(*) FROM reviews WHERE end_date >= now() AND eid = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $result = $pntr->fetchAll(PDO::FETCH_ASSOC)[0]['count'];
+            if ($result != 1 && $result != 0) throw new Exception("Result returned an invalid value");
+            if ($result == 1) return true;
+            else return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns the ID of any ongoing review
+     * @param String $eid The employee ID to find ongoing review ID
+     * @return String The ID of any ongoing review, false on error.
+     */
+    public function getOngoingReviewID ($eid) {
+        $sql = 'SELECT id FROM reviews WHERE eid = ? AND end_date >= now()';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC)[0]['id'];
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }
 
