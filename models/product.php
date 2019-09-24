@@ -72,6 +72,11 @@ class Product {
     public $pBOM;
 
     /**
+     * @var Array The products current work cells list
+     */
+    public $pWorkCells;
+
+    /**
      * Class constructor
      * @param PDO $dbh The database handle
      * @param String $prokey The products master key
@@ -86,6 +91,7 @@ class Product {
         $this->getProduct();
         $this->getBOM();
         $this->calcProductStatistics();
+        $this->setWorkCellData();
     }
 
     private function getProduct () {
@@ -186,5 +192,98 @@ class Product {
             trigger_error($e->getMessage(), E_USER_WARNING);
             $this->pBOM = null;
         }
+    }
+
+    private function setWorkCellData () {
+        $sql = 'SELECT * FROM work_cell WHERE prokey = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$this->getProductKey()])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $this->pWorkCells = $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            $this->pWorkCells = null;
+        }
+    }
+
+    /**
+     * Returns the products master product key
+     * @return String Prokey
+     */
+    public function getProductKey () {
+        return $this->pKey;
+    }
+
+    /**
+     * Returns the products description
+     * @return String Description
+     */
+    public function getProductDescription () {
+        return $this->pDescription;
+    }
+
+    /**
+     * Returns the products current state
+     * @return String State
+     */
+    public function getProductState () {
+        return $this->pState;
+    }
+
+    /**
+     * Returns the product creator
+     * @return String Creator
+     */
+    public function getProductCreator () {
+        return $this->pCreator;
+    }
+
+    /**
+     * Returns the date the product was created
+     * @return String Date
+     */
+    public function getCreationDate () {
+        return $this->pCreateDate;
+    }
+
+    /**
+     * Returns an array of inspection points for the product
+     * @return Array inspection points
+     */
+    public function getInspectionPoints () {
+        return $this->pQualityControl;
+    }
+
+    /**
+     * Returns an array of the products production log
+     * @return Array production log
+     */
+    public function getproductionLog () {
+        return $this->pLog;
+    }
+
+    /**
+     * Returns an array of production statistics
+     * @return Array production stats
+     */
+    public function getProductionStats () {
+        return $this->pStats;
+    }
+
+    /**
+     * Returns an array of the bill of materials for the product
+     * @return Array BOM
+     */
+    public function getProductBOM () {
+        return $this->pBOM;
+    }
+
+    /**
+     * Returns an array of work cell data for the product
+     * @return Array Work Cells
+     */
+    public function getWorkCells () {
+        return $this->pWorkCells;
     }
 }
