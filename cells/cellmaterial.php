@@ -23,11 +23,13 @@ $server->userMustHavePermission('editWorkCell');
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
         case 'add':
+            require_once(dirname(__DIR__).'/lib/libmath.php');
             $parts = new Materials($server->pdo);
             if (!$parts->verifySingleNumber($_REQUEST['cellid'],$_REQUEST['number'],$_REQUEST['prokey'])) duplicateNumber();
             if (!$parts->verifyMaterial($_REQUEST['number'])) partDoesNotExist();
             if (!$parts->verifyOnBOM($_REQUEST['number'], $_REQUEST['prokey'])) partNotFound();
             if (!$parts->verifyBOMQty($_REQUEST['number'], $_REQUEST['prokey'], $_REQUEST['qty'])) partQtyExceeded();
+            if (!nonZeroNumber($_REQUEST['qty'])) zeroSumNumber();
             $server->processingDialog(
                 [$parts,'addCellMaterial'],
                 [$_REQUEST],
@@ -38,11 +40,13 @@ if (!empty($_REQUEST['action'])) {
             editDisplay(); 
         break;
         case 'amend':
+            require_once(dirname(__DIR__).'/lib/libmath.php');
             $materials = new Materials($server->pdo);
             $part = $materials->getCellMaterialByID($_REQUEST['id']);
             $cell = new WorkCell($server->pdo,$part['cellid']);
             $old_qty = $part['qty'];
             $new_qty = $_REQUEST['qty'];
+            if (!nonZeroNumber($_REQUEST['qty'])) zeroSumNumber();
             if (!$materials->resetCellMaterialQty($_REQUEST['id'])) throw new Exception("Resetting quantity failed.");
             if (!$materials->verifyBOMQty($part['number'],$cell->ProductKey,$_REQUEST['qty'])) {
                 if (!$materials->amendCellMaterialQty(['rowid'=>$_REQUEST['rowid'],'qty'=>$old_qty])) throw new Exception("Update to old qty failed");
@@ -170,6 +174,16 @@ function duplicateNumber () {
     global $server;
     $server->newEndUserDialog(
         "This material number is already associated with this work cell. You may consider editing the existsing quantity.",
+        DIALOG_FAILURE,
+        $server->config['application-root'].'/cells/cellmaterial?cellid='.$_REQUEST['cellid']
+    );
+}
+
+//Fixes issue #63
+function zeroSumNumber () {
+    global $server;
+    $server->newEndUserDialog(
+        "Zero quantities for material are not allowed!",
         DIALOG_FAILURE,
         $server->config['application-root'].'/cells/cellmaterial?cellid='.$_REQUEST['cellid']
     );
