@@ -35,45 +35,32 @@ Class ViewMaker implements ViewWidgets {
      * to push data to an interface.
      */
     public $ViewData;
+    
     /**
      * @var Array Contains an array of strings which are typically used on a per page basis
      */
     public $PageData;
-    /**
-     * @var Security Contains the security object given from the server Instance.
-     * @see Security
-     */
-    protected $security;
-    /**
-     * @var Boolean Switch used to deteremine if the current interface view has a side navigation bar.
-     * `true` if side navigation is present, `false` otherwise.
-     * @see ViewMaker::sideDropDownMenu()
-     * @see ViewMaker::offCanvasSideNav()
-     */
-    protected $sideNav;
-    /**
-     * @var Array Contains the configuration variables array received from the main Instance
-     * @uses config.php
-     */
-    protected $config;
 
     /**
      * Class constructor
-     * @param Security $security Optional, but not very useful without.
-     * @param Array $config The configuration variables array.
-     * @uses Security
+     * @param Instance $server The server instance class object
      * @see Instance::getViewer()
      * @return ViewMaker
      */
-    public function __construct (Security $security = null, $config) {
-        $this->security = $security;
-        $this->config = $config;
-        $this->sideNav = false;
-        $this->PageData['approot'] = $config['application-root'];
-        $this->PageData['wwwroot'] = $config['application-root'].'/wwwroot';
-        $this->PageData['companyName'] = $config['company-name'];
-        $this->PageData['companyMotto'] = $config['company-motto'];
-        $this->PageData['navbarBrand'] = $config['home-name'];
+    public function __construct (Instance $server) {
+        $this->PageData = $server->config; 
+        $this->PageData['approot'] = !empty($this->PageData['application-root']) ? $this->PageData['application-root'] : '/';
+        $this->PageData['wwwroot'] = $this->PageData['application-root'].'/wwwroot';
+        $this->PageData['sidenav'] = false;
+        if (!is_null($server->currentUserID)) {
+            $this->ViewData['user'] = new User($server->pdo,$server->currentUserID);
+            $this->ViewData['admin'] = $server->checkPermission('adminAll');
+            $this->ViewData['theme'] = $this->ViewData['user']->getUserTheme();
+        }
+        else {
+            $this->ViewData['user'] = null;
+            $this->ViewData['admin'] = false;
+        }
     }
 
     /**
@@ -86,56 +73,52 @@ Class ViewMaker implements ViewWidgets {
      * @todo rewrite to use `echo` instead of hard coded html
      */
     public function header () {
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title><?php echo $this->ViewData['pagetitle'];?></title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="Copyright" content="2018 Paul W. Lane" />
-        <meta name="License" content="MIT" />
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="<?php echo $this->PageData['wwwroot'];?>/images/favicons/ms-icon-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="<?php echo $this->PageData['wwwroot'];?>/css/dark-header.css" />
-        <link rel="stylesheet" href="<?php echo $this->PageData['wwwroot'];?>/css/print.css" />
-        <link rel="apple-touch-icon" sizes="57x57" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/apple-icon-180x180.png">
-        <link rel="icon" type="image/png" sizes="192x192"  href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/android-icon-192x192.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $this->PageData['wwwroot'];?>/images/favicons/favicon-16x16.png">
-        <link rel="manifest" href="<?php echo $this->PageData['wwwroot'];?>/scripts/manifest.json">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="<?php echo $this->PageData['wwwroot'];?>/scripts/header.js"></script>
-        <?php
+        echo "<!DOCTYPE html>\n";
+        echo "<html>\n";
+        echo "  <head>\n";
+        echo "      <title>{$this->ViewData['pagetitle']}</title>\n";
+        echo "      <meta charset='utf-8' />\n";
+        echo "      <meta name='viewport' content='width=device-width, initial-scale=1' />\n";
+        echo "      <meta name='Copyright' content='2010-19 Paul W. Lane' />\n";
+        echo "      <meta name='License' content='MIT' />\n";
+        echo "      <meta name='msapplication-TileColor' content='#ffffff'>\n";
+        echo "      <meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>\n";
+        echo "      <meta name='theme-color' content='#ffffff'>\n";
+        echo "      <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' />\n";
+        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />\n";
+        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='60x60' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-60x60.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='72x72' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-72x72.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='76x76' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-76x76.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='114x114' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-114x114.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='120x120' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-120x120.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='144x144' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-144x144.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='152x152' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-152x152.png' />\n";
+        echo "      <link rel='apple-touch-icon' sizes='180x180' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-180x180.png' />\n";
+        echo "      <link rel='icon' type='image/png' sizes='192x192'  href='{$this->PageData['wwwroot']}/images/favicons/android-icon-192x192.png' />\n";
+        echo "      <link rel='icon' type='image/png' sizes='32x32' href='{$this->PageData['wwwroot']}/images/favicons/favicon-32x32.png' />\n";
+        echo "      <link rel='icon' type='image/png' sizes='96x96' href='{$this->PageData['wwwroot']}/images/favicons/favicon-96x96.png' />\n";
+        echo "      <link rel='icon' type='image/png' sizes='16x16' href='{$this->PageData['wwwroot']}/images/favicons/favicon-16x16.png' />\n";
+        echo "      <link rel='manifest' href='{$this->PageData['wwwroot']}/scripts/manifest.json' />\n";
+        echo "      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>\n";
+        echo "      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>\n";
+        echo "      <script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>\n";
+        if (!empty($this->ViewData['theme']))
+            echo "      <script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>\n";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
                 echo "{$insert}\n";
             }
         }
-        ?>
-    </head>
-    <body>
-        <div class='page-header' id='template-header'>
-            <h1><?php echo $this->PageData['companyName'];?></h1>
-            <span>
-                <?php echo $this->PageData['companyMotto'];?>
-            </span>
-        </div>
-        <?php $this->navBar();?>
-        <div class="container-float view-content">
-<?php
+        echo "</head>\n";
+        echo "<body>\n";
+        echo "  <div class='page-header' id='template-header'>\n";
+        echo "      <h1>{$this->PageData['company-name']}</h1>\n";
+        echo "      <span>{$this->PageData['company-motto']}</span>\n";
+        echo "  </div>\n";
+        $this->navBar();
+        echo "  <div class='container-float view-content'>\n";
     }
 
     /**
@@ -150,7 +133,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function footer (Array $script_links = null) {
-        if ($this->sideNav) {
+        if ($this->PageData['sidenav']) {
             echo "</div></div>\n";
         }
         echo "</div>\n";
@@ -194,7 +177,7 @@ Class ViewMaker implements ViewWidgets {
         echo "<div class='footer'>\n";
         echo "UData v".APP_VERSION." Copyright (C) 2008-2018 Paul W. Lane";
         $this->insertTab(2);
-        echo "<a href='{$this->config['error-support-link']}' target='_blank'>Problem with this page?</a>\n";
+        echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>\n";
         echo "</div>\n";
         if (!is_null($script_links)) {
             foreach($script_links as $link) {
@@ -217,60 +200,50 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function navBar () {
-?>
-<nav class='navbar navbar-inverse'>
-    <div class='container-fluid'>
-        <div class='navbar-header'>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class='navbar-brand' href='<?php if (empty($this->PageData['approot'])){echo '/';} else {echo $this->PageData['approot'];}?>'>
-                <?php echo $this->PageData['navbarBrand'];?>
-            </a>
-        </div>
-        <div class='collapse navbar-collapse' id='myNavbar'>
-            <ul class='nav navbar-nav'>
-                <?php foreach($this->config['navbar-links'] as $label=>$link) {
-                    if (is_string($link))
-                        echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
-                    elseif (is_array($link)) {
-                        if ($link[1]) 
-                            echo "<li><a href='{$link[0]}'>{$label}</a></li>\n";
-                        else
-                            echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
-                    }
-
-                }
-                ?>
-            </ul>
-            <ul class='nav navbar-nav navbar-right'>
-            <?php
-                if (!is_null($this->security->secureUserID)) {
-                    $username = is_null($this->security->user['firstname']) ? $this->security->user['email'] : $this->security->user['firstname'];
-                    echo "          <li class='dropdown'>\n";
-                    echo "              <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$username."&#160;<span class='caret'></span></a>\n";
-                    echo "              <ul class='dropdown-menu'>\n";
-                    if ($this->security->userHasPermission('adminAll')) {
-                        echo "                  <li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>\n";
-                    }
-                    echo "                  <li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>\n";
-                    echo "                  <li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>\n";
-                    echo "              </ul>\n";
-                    echo "          </li>\n";
-                }
-                else {
-                    #$_SESSION['login-redirect'] = $_SERVER['REQUEST_URI']; This can't be implemented until after migration from 3.10. 
-                    echo "          <li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>\n";
-                    echo "          <li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>\n";
-                }
-            ?>
-            </ul>
-        </div>
-    </div>
-</nav>
-<?php        
+        echo "  <nav class='navbar navbar-inverse'>\n";
+        echo "      <div class='container-fluid'>\n";
+        echo "          <div class='navbar-header'>\n";
+        echo "              <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#myNavbar'>\n";
+        echo "                  <span class='icon-bar'></span>\n";
+        echo "                  <span class='icon-bar'></span>\n";
+        echo "                  <span class='icon-bar'></span>\n";
+        echo "              </button>\n";
+        echo "              <a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>\n";
+        echo "          </div>\n";
+        echo "          <div class='collapse navbar-collapse' id='myNavbar'>\n";
+        echo "              <ul class='nav navbar-nav'>\n";
+        foreach($this->PageData['navbar-links'] as $label=>$link) {
+            if (is_string($link))
+                echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+            elseif (is_array($link)) {
+                if ($link[1]) 
+                    echo "                  <li><a href='{$link[0]}'>{$label}</a></li>\n";
+                else
+                    echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+            }
+        }
+        echo "              </ul>\n";
+        echo "              <ul class='nav navbar-nav navbar-right'>\n";
+        if (!is_null($this->ViewData['user'])) {
+            echo "              <li class='dropdown'>\n";
+            echo "                  <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$this->ViewData['user']->getFullName()."&#160;<span class='caret'></span></a>\n";
+            echo "                  <ul class='dropdown-menu'>\n";
+            if ($this->ViewData['admin']) {
+                echo "                      <li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>\n";
+            }
+            echo "                      <li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>\n";
+            echo "                      <li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>\n";
+            echo "                  </ul>\n";
+            echo "              </li>\n";
+        }
+        else {
+            echo "              <li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>\n";
+            echo "              <li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>\n";
+        }
+        echo "              </ul>\n";
+        echo "          </div>\n";
+        echo "      </div>\n";
+        echo "  </nav>\n";
     }
 
     /**
@@ -285,7 +258,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function offCanvasSideNav (Array $navLinks = null) {
-        $this->sideNav = true;
+        $this->PageData['sidenav'] = true;
         echo "<div class='row'>\n";
         echo "<div class='col-md-1 col-xs-12'>\n";
         echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>\n";
@@ -339,35 +312,31 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function sideDropDownMenu (Array $links) {
-        $this->sideNav = true;
-?>
-<div class='row'>
-    <div class='col-md-2 col-xs-12'>
-        <div class='dropdown'>
-            <button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>
-                Section Menu <span class='caret'></span>
-            </button>
-            <ul class='dropdown-menu'>
-                <?php
-                foreach($links as $item => $info) {
-                    if (is_array($info)) {
-                        if ($this->security->userHasPermission($info[1])) {
-                            echo "<li><a href='{$info[0]}'>{$item}</a></li>\n";
-                        }
-                        else {
-                            echo "<li class='disabled'>{$item}</li>\n";
-                        }
-                    }
-                    else {
-                        echo "<li><a href='{$info}'>{$item}</a></li>\n";
-                    }
+        $this->PageData['sidenav'] = true;
+        echo "  <div class='row'>\n";
+        echo "      <div class='col-md-2 col-xs-12'>\n";
+        echo "          <div class='dropdown'>\n";
+        echo "              <button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>\n";
+        echo "                  Section Menu <span class='caret'></span>\n";
+        echo "              </button>\n";
+        echo "              <ul class='dropdown-menu'>\n";
+        foreach($links as $item => $info) {
+            if (is_array($info)) {
+                if ($this->security->userHasPermission($info[1])) {
+                    echo "                  <li><a href='{$info[0]}'>{$item}</a></li>\n";
                 }
-                ?>
-            </ul>
-        </div>
-    </div>
-    <div class='col-md-10 col-xs-12 view-content'>
-<?php
+                else {
+                    echo "                  <li class='disabled'>{$item}</li>\n";
+                }
+            }
+            else {
+                echo "                      <li><a href='{$info}'>{$item}</a></li>\n";
+            }
+        }
+        echo "              </ul>\n";
+        echo "          </div>\n";
+        echo "      </div>\n";
+        echo "  <div class='col-md-10 col-xs-12 view-content'>\n";
     }
 
     /**
