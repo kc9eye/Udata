@@ -1,6 +1,6 @@
 <?php
 /* This file is part of UData.
- * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,37 +16,23 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once(dirname(__DIR__).'/lib/init.php');
-$view = $server->getViewer('Login');
 
-$failed_login = false;
-
-if (!empty($_POST)) {
-    $res = $server->security->verifyLogOn($_POST['username'], $_POST['password']);
-    if ($res === true) {
-        $_SESSION['uid'] = $server->security->secureUserID;
-        if (isset($_POST['remember']) && $_POST['remember'] == 1) {
-            $server->security->setPersistentLogOn($server->security->secureUserID);
-        }
-        if (isset($_SESSION['login-redirect'])) {
-            $url = $_SESSION['login-redirect'];
-            unset($_SESSION['login-redirect']);
-            $server->redirect($url);
-        }
-        else {
-            $server->redirect('');
-        }
-    }
-    else {
-        $failed_login = true;
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'login': verifyLogin(); break;
+        default: main(); break;
     }
 }
+else {
+    main();
+}
 
-?>
-<div class='row'>
-    <div class='center-text'><h1>Log In</h1></div>
-</div>
-<?php
-    if ($failed_login) {
+function main ($failed = false) {
+    global $server;
+    $view = $server->getViewer('Login');
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $form->newForm('Log On');
+    if ($failed) {
         echo "<div class='row'>\n
                 <div class='col-md-3'></div>\n
                     <div class='col-xs-12 col-md-6'>\n
@@ -76,47 +62,32 @@ if (!empty($_POST)) {
                 <div class='col-md-3'></div>
             </div>\n";
     }
-?>
-<form method='post' class='form-horizontal'>
-    <div class='row'>
-        <div class='col-md-3'></div>
-        <div class='col-xs-12 col-md-6'>
-            <div class='input-group'>
-                <span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>
-                <input id='username' type='email' class='form-control' name='username' placeholder='Email' />
-            </div>
-        </div>
-        <div class='col-md-3'></div>
-    </div>
-    <div class='row'>
-        <div class='col-md-3'></div>
-        <div class='col-xs-12 col-md-6'>
-            <div class='input-group'>
-                <span class='input-group-addon'><i class='glyphicon glyphicon-lock'></i></span>
-                <input id='password' type='password' class='form-control' name='password' placeholder='Password' />
-            </div>
-        </div>
-        <div class='col-md-3'></div>
-    </div>
-    <div class='row'>
-        <div class='col-md-3'></div>
-        <div class='col-xs-12 col-md-6'>
-            <div class='checkbox'>            
-                <label><input name='remember' type='checkbox' value='1' id='remember' /> Remember me</label>
-            </div>
-        </div>
-        <div class='col-md-3'></div>
-    </div>
-    <div class='row'><div class='col-xs-12 col-md-12'></div></div>
-    <div class='row'>
-        <div class='col-md-3'></div>
-        <div class='col-xs-12 col-md-6'>
-            <div class='input-group'>
-                <button type='submit' class='btn btn-default'>Submit</button>
-            </div>
-        </div>
-        <div class='col-md-3'></div>
-    </div>
-</form>
-<?php
-$view->footer();
+    $form->hiddenInput('action','login');
+    $form->emailCapture('username','Email',null,['email'=>'true']);
+    $form->passwordCapture('password','Password',null,true);
+    $form->checkBox('remember',['Remember','Stay logged in'],1);
+    $form->submitForm('Log On');
+    $form->endForm();
+    $view->footer();
+}
+
+function verifyLogin () {
+    global $server;
+    if ($server->security->verifyLogOn($_REQUEST['username'],$_REQUEST['password']) === true) {
+        $_SESSION['uid'] = $server->security->secureUserID;
+        if (isset($_REQUEST['remember']) && $_REQUEST['remember'] == 1) {
+            $server->security->setPersistentLogOn($server->security->secureUserID);
+        }
+        if (isset($_SESSION['login-redirect'])) {
+            $url = $_SESSION['login-redirect'];
+            unset($_SESSION['login-redirect']);
+            $server->redirect($url);
+        }
+        else {
+            $server->redirect('');
+        }
+    }
+    else {
+        main(true);
+    }
+}
