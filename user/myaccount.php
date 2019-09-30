@@ -72,7 +72,8 @@ function main () {
             ['','Dark'],
             ['light-theme.js','Light'],
             ['uhaul-theme.js','Uhaul'],
-            ['bears-theme.js','Chicago Bears']
+            ['bears-theme.js','Chicago Bears'],
+            ['cubs-theme.js','Chicago Cubs']
         ]
     );
     $form->inlineSubmit();
