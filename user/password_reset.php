@@ -17,7 +17,7 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-$admin = new UserReset($server->pdo,$server->mailer,$server->config);
+$admin = new UserServices($server);
 
 if (!empty($_REQUEST['username'])) {
     if ($admin->resetPassword($_REQUEST['username'])) {

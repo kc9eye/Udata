@@ -104,6 +104,7 @@ Class ViewMaker implements ViewWidgets {
         echo "      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>\n";
         echo "      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>\n";
         echo "      <script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>\n";
+        echo "      <script>function getAppRoot() {return {$this->PageData['approot']};}</script>\n";
         if (!empty($this->ViewData['theme']))
             echo "      <script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>\n";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {

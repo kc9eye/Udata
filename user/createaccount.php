@@ -1,6 +1,6 @@
 <?php
 /* This file is part of UData.
- * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,123 +16,66 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once(dirname(__DIR__).'/lib/init.php');
-if (!empty($_POST)) {
-    $account = new AccountCreator($server->pdo, $server->mailer, $server->config['application-root']);
-    if ($account->checkUsername($_POST['email'])) {
-        $server->newEndUserDialog('That username already exists, please choose another one.',DIALOG_FAILURE,$server->config['application-root'].'/user/createaccount');
-    }
-    if (($res = $account->createAccountToVerify($_POST)) !== true) {
-        switch ($res) {
-            case $account::AWAITING_VERIFICATION : 
-                $server->newEndUserDialog("That username is already registered and awaiting verification, check your email for the verification.");
-            break;
-            default:
-                $server->newEndUserDialog("Something went wrong with the request.");
-            break;
-        }
-        $server->newEndUserDialog('Something went wrong with the request. Try again later.',DIALOG_FAILURE,$server->config['application-root']);
-    }
-    else {
-        $server->newEndUserDialog('An email was sent to the provided address for verification.',DIALOG_SUCCESS);
+
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'create':
+            createNewAccount();
+        break;
+        default: main(); break;
     }
 }
-$viewer = $server->getViewer('Create Account');
-?>
-<div style='margin:10px'>
-    <div class='center-text center-block'><h1>Create Account</h1></div>
-    <form method='post' class='form-horizontal' id='createaccount'>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'><!-- This is for spacing on desktop --></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='email'>Email:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='email' class='form-control' id='email' placeholder='Enter Email' name='email' />
-                    <span class='help-block'>
-                        You will receive a confirmation to this email and it will also serve as your username.
-                        Make sure it is valid.
-                    </span>
-                </div>
-                <div class='col-md-3'><!-- This is for spacing on desktop --></div>
-            </div>
-        </div>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'><!-- Desktop spacing --></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='password'>Password:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='password' class='form-control' id='password' name='password' placeholder='Password' />
-                </div>
-                <div class='col-md-3'><!-- Desktop spacing --></div>
-            </div>
-        </div>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'><!-- Desktop spacing --></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='verify'>Verify:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='password' class='form-control' id='verify' name='verify' placeholder='Verify Password' />
-                </div>
-                <div class='col-md-3'><!-- Desktop sizing --></div>
-            </div>
-        </div>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='firstname'>Firstname:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='text' class='form-control' id='firstname' name='firstname' placeholder='Firstname Required' />
-                </div>
-                <div class='col-md-3'></div>
-            </div>
-        </div>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='lastname'>Lastname:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='text' class='form-control' id='lastname' name='lastname' placeholder='Optional' />
-                </div>
-                <div class='col-md-3'></div>
-            </div>
-        </div>
+else {
+    main();  
+}
 
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-3'></div>
-                <div class='col-xs-12 col-md-1 right-text'>
-                    <label class='control-label' for='altemail'>Alt. Email:</label>
-                </div>
-                <div class='col-xs-12 col-md-5'>
-                    <input type='email' class='form-control' id='altemail' name='altemail' placeholder='Optional' />
-                </div>
-                <div class='col-md-3'></div>
-            </div>
-        </div>
-        <div class='form-group'>
-            <div class='row'>
-                <div class='col-md-4'><!-- desktop spacing --></div>
-                <div class='col-xs-12 col-md-6'>
-                    <button class='btn btn-lg btn-default' type='submit'>Create Account</button>
-                </div>
-                <div class='col-md-2'><!-- desktop spacing --></div>
-            </div>
-        </div>
-    </form>
-</div>
-<?php
-$scripts = [
-    'https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js',
-    'https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js',
-    $viewer->PageData['wwwroot'].'/scripts/createaccount.js'
-];
-$viewer->footer($scripts);
+function main () {
+    global $server;
+    $view = $server->getViewer('Create New Account');
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $form->newForm('Create Account',null,'post','createaccount');
+    $form->hiddenInput('action','create');
+    $form->emailCapture('email','Username',null,null,'Enter a valid email for account verification, this will also serve as your username');
+    $form->passwordCapture('password','Password');
+    $form->passwordCapture('verify','Verify',);
+    $form->inputCapture('firstname','First Name');
+    $form->inputCapture('lastname','Last Name');
+    $form->inputCapture('altemail','Alt. Email');
+    $form->submitForm('Create Account');
+    $form->endForm();
+    echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js'></script>\n";
+    echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js'></script>\n";
+    echo "<script src='{$view->PageData['wwwroot']}/scripts/createaccount.js'></script>";
+    $view->footer();
+}
+
+function createNewAccount () {
+    global $server;
+    $handler = new UserServices($server);
+    $namecheck = $handler->checkUsernameNotTaken($_REQUEST['email']);
+    $notcreated = $handler->verifySingleSignUpAttempt($_REQUEST['email']);
+    if (is_null($namecheck)||is_null($notcreated)) {
+        $server->newEndUserDialog(
+            "There was an unknown error attempting to create the account."
+        );
+    }
+    if ($namecheck) {
+        $server->newEndUserDialog(
+            'That username already exists, please choose another one.',
+            DIALOG_FAILURE,
+            $server->config['application-root'].'/user/createaccount'
+        );
+    }
+    elseif (!$notcreated) {
+        $server->newEndUserDialolg(
+            "That username is already registered and awaiting verification, check your email for the verification.",
+            DIALOG_FAILURE,
+            $server->config['application-root']
+        );
+    }
+    $server->processingDialog(
+        [$handler,'createAccountToVerify'],
+        [$_REQUEST],
+        $server->config['application-root']
+    );
+}
