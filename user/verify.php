@@ -1,6 +1,6 @@
 <?php
 /* This file is part of UData.
- * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,40 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-if (empty($_REQUEST['id'])) {
-    trigger_error('Unknown request, or breach attempt!',E_USER_ERROR);
-}
-
-$verify = new AccountCreator($server->pdo, $server->mailer, $server->config['application-root']);
-
-if ( $verify->verifyAccount( urldecode($_REQUEST['id']) ) ) {
-    $_SESSION['login-redirect'] = '/user/update_profile';
-    $server->newEndUserDialog(
-        'Account verified! Please log in with your new account.',
-        DIALOG_SUCCESS,
-        $server->config['application-root'].'/user/login'
-    );
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'verify':
+            verifyAccountCreation();
+        break;
+        default: main(); break;
+    }
 }
 else {
-    $server->newEndUserDialog(
-        'Something went wrong with your request, try again later.',
-        DIALOG_FAILURE
-    );
+    main();
 }
 
-trigger_error('This shouldn\'t happen, but if it does it\'s bad!', E_USER_ERROR);
+function main () {
+    global $server;
+    $view = $server->getViewer('Verifying Account');
+    trigger_error('Unknown access attempt',E_USER_ERROR);
+    $view->footer();
+}
+
+function verifyAccountCreation () {
+    global $server;
+    $handler = new UserServices($server);
+    if ($handler->verifyAccount(urldecode($_REQUEST['id']))) {
+        $_SESSION['login-redirect'] = '/user/myaccount';
+        $server->newEndUserDialog(
+            'Account verified! Please log in with your new account.',
+            DIALOG_SUCCESS,
+            $server->config['application-root'].'/user/login'
+        );
+    }
+    else {
+        $server->newEndUserDialog(
+            'Something went wrong with your request, contact an administrator.',
+            DIALOG_FAILURE
+        );
+    }
+}
