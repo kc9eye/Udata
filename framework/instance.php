@@ -106,7 +106,7 @@ Class Instance {
      * @author Paul W. Lane
      */
     public function getViewer ($pagetitle = null, $pagedata = null) {
-        $view = new ViewMaker($this->security, $this->config);
+        $view = new ViewMaker($this);
         if (!is_null($pagedata)) {
             if (is_array($pagedata)) {
                 foreach($pagedata as $i=>$v) {
@@ -137,7 +137,7 @@ Class Instance {
         $buff = ob_get_contents();
         ob_clean();
         $this->userMustHaveRole('Administrator');
-        $view = new ViewMaker($this->security,$this->config);
+        $view = new ViewMaker($this);
         $view->ViewData['pagetitle'] = 'DEBUG CONTENT';
         $view->header();
         echo "<pre class='scrollable'>\n";
