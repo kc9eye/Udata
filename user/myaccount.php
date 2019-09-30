@@ -29,6 +29,14 @@ if (!empty($_REQUEST['action'])) {
                 $server->config['application-root'].'/user/myaccount'
             );
         break;
+        case 'updateprofile':
+            $handler = new UserServices($server);
+            $server->processingDialog(
+                [$handler,'updateAccountProfile'],
+                [$_REQUEST],
+                $server->config['application-root'].'/user/myaccount'
+            );
+        break;
         default: main(); break;
     }
 }
@@ -45,8 +53,6 @@ function main () {
     $view->hr();
     $view->h3('Account Actions');
     $view->linkButton('/user/password_reset?username='.$user->getUserName(),'Reset Password','warning');
-    $view->insertTab();
-    $view->linkButton('/user/myaccount?action=delete','DELETE Account','danger');
     $view->hr();
     $view->h3('Account Settings');
     $view->bold('My Notifications');
@@ -66,8 +72,7 @@ function main () {
             ['','Dark'],
             ['light-theme.js','Light'],
             ['uhaul-theme.js','Uhaul'],
-            ['bears-theme.js','Chicago Bears'],
-            ['cubs-theme.js','Chicago Cubs']
+            ['bears-theme.js','Chicago Bears']
         ]
     );
     $form->inlineSubmit();
@@ -77,9 +82,11 @@ function main () {
     $profile = $user->getProfileArray();
     $form->newForm();
     $form->hiddenInput('action','updateprofile');
+    $form->hiddenInput('pid',$user->pid);
     $form->inputCapture('first','First Name',$profile['first']);
     $form->inputCapture('middle','Middle Name',$profile['middle']);
     $form->inputCapture('last','Last Name',$profile['last']);
+    $form->inputCapture('other','Other Name',$profile['other']);
     $form->inputCapture('address','Address',$profile['address']);
     $form->inputCapture('address_other','Address Cont.',$profile['address_other']);
     $form->inputCapture('city','City',$profile['city']);

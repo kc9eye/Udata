@@ -303,12 +303,14 @@ class UserServices {
     public function deleteUserAccount ($uid) {
         //Get the account info
         $sql = 'SELECT * FROM user_accts WHERE id = ?';
+        $this->dbh->beginTransaction();
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$uid])) throw new Exception(print_r($pntr->errorInfo(),true));
             $account = $pntr->fetchAll(PDO::FETCH_ASSOC)[0];
         }
         catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -319,6 +321,7 @@ class UserServices {
             if (!$pntr->execute([$account['pid']])) throw new Exception(print_r($pntr->errorInfo(),true));
         }
         catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_erro($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -329,6 +332,7 @@ class UserServices {
             if (!$pntr->execute([$account['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
         }
         catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -339,6 +343,7 @@ class UserServices {
             if (!$pntr->execute([$account['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
         }
         catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -347,9 +352,11 @@ class UserServices {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$account['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $this->dbh->commit();
             return true;
         }
         catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -366,6 +373,63 @@ class UserServices {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':pid'=>$pid,':theme'=>$theme])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Updates an existing user profile
+     * @param Array $data The users profile data to update
+     * in the form ['pid'=>string,'first'=>string,'middle'=>string,'last'=>string,'other'=>string,
+     * 'address'=>string,'address_other'=>string,'city'=>string,'state_prov'=>string,'postal_code'=>string,
+     * 'home_phone'=>string,'cell_phone'=>string,'alt_phone'=>string,'e_contact_name'=>string,'e_contact_relation'=>string,
+     * 'e_contact_number'=>string]
+     * @return Boolean True on success, false otherwise
+     */
+    public function updateAccountProfile (Array $data) {
+        $sql = 
+            'UPDATE profiles SET
+            first = :first,
+            middle = :middle,
+            last = :last,
+            other = :other,
+            address = :address,
+            address_other = :address_other,
+            city = :city,
+            state_prov = :state_prov,
+            postal_code = :postal_code,
+            home_phone = :home_phone,
+            cell_phone = :cell_phone,
+            alt_phone = :alt_phone,
+            e_contact_name = :e_contact_name,
+            e_contact_relation = :e_contact_relation,
+            e_contact_number = :e_contact_number
+            WHERE id = :pid';
+        $insert = [
+            ':pid'=>$data['pid'],
+            ':first'=>$data['first'],
+            ':middle'=>$data['middle'],
+            ':last'=>$data['last'],
+            ':other'=>$data['other'],
+            ':address'=>$data['address'],
+            ':address_other'=>$data['address_other'],
+            ':city'=>$data['city'],
+            ':state_prov'=>$data['state_prov'],
+            ':postal_code'=>$data['postal_code'],
+            ':home_phone'=>$data['home_phone'],
+            ':cell_phone'=>$data['cell_phone'],
+            ':alt_phone'=>$data['alt_phone'],
+            ':e_contact_name'=>$data['e_contact_name'],
+            ':e_contact_relation'=>$data['e_contact_relation'],
+            ':e_contact_number'=>$data['e_contact_number']
+        ];
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
         }
         catch (Exception $e) {
