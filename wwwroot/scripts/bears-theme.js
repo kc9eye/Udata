@@ -33,6 +33,6 @@ $(document).ready(function(){
      $('.view-content').css({
         "padding":"10px",
         "min-height":"65vh",
-        "background":"rgb(255,255,255) url('" + getAppRoot() + "/wwwroot/images/theme/bearsbg.png') center fixed"
+        "background":"rgb(255,255,255) url('" + getAppRoot() + "/wwwroot/images/theme/bearsbg.png') center fixed no-repeat"
      });
 });

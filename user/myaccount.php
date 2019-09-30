@@ -73,7 +73,10 @@ function main () {
             ['light-theme.js','Light'],
             ['uhaul-theme.js','Uhaul'],
             ['bears-theme.js','Chicago Bears'],
-            ['cubs-theme.js','Chicago Cubs']
+            ['cubs-theme.js','Chicago Cubs'],
+            ['bulls-theme.js','Chicago Bulls'],
+            ['blackhawks-theme.js','Chicago Blackhawks'],
+            ['chfire-theme.js','Chicago Fire']
         ]
     );
     $form->inlineSubmit();
