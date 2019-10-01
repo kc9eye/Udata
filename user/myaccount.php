@@ -74,6 +74,7 @@ function main () {
             ['uhaul-theme.js','Uhaul'],
             ['bears-theme.js','Chicago Bears'],
             ['cubs-theme.js','Chicago Cubs'],
+            ['chsox-theme.js','Chicago White Sox'],
             ['bulls-theme.js','Chicago Bulls'],
             ['blackhawks-theme.js','Chicago Blackhawks'],
             ['chfire-theme.js','Chicago Fire'],
