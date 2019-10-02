@@ -512,6 +512,19 @@ Class ViewMaker implements ViewWidgets {
     }
 
     /**
+     * Outputs a print button to the stream.
+     * 
+     * Executes the javascript print function
+     * @param Boolean $return Default = false. If true will return the string instead of outputing to buffer stream
+     * @return Mixed Void if $return is false, String if $return true
+     */
+    public function printButton ($return = false) {
+        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>\n";
+        if ($return) return $btn;
+        else echo $btn;
+    }
+
+    /**
      * Outputs an edit button that when clicked goes to the given application centric addtress
      * @param String $addr The application centric API address the user should be sent to.
      * @param Boolean $passthru If true the address is passed through with alteration.

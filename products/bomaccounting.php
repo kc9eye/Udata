@@ -30,7 +30,6 @@ else {
 
 function main () {
     global $server;
-    include('submenu.php');
     $product = new Product($server->pdo,$_REQUEST['prokey']);
     $bom = new BillOfMaterials($server->pdo);
     $accounting = $bom->bomAccounting($_REQUEST['prokey']);
@@ -42,9 +41,13 @@ function main () {
             array_push($difference,$row);
         }
     }
-    $view = $server->getViewer('BOM Accounting');
-    $view->sideDropDownMenu($submenu);
-    $view->h1('BOM Accounting');
+    $view = $server->getViewer('BOM Accounting:'.$product->getProductDescription());
+    $view->printButton();
+    $view->h1(
+        '<small>BOM Accounting for:</small>'
+        .$product->getProductDescription()
+       .'&#160;'.$view->linkButton('/products/bom?prokey='.$_REQUEST['prokey'],"<span class='glyphicon glyphicon-arrow-left'></span>Back",'info',true)
+    );
     if (empty($difference)) {
         $view->bold("No accounting errors found");
     }
@@ -56,5 +59,6 @@ function main () {
         }
         $view->responsiveTableClose();
     }
+    $view->addScrollTopBtn();
     $view->footer();
 }

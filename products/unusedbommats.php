@@ -33,7 +33,8 @@ function main () {
    $product = new Product($server->pdo,$_REQUEST['prokey']);
    $bom = new BillOfMaterials($server->pdo);
    $unassigned = $bom->getUnassignedMaterial($_REQUEST['prokey']);
-   $view = $server->getViewer('Unutilized Material');
+   $view = $server->getViewer('Unutilized Material:'.$product->getProductDescription());
+   $view->printButton();
    $view->h1(
        '<small>Material Unassigned For:</small> '
        .$product->getProductDescription()
@@ -54,5 +55,6 @@ function main () {
         echo "<td>".$view->editBtnSm("/products/editbom?id={$row['id']}",true)."</td></tr>\n";
     }
     $view->responsiveTableClose();
+    $view->addScrollTopBtn();
    $view->footer();
 }
