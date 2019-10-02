@@ -37,6 +37,7 @@ if (!is_null($product->pBOM)) {
         class='btn btn-info' role='button'><span class='glyphicon glyphicon-arrow-left'></span> Back</a>";
     if ($edit) $heading .= " ".$view->linkButton('/products/editbom?action=addendum&prokey='.$_REQUEST['prokey'],"<span class='glyphicon glyphicon-plus'></span> Addendum",'warning',true);
     if ($edit) $heading .= " ".$view->linkButton('/products/unusedbommats?prokey='.$_REQUEST['prokey'],'List Unused Material','info',true);
+    if ($edit) $heading .= " ".$view->linkButton('/products/bomaccounting?prokey='.$_REQUEST['prokey'],'Material Accounting','info',true);
     $view->h2($heading);
     echo "<div class='table-responsive'><table class='table'>\n";
     echo "<tr><th>".htmlentities('Part#')."</th><th>Description</th><th>Qty.</th>";
