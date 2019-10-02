@@ -56,7 +56,8 @@ class Inspection {
                 _date,
                 comments
             FROM inspections as a
-            WHERE eqid = ?";
+            WHERE eqid = ?
+            ORDER BY _date DESC";
         try {
             $e_pntr = $this->dbh->prepare($e_sql);
             $p_pntr = $this->dbh->prepare($p_sql);

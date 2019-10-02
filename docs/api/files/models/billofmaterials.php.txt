@@ -296,4 +296,32 @@ class BillOfMaterials {
             return false;
         }
     }
+
+    /**
+     * Returns the qty on the bom and the quantity listed on work cells for the given product.
+     * @param String $prokey The product key
+     * @return Array In the form [['partid'=>string,'number'=>string,'description'=>string,'used'=>integer,'required'=>integer],...],
+     * or false on error.
+     */
+    public function bomAccounting ($prokey) {
+        $sql =
+            'SELECT
+                a.partid as partid,
+                (SELECT number FROM material WHERE id = a.partid) as number,
+                (SELECT description FROM material WHERE id = a.partid) as description,
+                (SELECT SUM(qty) FROM cell_material WHERE bomid = a.id) as used,
+                a.qty as required
+            FROM bom as a
+            WHERE prokey = ?
+            ORDER BY number ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }
