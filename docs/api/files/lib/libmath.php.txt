@@ -30,3 +30,15 @@
 function qualityControlPercentage ($quality,$control,$precision = 2) {
     return (float) round((($quality/$control)*100),$precision,PHP_ROUND_HALF_UP);
 }
+
+/**
+ * Determines if the number is non-zero
+ * 
+ * This function also test for if the number is in the negative range
+ * @param Float $number
+ * @return Boolean True if the number is not zero, false otherwise.
+ */
+function nonZeroNumber ($number) {
+    if ($number <= 0) return false;
+    return true;
+}

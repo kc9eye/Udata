@@ -104,6 +104,7 @@ Class ViewMaker implements ViewWidgets {
         echo "      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>\n";
         echo "      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>\n";
         echo "      <script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>\n";
+        echo "      <script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>\n";
         if (!empty($this->ViewData['theme']))
             echo "      <script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>\n";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
@@ -508,6 +509,19 @@ Class ViewMaker implements ViewWidgets {
             echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>\n";
         else
             echo "<p class='bg-primary'>{$content}</p>\n";
+    }
+
+    /**
+     * Outputs a print button to the stream.
+     * 
+     * Executes the javascript print function
+     * @param Boolean $return Default = false. If true will return the string instead of outputing to buffer stream
+     * @return Mixed Void if $return is false, String if $return true
+     */
+    public function printButton ($return = false) {
+        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>\n";
+        if ($return) return $btn;
+        else echo $btn;
     }
 
     /**

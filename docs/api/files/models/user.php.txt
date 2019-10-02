@@ -24,6 +24,7 @@ class User {
         $this->dbh = $dbh;
         $this->getUserInfo();
         $this->getProfileData();
+        $this->getNotificationData();
     }
 
     public function __set ($name,$value) {
@@ -74,6 +75,26 @@ class User {
         }
     }
 
+    private function getNotificationData () {
+        $sql = 
+            'SELECT DISTINCT
+                notifications.id as id,
+                notifications.description
+            FROM notifications
+            INNER JOIN notify ON notify.nid = notifications.id
+            WHERE notify.uid = ?
+            ORDER BY notifications.description ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$this->uid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $this->data['notifications'] = $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            $this->data['notifications'] = null;
+        }
+    }
+
     /**
      * Returns the users UID
      * @return String 
@@ -104,6 +125,14 @@ class User {
      */
     public function getLastName () {
         return $this->lastname;
+    }
+
+    /**
+     * Returns the profile array
+     * @return Array
+     */
+    public function getProfileArray () {
+        return $this->data['profile'];
     }
 
     /**
@@ -178,5 +207,13 @@ class User {
      */
     public function getUserTheme () {
         return $this->data['profile']['theme'];
+    }
+
+    /**
+     * Returns an array of the users current Notificions list
+     * @return Array
+     */
+    public function getUserNotifications () {
+        return $this->data['notifications'];
     }
 }
