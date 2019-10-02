@@ -79,7 +79,8 @@ function main () {
             ['blackhawks-theme.js','Chicago Blackhawks'],
             ['chfire-theme.js','Chicago Fire'],
             ['ford-theme.js','Ford Oval'],
-            ['beach-theme.js','Lazy Beach']
+            ['beach-theme.js','Lazy Beach'],
+            ['owl-theme.js','Overwatch League']
         ]
     );
     $form->inlineSubmit();
