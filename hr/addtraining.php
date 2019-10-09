@@ -62,7 +62,17 @@ function addNewTrainingDisplay () {
     $form->selectBox(
         'reoccur_time_frame',
         'Reoccuring',
-        [['30 days','30 Days'],['60 days','60 Days'],['90 days','90 Days'],['180 days','180 Days'],['360 days','360 Days']],
+        [
+            ['30 days','30 Days'],
+            ['60 days','60 Days'],
+            ['90 days','90 Days'],
+            ['6 months','6 Months'],
+            ['1 year','1 Year'],
+            ['2 years','2 Years'],
+            ['3 years','3 Years'],
+            ['4 years','4 Years'],
+            ['5 years','5 Years']
+        ],
         false,"Timeframe for retraining notifications.",
         ['0 days','Not Reoccurring']
     );
