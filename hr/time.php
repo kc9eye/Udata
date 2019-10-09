@@ -96,7 +96,8 @@ function displayLostTime ($request) {
     include('submenu.php');
     $view = $server->getViewer("Lost Time");
     $view->sideDropDownMenu($submenu);
-    $count = count($request);
+    if (is_array($request)) $count = count($request);
+    else $count = 0;
     $view->printButton();
     $view->h2("{$count} Lost Time Records Found");
     $view->responsiveTableStart(['Date','Name','Absent','Arrive Time','Leave Time','Description','Excused','Recorder','Record Date']);
@@ -117,7 +118,8 @@ function displayPerfect ($request) {
     include('submenu.php');
     $view = $server->getViewer("Perfect Time");
     $view->sideDropDownMenu($submenu);
-    $count = count($request);
+    if (is_array($request)) $count = count($request);
+    else $count = 0;
     $view->printButton();
     $view->h2("{$count} Perfect Records Found");
     $view->responsiveTableStart(['Name']);
