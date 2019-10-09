@@ -1,10 +1,11 @@
 <?php
-$update_version = 0.12;
+$update_version = 0.13;
 
 $sql = [
-    'ALTER TABLE public.profiles
-    ADD COLUMN theme character varying'
 ];
 
 $inserts = [
+    'insert into perms values (:id,:name)'=>[
+        [':id'=>uniqid(),':name'=>'viewLostTime']
+    ]
 ];
