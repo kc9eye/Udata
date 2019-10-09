@@ -18,5 +18,6 @@
 $submenu = [
     'Employee Profiles'=>$server->config['application-root'].'/hr/main',
     'Employee Training'=>$server->config['application-root'].'/hr/skills',
-    'Employee Injuries'=>$server->config['application-root'].'/hr/incidents'
+    'Employee Injuries'=>$server->config['application-root'].'/hr/incidents',
+    'Employee Time'=>$server->config['application-root'].'/hr/time'
 ];
