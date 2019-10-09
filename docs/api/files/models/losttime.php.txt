@@ -1,0 +1,97 @@
+<?php
+/* This file is part of UData.
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+class LostTime {
+    protected $dbh;
+
+    public function __construct (PDO $dbh) {
+        $this->dbh = $dbh;
+    }
+
+    /**
+     * Returns array of names of employees with perfect attendance for the given date range
+     * @param Date $begin ISO begin date string
+     * @param Date $end ISO end date string
+     * @return Array An array of names on success in the form [['name'=>string],...], or false on failure.
+     */
+    public function getPerfectAttendanceDateRange ($begin, $end) {
+        $sql = 
+            "SELECT 
+                profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other AS name
+             FROM profiles
+             INNER JOIN employees ON employees.pid = profiles.id
+             WHERE employees.end_date IS NULL 
+             AND employees.id NOT IN 
+             (
+                SELECT eid 
+                FROM missed_time
+                WHERE occ_date > :begin::date
+                AND occ_date < :end::date
+                AND NOT excused
+             )";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([':begin'=>$begin,':end'=>$end])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns an array of records
+     * @param Date $begin ISO date string
+     * @param Date $end ISO date string
+     * @param Boolean Optional true to return records that are excused. The
+     * default is to not return records that are excused.
+     * @return Array An array of records, or false on error. The array may be empty.
+     */
+    public function getLostTimeDateRange ($begin, $end, $excused = false) {
+        $sql = 
+            "SELECT 
+                (
+                    SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                    FROM profiles
+                    INNER JOIN employees ON employees.pid = profiles.id
+                    WHERE employees.id = a.eid
+                ) as name,
+                a.id,a.eid,a.occ_date,a.absent,a.arrive_time,a.leave_time,a.description,a.excused,
+                (
+                    SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                    FROM profiles
+                    WHERE id = (SELECT pid FROM user_accts WHERE id = a.uid)
+                ) as recorder,
+                a._date as recorded
+            FROM missed_time as a
+            WHERE occ_date > :begin::date
+            AND occ_date < :end::date";
+        if (!$excused) $sql .= " AND NOT excused";
+        $sql .= " ORDER BY name ASC";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([':begin'=>$begin,':end'=>$end])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+
+    }                   
+}
