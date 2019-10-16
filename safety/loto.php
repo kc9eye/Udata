@@ -18,7 +18,7 @@
 require_once(dirname(__DIR__).'/lib/init.php');
 include('submenu.php');
 
-$doc = new DocumentViewer($server->pdo, $server->security, $server->mailer, $server->config);
+$doc = new DocumentViewer($server);
 $doc->docURL = $server->config['application-root'].'/safety/loto';
 $doc->access = [DocumentViewer::EDIT_ACCESS_NAME=>['editLoto'], DocumentViewer::APPROVE_ACCESS_NAME=>['approveLoto']];
 $doc->setDocument('Lock Out Tag Out');
