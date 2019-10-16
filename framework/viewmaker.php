@@ -73,53 +73,54 @@ Class ViewMaker implements ViewWidgets {
      * @todo rewrite to use `echo` instead of hard coded html
      */
     public function header () {
-        echo "<!DOCTYPE html>\n";
-        echo "<html>\n";
-        echo "  <head>\n";
-        echo "      <title>{$this->ViewData['pagetitle']}</title>\n";
-        echo "      <meta charset='utf-8' />\n";
-        echo "      <meta name='viewport' content='width=device-width, initial-scale=1' />\n";
-        echo "      <meta name='Copyright' content='2010-19 Paul W. Lane' />\n";
-        echo "      <meta name='License' content='MIT' />\n";
-        echo "      <meta name='msapplication-TileColor' content='#ffffff'>\n";
-        echo "      <meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>\n";
-        echo "      <meta name='theme-color' content='#ffffff'>\n";
-        echo "      <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' />\n";
-        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />\n";
-        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='60x60' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-60x60.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='72x72' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-72x72.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='76x76' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-76x76.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='114x114' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-114x114.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='120x120' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-120x120.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='144x144' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-144x144.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='152x152' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-152x152.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='180x180' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-180x180.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='192x192'  href='{$this->PageData['wwwroot']}/images/favicons/android-icon-192x192.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='32x32' href='{$this->PageData['wwwroot']}/images/favicons/favicon-32x32.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='96x96' href='{$this->PageData['wwwroot']}/images/favicons/favicon-96x96.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='16x16' href='{$this->PageData['wwwroot']}/images/favicons/favicon-16x16.png' />\n";
-        echo "      <link rel='manifest' href='{$this->PageData['wwwroot']}/scripts/manifest.json' />\n";
-        echo "      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>\n";
-        echo "      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>\n";
-        echo "      <script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>\n";
-        echo "      <script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>\n";
+        echo "<!DOCTYPE html>";
+        echo "<html>";
+        echo "<head>";
+        echo "<title>{$this->ViewData['pagetitle']}</title>";
+        echo "<meta charset='utf-8' />";
+        echo "<meta name='viewport' content='width=device-width, initial-scale=1' />";
+        echo "<meta name='Copyright' content='2010-19 Paul W. Lane' />";
+        echo "<meta name='License' content='MIT' />";
+        echo "<meta name='msapplication-TileColor' content='#ffffff'>";
+        echo "<meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>";
+        echo "<meta name='theme-color' content='#ffffff'>";
+        echo "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>";
+        echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />";
+        echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />";
+        echo "<link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />";
+        echo "<link rel='apple-touch-icon' sizes='60x60' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-60x60.png' />";
+        echo "<link rel='apple-touch-icon' sizes='72x72' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-72x72.png' />";
+        echo "<link rel='apple-touch-icon' sizes='76x76' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-76x76.png' />";
+        echo "<link rel='apple-touch-icon' sizes='114x114' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-114x114.png' />";
+        echo "<link rel='apple-touch-icon' sizes='120x120' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-120x120.png' />";
+        echo "<link rel='apple-touch-icon' sizes='144x144' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-144x144.png' />";
+        echo "<link rel='apple-touch-icon' sizes='152x152' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-152x152.png' />";
+        echo "<link rel='apple-touch-icon' sizes='180x180' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-180x180.png' />";
+        echo "<link rel='icon' type='image/png' sizes='192x192'  href='{$this->PageData['wwwroot']}/images/favicons/android-icon-192x192.png' />";
+        echo "<link rel='icon' type='image/png' sizes='32x32' href='{$this->PageData['wwwroot']}/images/favicons/favicon-32x32.png' />";
+        echo "<link rel='icon' type='image/png' sizes='96x96' href='{$this->PageData['wwwroot']}/images/favicons/favicon-96x96.png' />";
+        echo "<link rel='icon' type='image/png' sizes='16x16' href='{$this->PageData['wwwroot']}/images/favicons/favicon-16x16.png' />";
+        echo "<link rel='manifest' href='{$this->PageData['wwwroot']}/scripts/manifest.json' />";
+        echo "<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>";
+        echo "<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>";
+        echo "<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>";
+        echo "<script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>";
+        echo "<script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>";
         if (!empty($this->ViewData['theme']))
-            echo "      <script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>\n";
+            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
-                echo "{$insert}\n";
+                echo "{$insert}";
             }
         }
-        echo "</head>\n";
-        echo "<body>\n";
-        echo "  <div class='page-header' id='template-header'>\n";
-        echo "      <h1>{$this->PageData['company-name']}</h1>\n";
-        echo "      <span>{$this->PageData['company-motto']}</span>\n";
-        echo "  </div>\n";
+        echo "</head>";
+        echo "<body>";
+        echo "<div class='page-header' id='template-header'>";
+        echo "<h1>{$this->PageData['company-name']}</h1>";
+        echo "<span>{$this->PageData['company-motto']}</span>";
+        echo "</div>";
         $this->navBar();
-        echo "  <div class='container-float view-content'>\n";
+        echo "<div class='container-float view-content'>";
     }
 
     /**
@@ -135,57 +136,57 @@ Class ViewMaker implements ViewWidgets {
      */
     public function footer (Array $script_links = null) {
         if ($this->PageData['sidenav']) {
-            echo "</div></div>\n";
+            echo "</div></div>";
         }
-        echo "</div>\n";
+        echo "</div>";
         if (!empty($_SESSION['controller-security'])) {
-            echo "<div class='panel panel-default' id='admin-perms'>\n";
-            echo "<div class='panel-heading'>\n";
+            echo "<div class='panel panel-default' id='admin-perms'>";
+            echo "<div class='panel-heading'>";
             echo htmlentities('Roles & Permissions on this Page');
-            echo "</div><div class='panel-body'>\n";
+            echo "</div><div class='panel-body'>";
             $displayed = null;
             foreach($_SESSION['controller-security'] as $i=>$y) {
                 if ($i == 'required') {
-                    echo "<strong>Required for Access:</strong>\n";
-                    echo "<ul class='list-group'>\n";
-                    echo "<li class='list-group-item'>{$y}</li>\n";
-                    echo "</ul>\n";
+                    echo "<strong>Required for Access:</strong>";
+                    echo "<ul class='list-group'>";
+                    echo "<li class='list-group-item'>{$y}</li>";
+                    echo "</ul>";
                 }
                 if ($i == 'roles') {
-                    echo "<strong>Page Access Roles:</strong>\n";
-                    echo "<ul class='list-group'>\n";
+                    echo "<strong>Page Access Roles:</strong>";
+                    echo "<ul class='list-group'>";
                     foreach($_SESSION['controller-security']['roles'] as $role) {
                         if ($role == $displayed) continue;
-                        echo "<li class='list-group-item'>{$role}</li>\n";
+                        echo "<li class='list-group-item'>{$role}</li>";
                         $displayed = $role;
                     }
-                    echo "</ul>\n";
+                    echo "</ul>";
                 }
                 if ($i == 'permissions') {
-                    echo "<strong>Page Access Permissions:</strong>\n";
-                    echo "<ul class='list-group'>\n";
+                    echo "<strong>Page Access Permissions:</strong>";
+                    echo "<ul class='list-group'>";
                     foreach($_SESSION['controller-security']['permissions'] as $perm) {
                         if ($perm == $displayed) continue;
-                        echo "<li class='list-group-item'>{$perm}</li>\n";
+                        echo "<li class='list-group-item'>{$perm}</li>";
                         $displayed = $perm;
                     }
-                    echo "</ul>\n";
+                    echo "</ul>";
                 }
             }
-            echo "</div></div>\n";
+            echo "</div></div>";
             unset($_SESSION['controller-security']);
         }
-        echo "<div class='footer'>\n";
+        echo "<div class='footer'>";
         echo "UData v".APP_VERSION." Copyright (C) 2008-2018 Paul W. Lane";
         $this->insertTab(2);
-        echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>\n";
-        echo "</div>\n";
+        echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>";
+        echo "</div>";
         if (!is_null($script_links)) {
             foreach($script_links as $link) {
-                echo "<script src='".$link."'></script>\n";
+                echo "<script src='".$link."'></script>";
             }
         }
-        echo "</body>\n</html>\n";
+        echo "</body></html>";
     }
 
     /**
@@ -201,50 +202,50 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function navBar () {
-        echo "  <nav class='navbar navbar-inverse'>\n";
-        echo "      <div class='container-fluid'>\n";
-        echo "          <div class='navbar-header'>\n";
-        echo "              <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#myNavbar'>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "              </button>\n";
-        echo "              <a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>\n";
-        echo "          </div>\n";
-        echo "          <div class='collapse navbar-collapse' id='myNavbar'>\n";
-        echo "              <ul class='nav navbar-nav'>\n";
+        echo "<nav class='navbar navbar-inverse'>";
+        echo "<div class='container-fluid'>";
+        echo "<div class='navbar-header'>";
+        echo "<button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#myNavbar'>";
+        echo "<span class='icon-bar'></span>";
+        echo "<span class='icon-bar'></span>";
+        echo "<span class='icon-bar'></span>";
+        echo "</button>";
+        echo "<a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>";
+        echo "</div>";
+        echo "<div class='collapse navbar-collapse' id='myNavbar'>";
+        echo "<ul class='nav navbar-nav'>";
         foreach($this->PageData['navbar-links'] as $label=>$link) {
             if (is_string($link))
-                echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+                echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>";
             elseif (is_array($link)) {
                 if ($link[1]) 
-                    echo "                  <li><a href='{$link[0]}'>{$label}</a></li>\n";
+                    echo "<li><a href='{$link[0]}'>{$label}</a></li>";
                 else
-                    echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
+                    echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>";
             }
         }
-        echo "              </ul>\n";
-        echo "              <ul class='nav navbar-nav navbar-right'>\n";
+        echo "</ul>";
+        echo "<ul class='nav navbar-nav navbar-right'>";
         if (!is_null($this->ViewData['user'])) {
-            echo "              <li class='dropdown'>\n";
-            echo "                  <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$this->ViewData['user']->getFullName()."&#160;<span class='caret'></span></a>\n";
-            echo "                  <ul class='dropdown-menu'>\n";
+            echo "<li class='dropdown'>";
+            echo "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$this->ViewData['user']->getFullName()."&#160;<span class='caret'></span></a>";
+            echo "<ul class='dropdown-menu'>";
             if ($this->ViewData['admin']) {
-                echo "                      <li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>\n";
+                echo "<li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>";
             }
-            echo "                      <li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>\n";
-            echo "                      <li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>\n";
-            echo "                  </ul>\n";
-            echo "              </li>\n";
+            echo "<li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>";
+            echo "<li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>";
+            echo "</ul>";
+            echo "</li>";
         }
         else {
-            echo "              <li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>\n";
-            echo "              <li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>\n";
+            echo "<li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>";
+            echo "<li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
         }
-        echo "              </ul>\n";
-        echo "          </div>\n";
-        echo "      </div>\n";
-        echo "  </nav>\n";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+        echo "</nav>";
     }
 
     /**
@@ -260,31 +261,31 @@ Class ViewMaker implements ViewWidgets {
      */
     public function offCanvasSideNav (Array $navLinks = null) {
         $this->PageData['sidenav'] = true;
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-1 col-xs-12'>\n";
-        echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-1 col-xs-12'>";
+        echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>";
         echo "Menu<br />";
-        echo "<span class='glyphicon glyphicon-forward'></span>\n";
-        echo "</button>\n";
-        echo "<div id='offCanvasSideNav' class='offCanvasSideNav'>\n";
-        echo "<a href='javascript:void(0)' class='closebtn' id='offCanvasSideNavClose'>&times;</a>\n";
-        echo "<div class='offCanvasSideNavContent'>\n";
+        echo "<span class='glyphicon glyphicon-forward'></span>";
+        echo "</button>";
+        echo "<div id='offCanvasSideNav' class='offCanvasSideNav'>";
+        echo "<a href='javascript:void(0)' class='closebtn' id='offCanvasSideNavClose'>&times;</a>";
+        echo "<div class='offCanvasSideNavContent'>";
         if (!is_null($navLinks)) {
             foreach($navLinks as $link => $url) {
                 if (is_array($url)){
                     if ($this->security->userHasPermission($url[1])) {
-                        echo "<a href='{$url[0]}'>{$link}</a>\n";
+                        echo "<a href='{$url[0]}'>{$link}</a>";
                     }
                 }
                 else {
-                    echo "<a href='{$url}'>{$link}</a>\n";
+                    echo "<a href='{$url}'>{$link}</a>";
                 }
             }
         }
-        echo "</div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-11 col-xs-12'>\n";        
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='col-md-11 col-xs-12'>";        
     }
 
     /**
@@ -314,30 +315,31 @@ Class ViewMaker implements ViewWidgets {
      */
     public function sideDropDownMenu (Array $links) {
         $this->PageData['sidenav'] = true;
-        echo "  <div class='row'>\n";
-        echo "      <div class='col-md-2 col-xs-12'>\n";
-        echo "          <div class='dropdown'>\n";
-        echo "              <button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>\n";
-        echo "                  Section Menu <span class='caret'></span>\n";
-        echo "              </button>\n";
-        echo "              <ul class='dropdown-menu'>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-2 col-xs-12'>";
+        echo "<div class='dropdown'>";
+        echo "<button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>";
+        echo "Section Menu <span class='caret'></span>";
+        echo "</button>";
+        echo "<ul class='dropdown-menu'>";
         foreach($links as $item => $info) {
             if (is_array($info)) {
                 if ($this->security->userHasPermission($info[1])) {
-                    echo "                  <li><a href='{$info[0]}'>{$item}</a></li>\n";
+                    echo "<li><a href='{$info[0]}'>{$item}</a></li>";
                 }
                 else {
-                    echo "                  <li class='disabled'>{$item}</li>\n";
+                    echo "<li class='disabled'>{$item}</li>";
                 }
             }
             else {
-                echo "                      <li><a href='{$info}'>{$item}</a></li>\n";
+                echo "<li><a href='{$info}'>{$item}</a></li>";
             }
         }
-        echo "              </ul>\n";
-        echo "          </div>\n";
-        echo "      </div>\n";
-        echo "  <div class='col-md-10 col-xs-12 view-content'>\n";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='col-md-10 col-xs-12 view-content'\
+        ";
     }
 
     /**
