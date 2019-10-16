@@ -18,7 +18,7 @@
 require_once(dirname(__DIR__).'/lib/init.php');
 include('submenu.php');
 
-$doc = new DocumentViewer($server->pdo, $server->security, $server->mailer, $server->config);
+$doc = new DocumentViewer($server);
 $doc->docURL = $server->config['application-root'].'/safety/emac';
 $doc->access = [DocumentViewer::EDIT_ACCESS_NAME=>['editEmac'],DocumentViewer::APPROVE_ACCESS_NAME=>['approveEmac']];
 $doc->setDocument('Emergency Action Plan');
