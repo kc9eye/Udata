@@ -225,7 +225,7 @@ Class ViewMaker implements ViewWidgets {
             unset($_SESSION['controller-security']);
         }
         echo "<div class='footer'>";
-        echo "UData v".APP_VERSION." Copyright (C) 2008-2018 Paul W. Lane";
+        echo "UData v".APP_VERSION." Copyright (C) 2008-2019 Paul W. Lane";
         $this->insertTab(2);
         echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>";
         echo "</div>";
@@ -386,26 +386,11 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function addScrollTopBtn () {
-        echo "<button type='button'
-                class='btn btn-lg btn-info'
-                onclick='document.body.scrollTop=0;document.documentElement.scrollTop=0;'
-                id='scrollTopBtn'
-                title='Go to top'
-                style='display:none;position:fixed;bottom:20px;right:30px;z-index:99;'>
-                    <span class='glyphicon glyphicon-arrow-up'></span>&#160;Top
-            </button>
-            <script>
-                $(document).ready(function(){
-                    window.onscroll = function() {
-                        if (document.body.scrollTop > 20||document.documentElement.scrollTop > 20) {
-                            $('#scrollTopBtn').css('display','block');
-                        }
-                        else {
-                            $('#scrollTopBtn').css('display','none');
-                        }
-                    };
-                });
-            </script>";
+        echo "<button type='button' class='btn btn-primary' onclick='document.body.scrollTop=0;document.documentElement.scrollTop=0;' ";
+        echo "id='scrollTopBtn' title='Go to top' style='display:none;position:fixed;bottom:20px;right:30px;z-index:99;'>";
+        echo "<span class='oi oi-arrow-thick-top' title='arrow-thick-top' aria-hidden='true'></span>&#160;Top</button>";
+        echo "<script>$(document).ready(function(){window.onscroll = function() {if (document.body.scrollTop > 20||document.documentElement.scrollTop > 20) {";
+        echo "$('#scrollTopBtn').css('display','block');} else {\$('#scrollTopBtn').css('display','none');}};});</script>";
     }
 
     /**
@@ -431,7 +416,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function hr () {
-        echo "<hr />\n";
+        echo "<hr />";
     }
 
     /**
@@ -439,7 +424,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function br () {
-        echo "<br />\n";
+        echo "<br />";
     }
 
     /**
@@ -449,9 +434,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h1 ($content, $centered=false) {
         if ($centered) 
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h1>{$content}</h1></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h1>{$content}</h1></div><div class='col-md-3'></div></div>";
         else
-            echo "<h1>{$content}</h1>\n";
+            echo "<h1>{$content}</h1>";
     }
 
     /**
@@ -461,9 +446,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h2 ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h2>{$content}</h2></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h2>{$content}</h2></div><div class='col-md-3'></div></div>";
         else
-            echo "<h2>{$content}</h2>\n";
+            echo "<h2>{$content}</h2>";
     }
 
     /**
@@ -473,9 +458,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h3 ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-6'><h3>{$content}</h3></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-6'><h3>{$content}</h3></div><div class='col-md-3'></div></div>";
         else
-            echo "<h3>{$content}</h3>\n";
+            echo "<h3>{$content}</h3>";
     }
 
     /**
@@ -496,9 +481,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function bgInfoParagraph ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>";
         else
-            echo "<p class='bg-primary'>{$content}</p>\n";
+            echo "<p class='bg-primary'>{$content}</p>";
     }
 
     /**
@@ -509,7 +494,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Mixed Void if $return is false, String if $return true
      */
     public function printButton ($return = false) {
-        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>\n";
+        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>";
         if ($return) return $btn;
         else echo $btn;
     }
@@ -523,7 +508,7 @@ Class ViewMaker implements ViewWidgets {
      */
     public function editBtnSm ($addr, $return = false, $passthru = false) {
         $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
-        $str = "<a href='{$addr}' class='btn btn-sm btn-warning' role='button'><span class='glyphicon glyphicon-pencil'></span></a>";
+        $str = "<a href='{$addr}' class='btn btn-sm btn-warning' role='button'><span class='oi oi-pencil' title='pencil' aria-hidden='true'></span></a>";
         if ($return) return $str;
         else echo $str;
     }
@@ -537,7 +522,7 @@ Class ViewMaker implements ViewWidgets {
      */
     public function trashBtnSm ($addr, $return = false, $passthru = false) {
         $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
-        $str = "<a href='{$addr}' class='btn btn-sm btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>";
+        $str = "<a href='{$addr}' class='btn btn-sm btn-danger' role='button'><span class='oi oi-trash' title='trash' aria-hidden='true'></span></a>";
         if ($return) return $str;
         else echo $str;
     }
@@ -553,7 +538,7 @@ Class ViewMaker implements ViewWidgets {
             echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><div class='table-responsive'><table class='table'>";
         }
         else {
-            echo "<div class='table-responsive'><table class='table'>\n";
+            echo "<div class='table-responsive'><table class='table'>";
         }
         if (!is_null($columnHeadings)) {
             echo "<tr>";
@@ -570,16 +555,16 @@ Class ViewMaker implements ViewWidgets {
      */
     public function responsiveTableClose ($centered = false) {
         if ($centered)
-            echo "</table>\n</div>\n</div><div class='col-md-3'></div></div>\n";
+            echo "</table></div></div><div class='col-md-3'></div></div>";
         else
-            echo "</table></div>\n";
+            echo "</table></div>";
     }
 
     /**
      * Outputs a link formatted as a Bootstrap info button
      * @param String $link Application centric link for the button
      * @param String $name The name to display on the button
-     * @param String $type Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'
+     * @param String $type Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'|'secondary'
      * @param Boolean $return Optional, if set true then the output is returned and not output to the stream buffer
      * @param String $target Optional target argument to launch new window, default is '_self'
      * @param Boolean $passthru Optional, if set true then the link is passed through unaltered.
@@ -590,19 +575,20 @@ Class ViewMaker implements ViewWidgets {
         $class = 'btn ';
         if (!is_null($type)) {
             switch($type) {
-                case 'default': $class .= 'btn-default'; break;
+                case 'default': $class .= 'btn-light'; break;
                 case 'primary': $class .= 'btn-primary'; break;
                 case 'success': $class .= 'btn-success'; break;
                 case 'info': $class .= 'btn-info'; break;
                 case 'warning': $class .= 'btn-warning'; break;
                 case 'danger': $class .= 'btn-danger'; break;
-                default: $class .= 'btn-info'; break;
+                case 'secondary': $class .= 'btn-secondary';break;
+                default: $class .= 'btn-info';
             }
         }
         else {
             $class .= 'btn-info';
         }
-        $string = "<a href='{$link}' class='{$class}' role='button' target='{$target}'>{$name}</a>\n";
+        $string = "<a href='{$link}' class='{$class}' role='button' target='{$target}'>{$name}</a>";
         if ($return) return $string;
         else echo $string;
     }
@@ -618,9 +604,9 @@ Class ViewMaker implements ViewWidgets {
      * @return Void This method outputs to the stream and returns nothing.
      */
     public function beginBtnCollapse ($name = 'Show/Hide Content',$id = null) {
-        if (is_null($id)) $id = uniqid();
-        echo "<button data-toggle='collapse' data-target='#{$id}' class='btn btn-default'>{$name}</button>\n";
-        echo "<div id='{$id}' class='collapse'>\n";
+        if (is_null($id)) $id = uniqid('collapse-');
+        echo "<button data-toggle='collapse' data-target='#{$id}' class='btn btn-secondary'>{$name}</button>";
+        echo "<div id='{$id}' class='collapse'>";
     }
 
     /**
@@ -629,7 +615,7 @@ Class ViewMaker implements ViewWidgets {
      * @see ViewMaker::beginBtnCollapse()
      */
     public function endBtnCollapse () {
-        echo "</div>\n";
+        echo "</div>";
     }
 
     /**
@@ -642,15 +628,15 @@ Class ViewMaker implements ViewWidgets {
      */
     public function wrapInWell ($content, $centered = false) {
         if ($centered) {
-            echo "<div class='row'>\n";
-            echo "<div class='col-md-3'></div>\n";
-            echo "<div class='col-xs-12 col-md-6'>\n";
+            echo "<div class='row'>";
+            echo "<div class='col-md-3'></div>";
+            echo "<div class='col-xs-12 col-md-6'>";
         }
-        echo "<div class='well'>\n{$content}\n</div>\n";
+        echo "<div class='well'>\n{$content}\n</div>";
         if ($centered) {
-            echo "</div>\n";
-            echo "<div class='col-md-3'></div>\n";
-            echo "</div>\n";
+            echo "</div>";
+            echo "<div class='col-md-3'></div>";
+            echo "</div>";
         }
     }
 
@@ -660,7 +646,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void Outputs directly to the stream and returns nothing
      */
     public function wrapInPre ($content) {
-        echo "<pre class='pre-scrollable'>\n{$content}\n</pre>\n";
+        echo "<pre class='pre-scrollable'>{$content}\n</pre>";
     }
 
     /**
