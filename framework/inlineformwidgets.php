@@ -177,22 +177,26 @@ class InlineFormWidgets extends FormWidgets {
      * @param Mixed $required Optional `true` or array of jquery.validate() properties if required
      * @return Void
      */
-    public function fullPageSearchBar($name, $label = 'Search', $value = null, $required = false, $helpBlock = null) {
-        echo "<form>\n";
-        echo "<div class='input-group'>\n";
-        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' >\n";
-        echo "<div class='input-group-btn'>\n";
-        echo "<button class='btn btn-default' type='submit'>\n";
-        echo "<span class='glyphicon glyphicon-search'></span>\n";
-        echo "</button>\n";
-        echo "</div>\n";
-        echo "</div>\n";
-        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>\n";
+    public function fullPageSearchBar($name, $label = 'Search', $value = null, $required = false, $helpBlock = null, $action='search') {
+        $id = uniqid('help-');
+        echo "<form>";
+        echo "<input type='hidden' name='action' value='{$action}' />";
+        echo "<div class='input-group mb-3'>";
+        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' aria-describedby='{$id}'>";
+        echo "<div class='input-group-append'>";
+        echo "<button class='btn btn-light' type='submit'>";
+        echo "<span class='oi oi-magnifying-glass' title='Search' aria-hidden='true'></span>";
+        echo "</button>";
+        echo "</div>";
+        echo "</div>";
+        if (!is_null($helpBlock)) {
+            echo "<small class='form-text text-muted' id='{$id}'>{$helpBlock}</small>";
+        }
         if ($required) {
             $this->addValidation($name,$required);
-            echo "<label class='error' for='{$name}' generated='true'></label>\n";
+            echo "<label class='error' for='{$name}' generated='true'></label>";
         }
-        echo "</form>\n";
+        echo "</form>";
     }
 
     /**
