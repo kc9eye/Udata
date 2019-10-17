@@ -85,6 +85,7 @@ Class ViewMaker implements ViewWidgets {
         echo "<meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>";
         echo "<meta name='theme-color' content='#ffffff'>";
         echo "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>";
+        echo "<link rel='stylesheet' href='{$this->PageData['approot']}/third-party/open-iconic-master/font/css/open-iconic-bootstrap.css' />";
         echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />";
         echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />";
         echo "<link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />";
@@ -121,6 +122,53 @@ Class ViewMaker implements ViewWidgets {
         echo "</div>";
         $this->navBar();
         echo "<div class='container-float view-content'>";
+    }
+
+    
+    /**
+     * Generates the upper interface view navigation bar.
+     * 
+     * This method should not be called standalone as the `ViewMaker::header()`
+     * method calls it as part of the standard interface. It is a seperate method
+     * only as it would make the header method overly complex.
+     * @uses ViewMaker::PageData
+     * @uses ViewMaker::ViewData
+     * @uses ViewMaker::security
+     * @uses ViewMaker::config
+     * @return Void
+     */
+    public function navBar () {
+        echo "<nav class='navbar navbar-expand-lg bg-dark navbar-dark'>";
+        echo "<a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>";
+        echo "<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#toggledNavSm' aria-controls='toggledNavSm' aria-expanded='false' aria-label='Toggle navigation'>";
+        echo "<span class='navbar-toggler-icon'></span>";
+        echo "</button>";
+        echo "<div class='collapse navbar-collapse' id='toggledNavSm'>";
+        echo "<ul class='navbar-nav mr-auto'>";
+        foreach($this->PageData['navbar-links'] as $name=>$link) {
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}{$link}'>{$name}</a></li>";
+        }
+        echo "</ul>";
+        echo "<ul class='navbar-nav'>";
+        if (is_null($this->ViewData['user'])) {
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}/user/createaccount'>Create Account</a></li>";
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}/user/login'>Sign In</a></li>";
+        }
+        else {
+            echo "<li class='nav-item dropdown'>";
+            echo "<a class='nav-link dropdown-toggle' id='navbarDropDown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'>";
+            echo "<span class='oi oi-person' title='person' aria-hidden='true'></span>&#160;";
+            echo "{$this->ViewData['user']->getFullName()}</a>";
+            echo "<div class='dropdown-menu' aria-labelledby='navbarDropDown'>";
+            echo "<a class='dropdown-item' href='{$this->PageData['approot']}/user/myaccount'>";
+            echo "<span class='oi oi-dashboard' title='dashboard' aria-hidden='true'></span>&#160;My Account</a>";
+            echo "<a class='dropdown-item' href='{$this->PageData['approot']}/user/logout'>";
+            echo "<span class='oi oi-delete' title='delete' aria-hidden='true'></span>&#160;Log Out</a>";
+            echo "</div>";        
+        }
+        echo "</ul>";
+        echo "</div>";
+        echo "</nav>";
     }
 
     /**
@@ -187,65 +235,6 @@ Class ViewMaker implements ViewWidgets {
             }
         }
         echo "</body></html>";
-    }
-
-    /**
-     * Generates the upper interface view navigation bar.
-     * 
-     * This method should not be called standalone as the `ViewMaker::header()`
-     * method calls it as part of the standard interface. It is a seperate method
-     * only as it would make the header method overly complex.
-     * @uses ViewMaker::PageData
-     * @uses ViewMaker::ViewData
-     * @uses ViewMaker::security
-     * @uses ViewMaker::config
-     * @return Void
-     */
-    public function navBar () {
-        echo "<nav class='navbar navbar-inverse'>";
-        echo "<div class='container-fluid'>";
-        echo "<div class='navbar-header'>";
-        echo "<button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#myNavbar'>";
-        echo "<span class='icon-bar'></span>";
-        echo "<span class='icon-bar'></span>";
-        echo "<span class='icon-bar'></span>";
-        echo "</button>";
-        echo "<a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>";
-        echo "</div>";
-        echo "<div class='collapse navbar-collapse' id='myNavbar'>";
-        echo "<ul class='nav navbar-nav'>";
-        foreach($this->PageData['navbar-links'] as $label=>$link) {
-            if (is_string($link))
-                echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>";
-            elseif (is_array($link)) {
-                if ($link[1]) 
-                    echo "<li><a href='{$link[0]}'>{$label}</a></li>";
-                else
-                    echo "<li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>";
-            }
-        }
-        echo "</ul>";
-        echo "<ul class='nav navbar-nav navbar-right'>";
-        if (!is_null($this->ViewData['user'])) {
-            echo "<li class='dropdown'>";
-            echo "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$this->ViewData['user']->getFullName()."&#160;<span class='caret'></span></a>";
-            echo "<ul class='dropdown-menu'>";
-            if ($this->ViewData['admin']) {
-                echo "<li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>";
-            }
-            echo "<li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>";
-            echo "<li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>";
-            echo "</ul>";
-            echo "</li>";
-        }
-        else {
-            echo "<li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>";
-            echo "<li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
-        }
-        echo "</ul>";
-        echo "</div>";
-        echo "</div>";
-        echo "</nav>";
     }
 
     /**
@@ -318,28 +307,27 @@ Class ViewMaker implements ViewWidgets {
         echo "<div class='row'>";
         echo "<div class='col-md-2 col-xs-12'>";
         echo "<div class='dropdown'>";
-        echo "<button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>";
+        echo "<button class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>";
         echo "Section Menu <span class='caret'></span>";
         echo "</button>";
-        echo "<ul class='dropdown-menu'>";
+        echo "<div class='dropdown-menu'>";
         foreach($links as $item => $info) {
             if (is_array($info)) {
                 if ($this->security->userHasPermission($info[1])) {
-                    echo "<li><a href='{$info[0]}'>{$item}</a></li>";
+                    echo "<a class='dropdown-item' href='{$info[0]}'>{$item}</a>";
                 }
                 else {
-                    echo "<li class='disabled'>{$item}</li>";
+                    echo "<a class='dropdown-item disabled'>{$item}</a>";
                 }
             }
             else {
-                echo "<li><a href='{$info}'>{$item}</a></li>";
+                echo "<a class='dropdown-item' href='{$info}'>{$item}</a>";
             }
         }
-        echo "</ul>";
         echo "</div>";
         echo "</div>";
-        echo "<div class='col-md-10 col-xs-12 view-content'\
-        ";
+        echo "</div>";
+        echo "<div class='col-md-10 col-xs-12 view-content'>";
     }
 
     /**

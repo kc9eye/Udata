@@ -33,34 +33,19 @@ function main ($failed = false) {
     $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
     $form->newForm('Log On');
     if ($failed) {
-        echo "<div class='row'>\n
-                <div class='col-md-3'></div>\n
-                    <div class='col-xs-12 col-md-6'>\n
-                        <h4 class='bg-danger text-danger'>
-                            Warning: 
-                            <small>
-                                Incorrect username or password
-                                <a href='{$server->config['application-root']}/user/password_reset'>Forgot my password</a>
-                            </small>
-                        </h4>\n
-                    </div>\n
-                <div class='col-md-3'></div>\n
-            </div>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-xs-12 col-md-6 alert alert-danger'>";
+        echo "<h5>Warning: <small>Incorrect username or password: &#160;";
+        echo "<a href='{$server->config['application-root']}/user/password_reset'>Forgot my password</a>";
+        echo "</small></h5></div><div class='col-md-3'></div></div>\n";
     }
     elseif (isset($_SESSION['user_privilege_escalation'])) {
         unset($_SESSION['user_privilege_escalation']);
-        echo "<div class='row'>
-                <div class='col-md-3'></div>
-                    <div class='col-xs-12 col-md-6'>
-                        <h4 class='bg-danger text-danger'>
-                            Warning:
-                            <small>
-                                The current account does not have sufficient privileges to access this page.
-                            </small>
-                        </h4>
-                    </div>
-                <div class='col-md-3'></div>
-            </div>\n";
+        echo "<div class='row'><div class='col-md-3'></div>";
+        echo "<div class='col-xs-12 col-md-6 alert alert-danger'>";
+        echo "<h5>Warning:<small>The current account does not have sufficient privileges to access this page.</small></h5>";
+        echo "</div><div class='col-md-3'></div></div>";
     }
     $form->hiddenInput('action','login');
     $form->emailCapture('username','Email',null,['email'=>'true']);
