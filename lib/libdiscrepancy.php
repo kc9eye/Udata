@@ -55,7 +55,8 @@ function errorCheckInput ($materials) {
         }
         catch (UploadException $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
-            requiredPhoto();
+            if ($e->getCode() == UPLOAD_ERR_INI_SIZE) fileSizeExceeded();
+            else requiredPhoto();
         }
     }
     elseif($_REQUEST['type'] == Materials::PDIH_TYPE) {
@@ -182,5 +183,14 @@ function requiredPhoto () {
         "A discrepancy of type:".Materials::PDN_TYPE." requires a photo file accompany the discrepancy. There was an issue with the given file.",
         DIALOG_FAILURE,
         $server->config['application-root'].'/material/discrepancy?number='.$_REQUEST['number'].'&prokey='.$_REQUEST['prokey']
+    );
+}
+
+function fileSizeExceeded () {
+    global $server;
+    $server->newEndUserDialog(
+        "The file you are uploading exceeds the file size limit of ".FileUpload::MAX_UPLOAD_SIZE." bytes, reduce the image size and try again.",
+        DIALOG_FAILURE,
+        $server->config['application-root'].'/material/discrepancy?number='.$_REQUEST['number'].'&prokey='.$_REQUEST['prokey'] 
     );
 }
