@@ -27,6 +27,8 @@
  */
 class FileUpload {
 
+    const MAX_UPLOAD_SIZE = 54525952; //52MB
+
     /**
      * @var Boolean $multiple Whether the file upload contains multiple files
      */
@@ -92,6 +94,7 @@ class FileUpload {
         if ($files['error'] != \UPLOAD_ERR_OK) {
             throw new UploadException($files['error']);
         }
+        if ($files['size'] > self::MAX_UPLOAD_SIZE) throw new UploadException(UPLOAD_ERR_INI_SIZE);
         $push = [
             'name'=>$files['name'],
             'tmp_name'=>$files['tmp_name'],
