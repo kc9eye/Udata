@@ -27,6 +27,8 @@
  * @package UData\Framework\UI\Bootstrap3
  */
 Class FormWidgets {
+
+    const BOOTSRAP_VERSION = '4.3.1';
     
     /**
      * @var String $formid The forms ID atrribute, auto generated if not given in newForm()
@@ -313,40 +315,35 @@ Class FormWidgets {
      * @return Void
      */
     public function submitForm ($label = 'Submit', $reset = false, $cancel = null) {
-?>
-<div class='form-group'>
-    <div class='row'>
-        <div class='col-md-4'><!-- desktop spacing --></div>
-        <div class='col-xs-12 col-md-6'>
-            <button class='btn btn-lg btn-default' type='submit'><?php echo $label;?></button>&#160;
-            <?php
-                if ($reset) {
-                    echo "<button type='reset' class='btn btn-lg btn-default'>Reset</button>&#160;";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-4'><!-- desktop spacing --></div>";
+        echo "<div class='col-xs-12 col-md-6'>";
+        echo "<button class='btn btn-lg btn-success' type='submit'>{$label}</button>&#160;";
+        if ($reset) {
+            echo "<button type='reset' class='btn btn-lg btn-warning'>Reset</button>&#160;";
+        }
+        if (!is_null($cancel)) {
+            if (is_array($cancel)) {
+                $class = 'btn btn-lg ';
+                switch ($cancel['type']) {
+                    case 'primary': $class .= 'btn-primary'; break;
+                    case 'info': $class .= 'btn-info'; break;
+                    case 'success': $class .= 'btn-success'; break;
+                    case 'warning': $class .= 'btn-warning'; break;
+                    case 'danger': $class .= 'btn-danger'; break;
+                    default: $class .= 'btn-danger'; break;
                 }
-                if (!is_null($cancel)) {
-                    if (is_array($cancel)) {
-                        $class = 'btn btn-lg ';
-                        switch ($cancel['type']) {
-                            case 'default': $class .= 'btn-default'; break;
-                            case 'primary': $class .= 'btn-primary'; break;
-                            case 'info': $class .= 'btn-info'; break;
-                            case 'success': $class .= 'btn-success'; break;
-                            case 'warning': $class .= 'btn-warning'; break;
-                            case 'danger': $class .= 'btn-danger'; break;
-                            default: $class .= 'btn-default'; break;
-                        }
-                        echo "<button type='button' class='{$class}' onclick='window.location=\"{$cancel['url']}\";'>{$cancel['label']}</button>";
-                    }
-                    else {
-                        echo "<button type='button' class='btn btn-lg btn-default' onclick='window.location=\"{$cancel}\";'>Cancel</button>";
-                    }
-                }
-            ?>
-        </div>
-        <div class='col-md-2'><!-- desktop spacing --></div>
-    </div>
-</div>
-<?php
+                echo "<button type='button' class='{$class}' onclick='window.location=\"{$cancel['url']}\";'>{$cancel['label']}</button>";
+            }
+            else {
+                echo "<button type='button' class='btn btn-lg btn-danger' onclick='window.location=\"{$cancel}\";'>Cancel</button>";
+            }
+        }
+        echo "</div>";
+        echo "<div class='col-md-2'><!-- desktop spacing --></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**

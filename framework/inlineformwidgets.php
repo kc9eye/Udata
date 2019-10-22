@@ -22,7 +22,8 @@
  * @package UData\Framework\UI\Bootstrap3
  */
 class InlineFormWidgets extends FormWidgets {
-    
+    const BOOTSTRAP_VERSION = '4.3.1';
+
     /**
      * Class constructor
      * @param String $scripts The base URL path to script files
@@ -120,9 +121,9 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineSubmit ($label = 'Submit',$reset = false, $cancel = null) {
-        echo "<button class='btn btn-default' type='submit'>{$label}</button>\n";
-        if ($reset) echo "&#160;<button class='btn btn-default' type='reset'>Reset</button>\n";
-        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-default'>Cancel</a>\n";
+        echo "<button class='btn btn-success' type='submit'>{$label}</button>\n";
+        if ($reset) echo "&#160;<button class='btn btn-warning' type='reset'>Reset</button>\n";
+        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-danger'>Cancel</a>\n";
     }
 
     /**
@@ -177,22 +178,26 @@ class InlineFormWidgets extends FormWidgets {
      * @param Mixed $required Optional `true` or array of jquery.validate() properties if required
      * @return Void
      */
-    public function fullPageSearchBar($name, $label = 'Search', $value = null, $required = false, $helpBlock = null) {
-        echo "<form>\n";
-        echo "<div class='input-group'>\n";
-        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' >\n";
-        echo "<div class='input-group-btn'>\n";
-        echo "<button class='btn btn-default' type='submit'>\n";
-        echo "<span class='glyphicon glyphicon-search'></span>\n";
-        echo "</button>\n";
-        echo "</div>\n";
-        echo "</div>\n";
-        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>\n";
+    public function fullPageSearchBar($name, $label = 'Search', $value = null, $required = false, $helpBlock = null, $action='search') {
+        $id = uniqid('help-');
+        echo "<form>";
+        echo "<input type='hidden' name='action' value='{$action}' />";
+        echo "<div class='input-group mb-3'>";
+        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' aria-describedby='{$id}'>";
+        echo "<div class='input-group-append'>";
+        echo "<button class='btn btn-light' type='submit'>";
+        echo "<span class='oi oi-magnifying-glass' title='Search' aria-hidden='true'></span>";
+        echo "</button>";
+        echo "</div>";
+        echo "</div>";
+        if (!is_null($helpBlock)) {
+            echo "<small class='form-text text-muted' id='{$id}'>{$helpBlock}</small>";
+        }
         if ($required) {
             $this->addValidation($name,$required);
-            echo "<label class='error' for='{$name}' generated='true'></label>\n";
+            echo "<label class='error' for='{$name}' generated='true'></label>";
         }
-        echo "</form>\n";
+        echo "</form>";
     }
 
     /**
