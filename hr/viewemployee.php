@@ -52,7 +52,7 @@ function employeeViewDisplay () {
         echo 
             "<a href='{$server->config['application-root']}/data/files?file=".$emp->getImageFilename()."'>
              <img 
-                class='img-responsive'
+                class='img-fluid'
                 src='{$server->config['application-root']}/data/files?file=".$emp->getImageFilename()."'
                 alt='[IMAGE NOT FOUND]'
                 style='max-width:200px;max-height:400px;'

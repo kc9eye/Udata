@@ -681,7 +681,7 @@ Class ViewMaker implements ViewWidgets {
      * @param Boolean $return Optional true if the method should return the image instead of inserting to the stream
      */
     public function responsiveImage ($file, $return = false) {
-        $image = "<img class='img-responsive' src='{$file}' alt='[IMAGE]' />";
+        $image = "<img class='img-fluid' src='{$file}' alt='[IMAGE]' />";
         if ($return) return $image;
         else echo $image;
     }
