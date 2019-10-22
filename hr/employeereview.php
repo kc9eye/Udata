@@ -82,7 +82,7 @@ function displayOngoingReview ($revid) {
     $view->h1("<small>Ongoing Review for:</small> ".$review->getFullName());
     $view->h3("<small>Began:</small> ".$review->getStartDate());
     $view->h3("<small>Ends:</small> ".$review->getEndDate());
-    echo "<span class='bg-info'>The following data represents this timeframe: <mark>".Review::DATA_TIMEFRAME."</mark></span>";
+    echo "<span class='bg-info text-white'>The following data represents this timeframe: <mark>".Review::DATA_TIMEFRAME."</mark></span>";
     $view->bgInfoParagraph(
         "The purpose of conducting the Performace Appraisal is to:
         <ol>
@@ -162,12 +162,11 @@ function displayOngoingReview ($revid) {
         $view->bold("No other appraisals found.");
     }
     else {
-        echo "<div class='panel-group'>\n"; 
+        echo "<div class='card bg-light'>"; 
         foreach($otherappraisals as $row) {
-            echo "  <div class='panel panel-primary'>\n";
-            echo "      <div class='panel-heading'>Reviewers Appraisal</div>\n";
-            echo "      <div class='panel-body'>{$row['comments']}</div>\n";
-            echo "  </div>\n";
+             echo "<div class='card-header bg-info text-white'>Reviewers Appraisal</div>";
+            echo "<div class='panel-text'>{$row['comments']}</div>";
+            echo "</div>";
         }
         echo "</div>";
     }
@@ -201,7 +200,7 @@ function displayPastReview ($revid) {
     $review = new Review($server->pdo,$revid);
     $view = $server->getViewer("Review: ".$review->getFullName());
     $view->sideDropDownMenu($submenu);
-    $view->linkButton("/hr/employeereview?action=printreview&revid={$revid}","Print",'default');
+    $view->linkButton("/hr/employeereview?action=printreview&revid={$revid}","Print",'secondary');
     $view->h1($review->getFullName());
     $view->h2("<small>Began:</small> ".$review->getStartDate());
     $view->h2("<small>Ended:</small> ".$review->getEndDate());
@@ -252,14 +251,15 @@ function displayPastReview ($revid) {
     //Appraisals
     $view->hr();
     $view->h3("Appraisals");
-    echo "<div class='panel-group'>\n";
+    echo "<div class='card'>";
     foreach($review->getAllAppraisals() as $row) {
-        echo "  <div class='panel panel-primary'>\n";
-            echo "      <div class='panel-heading'>{$row['author']} Appraisal</div>\n";
-            echo "      <div class='panel-body'>{$row['comments']}</div>\n";
-            echo "  </div>\n";
+        echo "<div class='card-header bg-info text-white'>{$row['author']}</div>";
+        echo "<div class='card-body bg-light'>";
+        echo "<h5 class='card-title'>Appraisal</h5>";
+        echo "<div class='card-text '>{$row['comments']}</div>";
+        echo "</div>";
     }
-    echo "</div>\n";
+    echo "</div>";
     $view->footer();
 }
 

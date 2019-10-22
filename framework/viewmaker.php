@@ -488,9 +488,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function bgInfoParagraph ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-info text-white'>{$content}</p></div><div class='col-md-3'></div></div>";
         else
-            echo "<p class='bg-primary'>{$content}</p>";
+            echo "<p class='bg-info text-white'>{$content}</p>";
     }
 
     /**
