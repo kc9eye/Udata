@@ -108,7 +108,7 @@ Class ViewMaker implements ViewWidgets {
         echo "<script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>";
         echo "<script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>";
         if (!empty($this->ViewData['theme']))
-            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>";
+            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
                 echo "{$insert}";
@@ -138,7 +138,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function navBar () {
-        echo "<nav class='navbar navbar-expand-lg bg-dark navbar-dark'>";
+        echo "<nav class='navbar navbar-expand-lg bg-dark navbar-dark sticky-top'>";
         echo "<a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>";
         echo "<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#toggledNavSm' aria-controls='toggledNavSm' aria-expanded='false' aria-label='Toggle navigation'>";
         echo "<span class='navbar-toggler-icon'></span>";
@@ -501,7 +501,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Mixed Void if $return is false, String if $return true
      */
     public function printButton ($return = false) {
-        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>";
+        $btn = "<button class='btn btn-secondary' onclick='window.print();'>Print</button>";
         if ($return) return $btn;
         else echo $btn;
     }
@@ -554,6 +554,25 @@ Class ViewMaker implements ViewWidgets {
             }
             echo "</tr>\n";
         }
+    }
+
+    /**
+     * Outputs a table row based on the given array
+     * @param Array $rows Multi-dimensional array in the form [[cell-data,...],...]
+     * @param Boolean $return Optionally true, to return the string instead of outputting to stream
+     * @return Mixed Void if not $return, and the array will be output the stream in the for '<tr><td>cell-data</td>...</tr>
+     */
+    public function tableRow (Array $rows, $return = false) {
+        $string = "";
+        foreach($rows as $row) {
+            $string .= "<tr>";
+            foreach($row as $data) {
+                $string .= "<td>{$data}</td>";
+            }
+            $string .= "</tr>";
+        }
+        if ($return) return $string;
+        else echo $string;
     }
 
     /**

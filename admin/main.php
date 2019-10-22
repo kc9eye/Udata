@@ -25,21 +25,17 @@ $notify = new Notification($server->pdo,$server->mailer);
 $view = $server->getViewer("Application Settings");
 $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
 
-$view->responsiveTableStart(['Package Name','Current Version']);
-echo "<tr><td>".$view->bold("Framework",true)."</td><td>".\APP_VERSION."</td></tr>";
-echo "<tr><td>".$view->bold("Database Schema",true)."</td><td>{$current_version}</td></tr>";
-echo "<tr><td>".$view->bold("Bootstrap UI",true)."</td><td>".\BOOTSTRAP_VERSION."</td></tr>";
-$view->responsiveTableClose();
-// $view->h1("Application Settings");
-// $view->bold("UData Framework v".\APP_VERSION);
-// $view->br();
-// $view->bold("Database Structure v{$current_version}");
-// $view->br();
-
 $form->inlineButtonGroup([
     'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/api/index.html\",\"_blank\")",
     'Framework'=>"window.open(\"{$view->PageData['approot']}/docs/database_structure/UData_Database_Structure.html\",\"_blank\")"
 ]);
+
+$view->responsiveTableStart(['Package Name','Current Version']);
+echo "<tr><td>UData Framework</td><td>".\APP_VERSION."</td></tr>";
+echo "<tr><td>UDatabase Schema</td><td>{$current_version}</td></tr>";
+echo "<tr><td>Bootstrap UI</td><td>".\BOOTSTRAP_VERSION."</td></tr>";
+echo "<tr><td>PHPMailer</td><td>".file_get_contents(\INCLUDE_ROOT.'/third-party/PHPMailer/VERSION')."</td></tr>";
+$view->responsiveTableClose();
 
 //User Adminstration
 $view->hr();
@@ -63,6 +59,7 @@ else {
 $view->hr();
 $view->h2("Security Model");
 $view->beginBtnCollapse();
+$view->br();
 $form->inlineButtonGroup([
     'Add/Edit Roles'=>"window.open(\"{$view->PageData['approot']}/admin/roles\",\"_self\")",
     'Add/Edit Permissions'=>"window.open(\"{$view->PageData['approot']}/admin/permissions\",\"_self\")"
@@ -74,7 +71,7 @@ foreach($app->getRole() as $role) {
     if (!empty($perms)) {
         echo "<ol class='list-inline'>\n";
         foreach($perms as $perm) {
-            echo "<li>{$perm['name']}</li>\n";
+            echo "<li class='list-inline-item'>{$perm['name']}</li>\n";
         }
         echo "</ol>\n";
     }
@@ -86,6 +83,7 @@ $view->endBtnCollapse();
 $view->hr();
 $view->h2("Notifications");
 $view->beginBtnCollapse();
+$view->br();
 $form->inlineButtonGroup([
     'Add Notifications'=>"window.open(\"{$view->PageData['approot']}/admin/notifications\",\"_self\");"
 ]);
@@ -134,6 +132,7 @@ $view->endBtnCollapse();
 $view->hr();
 $view->h2("Error Log");
 $view->beginBtnCollapse();
+$view->br();
 if (file_exists($server->config['error-log-file-path'])) {
     $view->linkButton('/admin/errlog?id=reset','Reset Log File','danger');
     $view->br();
@@ -142,9 +141,9 @@ if (file_exists($server->config['error-log-file-path'])) {
     $entries = array_reverse($entries);
     echo "<div class='list-group' style='height:300px;overflow-y:scroll;width:100%'>\n";
     foreach($entries as $err) {
-        echo "<a href='{$view->PageData['approot']}/admin/errlog?id={$err->id}' class='list-group-item'>";
+        echo "<a href='{$view->PageData['approot']}/admin/errlog?id={$err->id}' class='list-group-item list-group-item-action'>";
         $view->bold("Error:&nbsp;");
-        echo "{$err->id} <span class='badge'>{$err->date}</span></a>\n";
+        echo "{$err->id} <span class='badge badge-info float-right m-2'>{$err->date}</span></a>\n";
     }
     echo "</div>\n";
 }

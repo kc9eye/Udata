@@ -22,7 +22,8 @@
  * @package UData\Framework\UI\Bootstrap3
  */
 class InlineFormWidgets extends FormWidgets {
-    
+    const BOOTSTRAP_VERSION = '4.3.1';
+
     /**
      * Class constructor
      * @param String $scripts The base URL path to script files
@@ -120,9 +121,9 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineSubmit ($label = 'Submit',$reset = false, $cancel = null) {
-        echo "<button class='btn btn-default' type='submit'>{$label}</button>\n";
-        if ($reset) echo "&#160;<button class='btn btn-default' type='reset'>Reset</button>\n";
-        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-default'>Cancel</a>\n";
+        echo "<button class='btn btn-success' type='submit'>{$label}</button>\n";
+        if ($reset) echo "&#160;<button class='btn btn-warning' type='reset'>Reset</button>\n";
+        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-danger'>Cancel</a>\n";
     }
 
     /**

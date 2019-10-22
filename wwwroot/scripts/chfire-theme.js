@@ -16,6 +16,8 @@
  */
 $(document).ready(function(){
     var iconimg = "<img src='"+getAppRoot()+"/wwwroot/images/theme/chfireicon.png' style='float:right;margin-top:-65px;width:75px;height:75px;' />";
+    $('nav').removeClass('bg-dark');
+    $('nav').addClass('chfire-theme-nav');
     $('#template-header').css({
         "background-color":"#00215b",
         "color": "#ce1432",
@@ -26,9 +28,6 @@ $(document).ready(function(){
         "background-color":"#00215b",
         "color": "#ce1432",
         "border": "1px solid #ce1432",
-     });
-     $('nav').css({
-         "background-color":"#00215b"
      });
      $('.view-content').css({
         "padding":"10px",

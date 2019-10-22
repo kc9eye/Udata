@@ -88,14 +88,9 @@ if ($server->checkPermission('viewProductStats')) {
     echo "<div class='input-group-btn'>";
     echo "<button class='btn btn-light form-control' role='submit'><span class='oi oi-magnifying-glass' title='magnifying-glass' aria-hidden='true'></span></button>";
     echo "</div></div></form>";
-    echo "<hr />";
-    echo "<ul class='list-group'>";
-    echo "<li class='list-group-item'>Total Period Count <span class='badge'>{$product->pStats['total_count']}</span></li>";
-    if ($product->pState == 'Active') {
-        echo "<li class='list-group-item'>Total Today Count <span class='badge'>{$product->pStats['today_count']}</span></li>";
-    }
-    echo "<li class='list-group-item'>Total Period FTC <span class='badge'>{$product->pStats['total_ftc']}</span></li>";
-    echo "</ul>";
+    $view->responsiveTableStart(['Total Period Count','Total 24H Count','Period FTC %']);
+    $view->tableRow([[$product->pStats['total_count'],$product->pStats['today_count'],$product->pStats['total_ftc']]]);
+    $view->responsiveTableClose();
 }
 
 #Currently implemented product quality control points

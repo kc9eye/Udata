@@ -16,9 +16,8 @@
  */
 $(document).ready(function(){
     var iconimg = "<img src='"+getAppRoot()+"/wwwroot/images/theme/bearsicon.png' style='float:right;margin-top:-65px;width:100px;height:75px;' />";
-    $('nav').css({
-        'background-color':'#101034'
-    });
+    $('nav').removeClass('bg-dark');
+    $('nav').addClass('bears-theme-nav');
     $('#template-header').css({
         'background-color':'#101034',
         'color':'#ff530b',
