@@ -16,9 +16,8 @@
  */
 $(document).ready(function(){
     var iconimg = "<img src='"+getAppRoot()+"/wwwroot/images/theme/fordicon.png' style='float:right;margin-top:-65px;width:120px;height:75px;' />";
-    $('nav').css({
-        'background-color':'#1e518e'
-    });
+    $('nav').removeClass('bg-dark');
+    $('nav').addClass('fordoval-theme-nav');
     $('#template-header').css({
         'background-color':'#1e518e',
         'color':'#f7f6f5',

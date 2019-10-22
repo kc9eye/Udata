@@ -16,9 +16,8 @@
  */
 $(document).ready(function(){
     var iconimg = "<img src='"+getAppRoot()+"/wwwroot/images/theme/cubsicon.png' style='float:right;margin-top:-65px;width:100px;height:75px;' />";
-    $('nav').css({
-        'background-color':'#005395'
-    });
+    $('nav').removeClass('bg-dark');
+    $('nav').addClass('cubs-theme-nav');
     $('#template-header').css({
         'background-color':'#005395',
         'color':'#e31836',

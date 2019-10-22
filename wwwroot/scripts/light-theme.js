@@ -16,8 +16,8 @@
  */
 $(document).ready(function(){
     //The navbar goes to default
-    $('nav').removeClass('navbar-inverse');
-    $('nav').addClass('navbar-default');
+    $('nav').removeClass('bg-dark navbar-dark');
+    $('nav').addClass('bg-light navbar-light');
 
     //Header and footer should be the same
     $('#template-header').css({

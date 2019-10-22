@@ -25,4 +25,5 @@ $(document).ready(function(){
 
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
+    $('pre').addClass('bg-secondary text-white p-2');
 });
