@@ -134,8 +134,8 @@ if ($server->checkPermission('viewProductLog')) {
         if ($edit) echo "<td>".$view->editBtnSm("/products/editlogentry?id={$row['id']}",true)."</td>";
         echo "<td>{$row['sequence_number']}</td>";
         echo "<td>{$row['serial_number']}</td><td>{$row['misc']}</td>";
-        echo "<td>{$row['ftc']}</td><td>".date('c',strtotime($row['_date']))."</td>";
-        echo "<td>{$row['comments']}</td><td>{$row['inspector']}</td></tr>";
+        echo "<td>{$row['ftc']}</td><td>".date('Y/m/d H:i',strtotime($row['_date']))."</td>";
+        echo "<td>{$row['comments']}</td><td>{$row['inspector']}</td></tr>\n";
     }
     $view->responsiveTableClose();
     $view->endBtnCollapse();
