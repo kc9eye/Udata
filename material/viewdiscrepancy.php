@@ -98,35 +98,27 @@ function discrepancyDisplay (MaterialDiscrepancy $dis) {
     switch(pathinfo($server->config['data-root'].'/'.$dis->file,PATHINFO_EXTENSION)) {
         case 'gif':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'GIF':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'jpg':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'jpeg':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'JPG':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'JPEG':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'PNG':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         case 'png':
             $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
-            // echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
         break;
         default:
             $view->linkButton('/data/files?dis=inline&file='.$dis->file,'Download File','info');
