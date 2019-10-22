@@ -148,7 +148,7 @@ if ($server->checkPermission('viewProductLog')) {
         }
         echo "<td>{$row['sequence_number']}</td>";
         echo "<td>{$row['serial_number']}</td><td>{$row['misc']}</td>";
-        echo "<td>{$row['ftc']}</td><td>".date('c',strtotime($row['_date']))."</td>";
+        echo "<td>{$row['ftc']}</td><td>".date('Y/m/d H:i',strtotime($row['_date']))."</td>";
         echo "<td>{$row['comments']}</td><td>{$row['inspector']}</td></tr>\n";
     }
     echo "</table></div>\n";
