@@ -25,11 +25,16 @@ $notify = new Notification($server->pdo,$server->mailer);
 $view = $server->getViewer("Application Settings");
 $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
 
-$view->h1("Application Settings");
-$view->bold("UData Framework v".\APP_VERSION);
-$view->br();
-$view->bold("Database Structure v{$current_version}");
-$view->br();
+$view->responsiveTableStart(['Package Name','Current Version']);
+echo "<tr><td>".$view->bold("Framework",true)."</td><td>".\APP_VERSION."</td></tr>";
+echo "<tr><td>".$view->bold("Database Schema",true)."</td><td>{$current_version}</td></tr>";
+echo "<tr><td>".$view->bold("Bootstrap UI",true)."</td><td>".\BOOTSTRAP_VERSION."</td></tr>";
+$view->responsiveTableClose();
+// $view->h1("Application Settings");
+// $view->bold("UData Framework v".\APP_VERSION);
+// $view->br();
+// $view->bold("Database Structure v{$current_version}");
+// $view->br();
 
 $form->inlineButtonGroup([
     'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/api/index.html\",\"_blank\")",
