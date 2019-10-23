@@ -115,6 +115,9 @@ class DocumentViewer extends ViewMaker {
      */
     public $access;
 
+    protected $security;
+    protected $config;
+
     /**
      * Class Constructor
      * @param PDO $dbh The current database access PDO
@@ -123,11 +126,13 @@ class DocumentViewer extends ViewMaker {
      * @param Array $config The current configuration variables
      * @return DocumentViewer
      */
-    public function __construct (PDO $dbh, Security $security, Mailer $mailer, Array $config) {
-        $this->dbh = $dbh;
-        $this->mailer = $mailer;
+    public function __construct (Instance $server) {
+        $this->dbh = $server->pdo;
+        $this->mailer = $server->mailer;
         $this->rights = 0;
-        parent::__construct($security, $config);
+        $this->security = $server->security;
+        $this->config = $server->config;
+        parent::__construct($server);
     }
 
     /**

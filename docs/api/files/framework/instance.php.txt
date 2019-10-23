@@ -185,25 +185,29 @@ Class Instance {
      * 
      * @author Paul W. Lane
      */
-    public function newEndUserDialog ($message, $success = DIALOG_FAILURE, $target_link = null) {
+    public function newEndUserDialog ($message = '', $success = DIALOG_FAILURE, $target_link = null) {
         $target_link = !is_null($target_link) ? $target_link : $this->config['application-root'];
         $view = $this->getViewer('User Dialog');
-        echo "<div class='col-md-3'></div>\n";
-        echo "<div class='col-xs-12 col-md-6'>\n";
-        echo "<div class='well well-lg'>\n";
-        echo "<h2>";
-        if ($success) echo 'Success';
-        else echo 'Failure';
-        echo "!</h2>\n";
-        echo "<p class='";
-        if ($success) echo 'bg-success';
-        else echo 'bg-danger';
-        echo "'>{$message}</p>\n";
-        echo "<button type='button' class='btn ";
-        if ($success) echo "btn-success";
-        else echo "btn-danger";
-        echo "' onclick='window.open(\"{$target_link}\",\"_self\")'>Close</button>\n";
-        echo "</div></div><div class='col-md-3'></div>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        switch($success){
+            case DIALOG_SUCCESS:
+                $message = empty($message) ? 'The requested operation completed successfull.' : $message;
+                echo "<div class='col-xs-12 col-md-6 alert alert-success'>";
+                echo "<strong>Success!</strong><br /> {$message}<br />";
+                echo "<a class='btn btn-light' href='{$target_link}'>Continue</a>";
+                echo "</div>";
+            break;
+            case DIALOG_FAILURE:
+                $message = empty($message) ? 'The requested operation failed to complete.' : $message;
+                echo "<div class='col-xs-12 col-md-6 alert alert-danger'>";
+                echo "<strong>Warning!</strong><br /> {$message}<br />";
+                echo "<a class='btn btn-light' href='{$target_link}'>Continue</a>";
+                echo "</div>";
+            break;
+        }
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
         $view->footer();
         die();
     }

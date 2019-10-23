@@ -20,21 +20,40 @@ include('./submenu.php');
 
 $server->userMustHavePermission('adminAll');
 
-$app = new Application($server->pdo);
-if (!empty($_REQUEST)) {
-    $app->addRole($_REQUEST['role']) ||
-    $server->newEndUserDialog(
-        "Smoething went wrong with the request",
-        DIALOG_FAILURE,
-        $server->config['application-root'].'/admin/roles'
-    );
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'addrole':
+            $server->processingDialog(
+                [new Application($server->pdo), 'addRole'],
+                [$_REQUEST['role']],
+                $server->config['application-root'].'/admin/roles'
+            );
+        break;
+        default: main();
+    }
 }
+else main();
+// $app = new Application($server->pdo);
+// if (!empty($_REQUEST)) {
+//     $app->addRole($_REQUEST['role']) ||
+//     $server->newEndUserDialog(
+//         "Smoething went wrong with the request",
+//         DIALOG_FAILURE,
+//         $server->config['application-root'].'/admin/roles'
+//     );
+// }
 
+function main () {
+    global $server;
+    $view = $server->getViewer('Admin: User Roles');
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->sideDropDownMenu($submenu);
+    
+    
+}
 $content = $app->getRole();
 
-$view = $server->getViewer('Application Settings');
-$view->sideDropDownMenu($submenu);
-$form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+
 
 $form->newForm();
 echo "<div class='row'>\n";

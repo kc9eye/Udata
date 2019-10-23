@@ -552,7 +552,7 @@ Class ViewMaker implements ViewWidgets {
             foreach($columnHeadings as $heading) {
                 echo "<th>{$heading}</th>";
             }
-            echo "</tr>\n";
+            echo "</tr>";
         }
     }
 
@@ -645,25 +645,25 @@ Class ViewMaker implements ViewWidgets {
     }
 
     /**
-     * Inserts a bootstrap well into the stream
-     * 
-     * Adds content encapsulated in a bootstrap well.
-     * @param String $content The content to wrapped in a well
-     * @param Boolean $centered Centers the well on page
-     * @return Void Output is sent directly to the stream and nothing is returned
+     * Inserts a bootstrap card into the stream
+     * @param String $body The body text of the card
+     * @param String $header Optional $header for the card
+     * @param String $footer Optional $footer for the card
+     * @param Boolean $centered Optional true to center the card in one of three rows on md screens
+     * @param Boolean $return Optional true to return the card, otherwise it is ouput to the buffer
+     * @return Mixed Void if $return is false, otherwise returns a String.
      */
-    public function wrapInWell ($content, $centered = false) {
-        if ($centered) {
-            echo "<div class='row'>";
-            echo "<div class='col-md-3'></div>";
-            echo "<div class='col-xs-12 col-md-6'>";
-        }
-        echo "<div class='well'>\n{$content}\n</div>";
-        if ($centered) {
-            echo "</div>";
-            echo "<div class='col-md-3'></div>";
-            echo "</div>";
-        }
+    public function wrapInCard ($body, $header = null, $footer = null, $centered = false, $return = false) {
+        $string = "";
+        if ($centered) $string .= "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'>";
+        $string .= "<div class='card'>";
+        if (!is_null($header)) $string .= "<div class='card-header'>{$header}</div>";
+        $string .= "<div class='card-body'><div class='card-text'>{$body}</div></div>";
+        if (!is_null($footer)) $string .= "<div class='card-footer'>{$footer}</div>";
+        $string .= "</div>";
+        if ($centered) $string .= "</div><div class='col-md-3'></div></div>";
+        if ($return) return $string;
+        else echo $string;
     }
 
     /**
@@ -672,7 +672,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void Outputs directly to the stream and returns nothing
      */
     public function wrapInPre ($content) {
-        echo "<pre class='pre-scrollable'>{$content}\n</pre>";
+        echo "<pre class='pre-scrollable'>{$content}</pre>";
     }
 
     /**
