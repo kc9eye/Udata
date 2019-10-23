@@ -16,16 +16,35 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once(dirname(__DIR__).'/lib/init.php');
-include('./submenu.php');
-
 $server->userMustHavePermission('adminAll');
 
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
-        case 'addrole':
+        case 'create':
             $server->processingDialog(
                 [new Application($server->pdo), 'addRole'],
-                [$_REQUEST['role']],
+                [$_REQUEST['name']],
+                $server->config['application-root'].'/admin/roles'
+            );
+        break;
+        case 'delete':
+            $server->processingDialog(
+                [new Application($server->pdo), 'deleteRole'],
+                [$_REQUEST['rid']],
+                $server->config['application-root'].'/admin/roles'
+            );
+        break;
+        case 'add':
+            $server->processingDialog(
+                [new Application($server->pdo),'addPermToRole'],
+                [$_REQUEST['pid'],$_REQUEST['rid']],
+                $server->config['application-root'].'/admin/roles'
+            );
+        break;
+        case 'remove':
+            $server->processingDialog(
+                [new Application($server->pdo),'removePermFromRole'],
+                [$_REQUEST['pid'],$_REQUEST['rid']],
                 $server->config['application-root'].'/admin/roles'
             );
         break;
@@ -33,48 +52,54 @@ if (!empty($_REQUEST['action'])) {
     }
 }
 else main();
-// $app = new Application($server->pdo);
-// if (!empty($_REQUEST)) {
-//     $app->addRole($_REQUEST['role']) ||
-//     $server->newEndUserDialog(
-//         "Smoething went wrong with the request",
-//         DIALOG_FAILURE,
-//         $server->config['application-root'].'/admin/roles'
-//     );
-// }
 
 function main () {
     global $server;
+    include('./submenu.php');
+    $app = new Application($server->pdo);
     $view = $server->getViewer('Admin: User Roles');
-    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
-    
-    
+    $view->h1("User Roles",true);
+    echo "<p class='font-weight-light'>Clicking on each role button will allow you to add or remove ";
+    echo "permissions from that specific role. Permissions are assigned to Roles, and in turn, Roles are ";
+    echo "assigned to Users. Custom roles can be created, giving great flexibility in the security model.</p>";
+    foreach($app->getRole() as $role) {
+        $unused = array();
+        foreach($app->unusedPermissionSet($role['id']) as $set)
+            array_push($unused,[$set['id'],$set['name']]);
+
+        $view->beginBtnCollapse($view->bold($role['name'],true));
+        echo "<a href='?action=delete&rid={$role['id']}' class='btn btn-danger float-right'>Delete {$role['name']}</a>";
+        
+        $form->newInlineForm();
+        $form->hiddenInput('action','add');
+        $form->hiddenInput('rid',$role['id']);
+        $view->responsiveTableStart(['Permission','Remove']);
+        foreach($app->getPermsFromRole($role['id']) as $perm)
+            echo "<tr><td>{$perm['name']}</td><td>".$view->trashBtnSm('/admin/roles?action=remove&rid='.$role['id'].'&pid='.$perm['id'],true)."</td></tr>";
+        echo "<tr><td>";
+        $form->inlineSelectBox('pid','Permissions',$unused);
+        echo "</td><td>";
+        $form->inlineSubmit('Add');
+        echo "</td></tr>";
+        $view->responsiveTableClose();
+        $form->endInlineForm();
+
+        $view->endBtnCollapse();
+        $view->hr();
+    }
+
+    $view->h3("Create New Role");
+    $form->newInlineForm();
+    $form->hiddenInput('action','create');
+    $view->responsiveTableStart();
+    echo "<tr><td>";
+    $form->inlineInputCapture('name','New Role Name',null,true);
+    echo "</td><td>";
+    $form->inlineSubmit('Create');
+    echo "</td></tr>";
+    $view->responsiveTableClose();
+    $form->endInlineForm();
+    $view->footer();
 }
-$content = $app->getRole();
-
-
-
-$form->newForm();
-echo "<div class='row'>\n";
-echo "<div class='col-md-3'></div>\n";
-echo "<div class='col-xs-12 col-md-6'>\n";
-$view->h3("User Role");
-echo "<div class='table-responsive'>\n";
-echo "<table class='table'>\n";
-echo "<tr><th>Role Name</th><th>Edit</th></tr>\n";
-foreach ($content as $row) {
-    echo "<tr><td>{$row['name']}</td><td><a href='{$view->PageData['approot']}/admin/editrole?rid={$row['id']}' class='btn btn-xs btn-warning' role='button'>";
-    echo "<span class='glyphicon glyphicon-pencil'></span></a></td></tr>\n";
-}
-echo "</table>\n</div>\n";
-echo "</div>\n";
-echo "<div class='col-md-3'></div>\n";
-echo "</div>";
-$form->inputCapture('role', 'Add Role', null, true);
-$form->submitForm();
-$form->endForm();
-$view->hr();
-
-$view->footer();
-

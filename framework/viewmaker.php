@@ -482,6 +482,20 @@ Class ViewMaker implements ViewWidgets {
     }
 
     /**
+     * Outputs a given array as an unordered inline list
+     * @param Array $list In the form ['list-item','list-item',...]
+     * @param Boolean $return Optional true to return the list as a string, otherwise output to buffer
+     * @return Mixed Void without $return, otherwise string.
+     */
+    public function inlineList (Array $list, $return = false) {
+        $string = "<ul class='list-inline'>";
+        foreach($list as $item) $string .= "<li class='list-inline-item'>{$item}</li>";
+        $string .= "</ul>";
+        if ($return) return $string;
+        else echo $string;
+    }
+
+    /**
      * Encapsulate `$content` in an HTML paragraph section in the bg-info bootstrap style.
      * @param String $content The string to be in the paragraph.
      * @return Void
@@ -690,6 +704,7 @@ Class ViewMaker implements ViewWidgets {
      * Inserts an image thumbnail to stream, or returns as such
      * @param String $file The URI of the image file to insert
      * @param Boolean $return Optional true if the method should return the image instead of inserting to the stream
+     * @deprecated replaced by Bootstrap 4 card class
      */
     public function imageThumbnail ($file, $return = false) {
         $image = "<img class='img-thumbnail' src='{$file}' alt='[IMAGE]' />";

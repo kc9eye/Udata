@@ -17,19 +17,15 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 $server->userMustHavePermission('adminAll');
+include('submenu.php');
 include(UpdateDatabase::DB_VERSION_FILE);
-
-$app = new Application($server->pdo);
-$notify = new Notification($server->pdo,$server->mailer);
 
 $view = $server->getViewer("Application Settings");
 $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+$view->sideDropDownMenu($submenu);
+$view->h1("UData Application");
 
-$form->inlineButtonGroup([
-    'Documentation'=>"window.open(\"{$view->PageData['approot']}/docs/api/index.html\",\"_blank\")",
-    'Framework'=>"window.open(\"{$view->PageData['approot']}/docs/database_structure/UData_Database_Structure.html\",\"_blank\")"
-]);
-
+//Package Version information
 $view->responsiveTableStart(['Package Name','Current Version']);
 echo "<tr><td>UData Framework</td><td>".\APP_VERSION."</td></tr>";
 echo "<tr><td>UDatabase Schema</td><td>{$current_version}</td></tr>";
@@ -37,69 +33,9 @@ echo "<tr><td>Bootstrap UI</td><td>".\BOOTSTRAP_VERSION."</td></tr>";
 echo "<tr><td>PHPMailer</td><td>".file_get_contents(\INCLUDE_ROOT.'/third-party/PHPMailer/VERSION')."</td></tr>";
 $view->responsiveTableClose();
 
-//User Adminstration
-$view->hr();
-$view->h2("User Administration");
-$users = empty($_REQUEST['usersearch']) ? [] : $app->searchUsers($_REQUEST['usersearch']);
-$form->fullPageSearchBar('usersearch','Search Users');
-if (empty($users)) {
-    $view->bold('No users found to match.');
-}
-else {
-    $view->h2("Search Results");
-    echo "<div class='table-responsive'><table class='table'>";
-    foreach ($users as $row) {
-        echo "<tr><td><a href='{$view->PageData['approot']}/admin/users?uid={$row['id']}'>{$row['firstname']} {$row['lastname']}</td><td>{$row['username']}</td></tr>";
-    }
-    echo "</table></div>";
-}
-
-
-//Security Model
-$view->hr();
-$view->h2("Security Model");
-$view->beginBtnCollapse();
-$view->br();
-$form->inlineButtonGroup([
-    'Add/Edit Roles'=>"window.open(\"{$view->PageData['approot']}/admin/roles\",\"_self\")",
-    'Add/Edit Permissions'=>"window.open(\"{$view->PageData['approot']}/admin/permissions\",\"_self\")"
-]);
-$view->hr();
-foreach($app->getRole() as $role) {
-    $perms = $app->getPermsFromRole($role['id']);
-    $view->h3($role['name']."&#160;".$view->editBtnSm("/admin/editrole?rid={$role['id']}",true));
-    if (!empty($perms)) {
-        echo "<ol class='list-inline'>";
-        foreach($perms as $perm) {
-            echo "<li class='list-inline-item'>{$perm['name']}</li>";
-        }
-        echo "</ol>";
-    }
-    $view->hr();
-}
-$view->endBtnCollapse();
-
-//Application Notifications
-$view->hr();
-$view->h2("Notifications");
-$view->beginBtnCollapse();
-$view->br();
-$form->inlineButtonGroup([
-    'Add Notifications'=>"window.open(\"{$view->PageData['approot']}/admin/notifications\",\"_self\");"
-]);
-$view->responsiveTableStart();
-foreach($notify->getAllNotifications() as $row) {
-    echo "<tr><td>{$row['description']}</td><td>";
-    $view->trashBtnSm('/admin/notifications?action=delete&id='.$row['id']);
-    echo "</td></tr>";
-}
-$view->responsiveTableClose();
-$view->endBtnCollapse();
-
 //Application Settings
 $view->hr();
 $view->h2("Current Application Settings");
-$view->beginBtnCollapse();
 $view->responsiveTableStart(['Variable Name','Current Value']);
 foreach($server->config as $index => $value) {
     if (is_string($value)) {
@@ -125,12 +61,10 @@ foreach($server->config as $index => $value) {
     }
 }
 $view->responsiveTableClose();
-$view->endBtnCollapse();
 
 //Error log
 $view->hr();
 $view->h2("Error Log");
-$view->beginBtnCollapse();
 $view->br();
 if (file_exists($server->config['error-log-file-path'])) {
     $view->linkButton('/admin/errlog?id=reset','Reset Log File','danger');
@@ -146,8 +80,5 @@ if (file_exists($server->config['error-log-file-path'])) {
     }
     echo "</div>";
 }
-
-$view->endBtnCollapse();
-
 $view->addScrollTopBtn();
 $view->footer();

@@ -16,8 +16,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 $submenu = [
-    'Application Settings'=>$server->config['application-root'].'/admin/main',
-    //'User Administation'=>$server->config['application-root'].'/admin/users',
+    'Application Info'=>$server->config['application-root'].'/admin/main',
+    'Users'=>$server->config['application-root'].'/admin/users',
     'Roles'=>$server->config['application-root'].'/admin/roles',
-    'Permissions'=>$server->config['application-root'].'/admin/permissions'
+    'Error Log'=>$server->config['application-root'].'/admin/errlog',
+    'Access Log'=>$server->config['application-root'].'/admin/accesslog',
+    'API Documentation'=>$server->config['application-root'].'/docs/api/index.html',
+    'UDatabase Scheme'=>$server->config['application-root'].'/docs/database_structure/UData_Database_Structure.html'
 ];
