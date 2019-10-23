@@ -47,9 +47,9 @@ if (empty($users)) {
 }
 else {
     $view->h2("Search Results");
-    echo "<div class='table-responsive'>\n<table class='table'>\n";
+    echo "<div class='table-responsive'><table class='table'>";
     foreach ($users as $row) {
-        echo "<tr><td><a href='{$view->PageData['approot']}/admin/users?uid={$row['id']}'>{$row['firstname']} {$row['lastname']}</td><td>{$row['username']}</td></tr>\n";
+        echo "<tr><td><a href='{$view->PageData['approot']}/admin/users?uid={$row['id']}'>{$row['firstname']} {$row['lastname']}</td><td>{$row['username']}</td></tr>";
     }
     echo "</table></div>";
 }
@@ -69,11 +69,11 @@ foreach($app->getRole() as $role) {
     $perms = $app->getPermsFromRole($role['id']);
     $view->h3($role['name']."&#160;".$view->editBtnSm("/admin/editrole?rid={$role['id']}",true));
     if (!empty($perms)) {
-        echo "<ol class='list-inline'>\n";
+        echo "<ol class='list-inline'>";
         foreach($perms as $perm) {
-            echo "<li class='list-inline-item'>{$perm['name']}</li>\n";
+            echo "<li class='list-inline-item'>{$perm['name']}</li>";
         }
-        echo "</ol>\n";
+        echo "</ol>";
     }
     $view->hr();
 }
@@ -91,7 +91,7 @@ $view->responsiveTableStart();
 foreach($notify->getAllNotifications() as $row) {
     echo "<tr><td>{$row['description']}</td><td>";
     $view->trashBtnSm('/admin/notifications?action=delete&id='.$row['id']);
-    echo "</td></tr>\n";
+    echo "</td></tr>";
 }
 $view->responsiveTableClose();
 $view->endBtnCollapse();
@@ -103,26 +103,25 @@ $view->beginBtnCollapse();
 $view->responsiveTableStart(['Variable Name','Current Value']);
 foreach($server->config as $index => $value) {
     if (is_string($value)) {
-        if ($index == 'dbuser') echo "<tr><td>{$index}</td><td>REDACTED</td></tr>\n";
-        elseif ($index == 'dbpass') echo "<tr><td>{$index}</td><td>REDACTED</td></tr>\n";
-        else echo "<tr><td>{$index}</td><td>{$value}</td></tr>\n";
+        if ($index == 'dbpass') echo "<tr><td>{$index}</td><td>REDACTED</td></tr>";
+        else echo "<tr><td>{$index}</td><td>{$value}</td></tr>";
     }
     elseif (is_array($value)) {
         echo "<tr><td>{$index}</td><td>";
-        echo "<ul>\n";
+        echo "<ul>";
         foreach($value as $i=>$v) {
             if (is_string($v))
-                echo "<li>{$i} = {$v}</li>\n";
+                echo "<li>{$i} = {$v}</li>";
             elseif (is_array($v)) {
-                echo "<li>{$i} = <ul>\n";
+                echo "<li>{$i} = <ul>";
                 foreach($v as $vi) {
                     echo "<li>{$vi}</li>";
                 }
-                echo "</ul>\n";
+                echo "</ul>";
             }
         }
-        echo "</ul>\n";
-        echo "</td></tr>\n";
+        echo "</ul>";
+        echo "</td></tr>";
     }
 }
 $view->responsiveTableClose();
@@ -139,13 +138,13 @@ if (file_exists($server->config['error-log-file-path'])) {
     $log = simplexml_load_file($server->config['error-log-file-path']);
     $entries = $log->xpath('error');
     $entries = array_reverse($entries);
-    echo "<div class='list-group' style='height:300px;overflow-y:scroll;width:100%'>\n";
+    echo "<div class='list-group' style='height:300px;overflow-y:scroll;width:100%'>";
     foreach($entries as $err) {
         echo "<a href='{$view->PageData['approot']}/admin/errlog?id={$err->id}' class='list-group-item list-group-item-action'>";
         $view->bold("Error:&nbsp;");
-        echo "{$err->id} <span class='badge badge-info float-right m-2'>{$err->date}</span></a>\n";
+        echo "{$err->id} <span class='badge badge-info float-right m-2'>{$err->date}</span></a>";
     }
-    echo "</div>\n";
+    echo "</div>";
 }
 
 $view->endBtnCollapse();

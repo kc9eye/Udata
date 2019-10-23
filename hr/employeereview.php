@@ -200,7 +200,7 @@ function displayPastReview ($revid) {
     $review = new Review($server->pdo,$revid);
     $view = $server->getViewer("Review: ".$review->getFullName());
     $view->sideDropDownMenu($submenu);
-    $view->linkButton("/hr/employeereview?action=printreview&revid={$revid}","Print",'secondary');
+    $view->linkButton("/hr/employeereview?action=printreview&revid={$revid}","Print",'secondary',false,'_blank');
     $view->h1($review->getFullName());
     $view->h2("<small>Began:</small> ".$review->getStartDate());
     $view->h2("<small>Ended:</small> ".$review->getEndDate());
