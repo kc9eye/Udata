@@ -44,10 +44,10 @@ class InlineFormWidgets extends FormWidgets {
      */
     public function newInlineForm ($header = null, $uri = null, $method = 'post', $id = null) {
         $this->formid = is_null($id) ? uniqid() : $id;
-        if (!is_null($header)) {echo "<h3>{$header}</h3>\n";}
+        if (!is_null($header)) {echo "<h3>{$header}</h3>";}
         echo "<form class='form-inline' method='{$method}' ";
         if (!is_null($uri)) {echo "action='{$uri}' ";}
-        echo "id='{$this->formid}'>\n";
+        echo "id='{$this->formid}'>";
     }
 
     /**
@@ -64,7 +64,7 @@ class InlineFormWidgets extends FormWidgets {
         if (!is_null($header)) {echo "<h3>{$header}</h3>";}
         echo "<form class='form-inline' method='post' enctype='multipart/form-data' id='{$this->formid}' ";
         if (!is_null($uri)) {echo "action='{$uri}' ";}
-        echo "/>\n";
+        echo "/>";
     }
 
     /**
@@ -77,16 +77,18 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineInputCapture ($name, $label = 'Data Input', $value = null, $required = false, $helpBlock = null) {
-        echo "<div class='form-group'>\n";
-        echo "<label for='{$name}'>{$label}:</label>\n";
+        echo "<div class='form-group'>";
+        echo "<label for='{$name}' class='control-label'>{$label}:</label>&#160;";
         echo "<input type='text' class='form-control' name='{$name}' id='{$name}' ";
-        if (!is_null($value)) {echo "value='{$value}' ";}
+        if (!is_null($value)) echo "value='{$value}' ";
         if ($required) {
-            echo "placeholder='Required' ";
+            echo "placeholder='Required'";
             $this->addValidation($name,$required);
         }
-        echo "/>\n";
-        echo "</div>\n";
+        else echo "placeholder='{$label}'";
+        echo "/>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
+        echo "</div>";
     }
 
     /**
@@ -97,20 +99,20 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineFileUpload ($name, $multiple = false, $required = false) {
-        echo "<div class='form-group'>\n";
-        echo "<div class='input-group'>\n";
-        echo "<label class='input-group-btn'>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='input-group'>";
+        echo "<label class='input-group-btn'>";
         echo "<span class='btn btn-info'>Browse&hellip;";
         echo "<input type='file' style='display:none' ";
         if ($multiple) {echo "name='{$name}[]' ";}
         else {echo "name='{$name}' ";}
         if ($required) {echo "placeholder='Required' ";}
-        if ($multiple) {echo "multiple /></span>\n";}
-        else {echo "/></span>\n";}
-        echo "</label>\n";
-        echo "<input type='text' class='form-control' readonly />\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        if ($multiple) {echo "multiple /></span>";}
+        else {echo "/></span>";}
+        echo "</label>";
+        echo "<input type='text' class='form-control' readonly />";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -121,9 +123,9 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineSubmit ($label = 'Submit',$reset = false, $cancel = null) {
-        echo "<button class='btn btn-success' type='submit'>{$label}</button>\n";
-        if ($reset) echo "&#160;<button class='btn btn-warning' type='reset'>Reset</button>\n";
-        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-danger'>Cancel</a>\n";
+        echo "<button class='btn btn-success' type='submit'>{$label}</button>";
+        if ($reset) echo "&#160;<button class='btn btn-warning' type='reset'>Reset</button>";
+        if (!is_null($cancel)) echo "&#160;<a href='{$cancel}' class='btn btn-danger'>Cancel</a>";
     }
 
     /**
@@ -132,16 +134,16 @@ class InlineFormWidgets extends FormWidgets {
      */
     public function endInlineForm () {
         if ($this->validate) {
-            echo "</form>\n";
-            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js'></script>\n";
-            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js'></script>\n";
-            echo "<script src='{$this->scripts}/btstrapfileinputhack.js'></script>\n";
-            echo "<script>\n";
+            echo "</form>";
+            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js'></script>";
+            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js'></script>";
+            echo "<script src='{$this->scripts}/btstrapfileinputhack.js'></script>";
+            echo "<script>";
             echo "$(document).ready(function(){ $('#{$this->formid}').validate(".str_replace('"','',json_encode(['rules'=>$this->rules],JSON_FORCE_OBJECT)).");});";
-            echo "</script>\n";
+            echo "</script>";
         }
         else {
-            echo "</form>\n";
+            echo "</form>";
         }
     }
 
@@ -156,14 +158,14 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineCheckbox ($name, $label, $value, $required = false) {
-        echo "<div class='checkbox'>\n";
-        echo "<label>\n";
-        echo "<input type='checkbox' name='{$name}' value='{$value}' />\n";
-        echo "{$label}</label>\n";
+        echo "<div class='checkbox'>";
+        echo "<label>";
+        echo "<input type='checkbox' name='{$name}' value='{$value}' />";
+        echo "{$label}</label>";
         echo "</div>";
         if ($required) {
             $this->addValidation($name, $required);
-            echo "<label class='error' for='{$name}' generated='true'></label>\n";
+            echo "<label class='error' for='{$name}' generated='true'></label>";
         }
     }
 
@@ -212,11 +214,11 @@ class InlineFormWidgets extends FormWidgets {
      * @return Void
      */
     public function inlineButtonGroup (Array $btns) {
-        echo "<div class='btn-group'>\n";
+        echo "<div class='btn-group'>";
         foreach($btns as $label=>$action) {
-            echo "<button type='button' class='btn btn-info' onclick='{$action}'>{$label}</button>\n";
+            echo "<button type='button' class='btn btn-info' onclick='{$action}'>{$label}</button>";
         }
-        echo "</div>\n";
+        echo "</div>";
     }
 
        /**
@@ -231,19 +233,19 @@ class InlineFormWidgets extends FormWidgets {
         if ($required) {
             $this->addValidation($name, $required);
         }
-        echo "<div class='form-group'>\n";
-        echo "<label class='control-label' for='{$name}'>{$label}:</label>\n";
-        echo "<select class='form-control' name='{$name}' id='{$name}'>\n";
-        echo "<option value='' selected='selected'></option>\n";
+        echo "<div class='form-group'>";
+        echo "<label class='control-label' for='{$name}'>{$label}:</label>";
+        echo "<select class='form-control' name='{$name}' id='{$name}'>";
+        echo "<option value='' selected='selected'></option>";
         foreach($value as $opt) {
-            echo "<option value='{$opt[0]}'>{$opt[1]}</option>\n";
+            echo "<option value='{$opt[0]}'>{$opt[1]}</option>";
         }
-        echo "</select>\n";
-        echo "<label class='error' for='{$name}' generated='true'></label>\n";
+        echo "</select>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
         if (!is_null($helpBlock)) {
-            echo "<span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "</div>\n";
+        echo "</div>";
     }
 
      /**
@@ -263,13 +265,13 @@ class InlineFormWidgets extends FormWidgets {
             $this->addValidation($name, $required);
         }
         $id = uniqid();
-        echo "<div class='form-group'>\n";
+        echo "<div class='form-group'>";
         if (!is_null($label))
-            echo "<label class='control-label' for='{$name}'>{$label}:</label>\n";
-        echo "<textarea class='form-control' name='{$name}' id='{$id}'>{$value}</textarea>\n";
+            echo "<label class='control-label' for='{$name}'>{$label}:</label>";
+        echo "<textarea class='form-control' name='{$name}' id='{$id}'>{$value}</textarea>";
         if (!is_null($helpBlock)) {
-            echo "<span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "</div>\n";      
+        echo "</div>";      
     }
 }

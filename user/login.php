@@ -38,10 +38,11 @@ function main ($failed = false) {
         echo "<div class='col-xs-12 col-md-6 alert alert-danger'>";
         echo "<h5>Warning: <small>Incorrect username or password: &#160;";
         echo "<a href='{$server->config['application-root']}/user/password_reset'>Forgot my password</a>";
-        echo "</small></h5></div><div class='col-md-3'></div></div>\n";
+        echo "</small></h5></div><div class='col-md-3'></div></div>";
     }
     elseif (isset($_SESSION['user_privilege_escalation'])) {
         unset($_SESSION['user_privilege_escalation']);
+        if (isset($_SESSION['uid'])) $server->userRightsEscalation($_SESSION['uid'],$_SESSION['login-redirect']);
         echo "<div class='row'><div class='col-md-3'></div>";
         echo "<div class='col-xs-12 col-md-6 alert alert-danger'>";
         echo "<h5>Warning:<small>The current account does not have sufficient privileges to access this page.</small></h5>";

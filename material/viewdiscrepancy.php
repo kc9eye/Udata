@@ -19,19 +19,25 @@ require_once(dirname(__DIR__).'/lib/init.php');
 include('submenu.php');
 $server->userMustHavePermission('viewDiscrepancy');
 
-if (!empty($_REQUEST['dis_search'])) {
-    $materials = new Materials($server->pdo);
-    $search_string = new SearchStringFormater($_REQUEST['dis_search']);
-    $discrepancies = $materials->searchDiscrepancies($search_string->formatedString);
-    resultsDisplay($discrepancies);
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'search':
+            $materials = new Materials($server->pdo);
+            $search_string = new SearchStringFormater($_REQUEST['dis_search']);
+            $discrepancies = $materials->searchDiscrepancies($search_string->formatedString);
+            resultsDisplay($discrepancies);
+        break;
+        case view:
+            $discrepancy = new MaterialDiscrepancy($server->pdo,$_REQUEST['id']);
+            discrepancyDisplay($discrepancy);
+        break;
+        default:
+            searchDisplay();
+        break;
+    }
 }
-elseif (!empty($_REQUEST['id'])) {
-    $discrepancy = new MaterialDiscrepancy($server->pdo,$_REQUEST['id']);
-    discrepancyDisplay($discrepancy);
-}
-else{
+else
     searchDisplay();
-}
 
 function resultsDisplay ($discrepancies) {
     global $server,$submenu;
@@ -44,14 +50,14 @@ function resultsDisplay ($discrepancies) {
     $view->br();
     $view->insertTab();
     $form->fullPageSearchBar('dis_search');
-    if (!empty($_REQUEST['dis_search']) && !empty($discrepancies)) {
-        $view->responsiveTableStart(['ID','Qty.','Material#','Date','Product'],true);
+    if (!empty($discrepancies)) {
+        $view->responsiveTableStart(['ID','Qty.','Material#','Type','Date','Product']);
         foreach($discrepancies as $row) {
             echo "<tr><td>";
-            echo "<a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$row['id']}'>{$row['id']}</a></td>";
-            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['date']}</td><td>{$row['product']}</td></tr>\n";
+            echo "<a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$row['id']}'>{$row['id']}</a></td>";
+            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>{$row['date']}</td><td>{$row['product']}</td></tr>\n";
         }
-        $view->responsiveTableClose(true);
+        $view->responsiveTableClose();
     }
     elseif (!empty($_REQUEST['dis_search'] && empty($discrepancies))) {
         $view->bold('Nothing Found');
