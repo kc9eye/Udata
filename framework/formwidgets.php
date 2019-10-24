@@ -121,15 +121,15 @@ Class FormWidgets {
         else {
             $this->formid = $id;
         }
-        echo "<div style='margin:10px'>\n";
+        echo "<div style='margin:10px'>";
         if (!is_null($header)) {
-            echo "<div class='center-text center-block'><h2>{$header}</h2></div>\n";
+            echo "<div class='center-text center-block'><h2>{$header}</h2></div>";
         }
         echo "<form method='{$method}' class='form-horizontal' id='{$this->formid}'";
         if (!is_null($uri)) {
             echo " action='{$uri}'";
         }
-        echo ">\n";
+        echo ">";
     }
 
     /**
@@ -139,29 +139,29 @@ Class FormWidgets {
      * @return Void
      */
     public function endForm () {
-        echo "</form>\n";
-        echo "</div>\n";
+        echo "</form>";
+        echo "</div>";
         if ($this->validate) {
-            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js'></script>\n";
-            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js'></script>\n";
-            echo "<script>\n";
-            echo "  $(document).ready(function(){\n";
-            echo "    $('#{$this->formid}').validate(".str_replace('"','',json_encode(['rules'=>$this->rules],JSON_FORCE_OBJECT)).");\n";
-            echo "  });\n";
-            echo "</script>\n";            
+            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js'></script>";
+            echo "<script src='https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js'></script>";
+            echo "<script>";
+            echo "  $(document).ready(function(){";
+            echo "    $('#{$this->formid}').validate(".str_replace('"','',json_encode(['rules'=>$this->rules],JSON_FORCE_OBJECT)).");";
+            echo "  });";
+            echo "</script>";            
         }
         if ($this->wysiwyg) {
-            echo "<script src='{$this->third_party}/tinymce/tinymce.min.js'></script>\n";
-            echo "<script>\n";
-            echo "  $(document).ready(function(){\n";
-            echo "      tinymce.init({\n";
-            echo "          selector: 'textarea', plugins: 'autoresize'\n";
-            echo "      });\n";
-            echo "  });\n";
-            echo "</script>\n";
+            echo "<script src='{$this->third_party}/tinymce/tinymce.min.js'></script>";
+            echo "<script>";
+            echo "  $(document).ready(function(){";
+            echo "      tinymce.init({";
+            echo "          selector: 'textarea', plugins: 'autoresize'";
+            echo "      });";
+            echo "  });";
+            echo "</script>";
         }   
         if ($this->uploadhack) {
-            echo "<script src='{$this->scripts}/btstrapfileinputhack.js'></script>\n";
+            echo "<script src='{$this->scripts}/btstrapfileinputhack.js'></script>";
         }
     }
 
@@ -290,18 +290,18 @@ Class FormWidgets {
      */
     public function labelContent ($label, $content = 'Default Content') {
         $id = uniqid();
-        echo "<div class='form-group'>\n";
-        echo "  <div class='row'>\n";
-        echo "      <div class='col-md-3'></div>\n";
-        echo "      <div class='col-xs-12 col-md-1 right-text'>\n";
-        echo "          <label class='control-label' for='{$id}'>{$label}:</label>\n";
-        echo "      </div>\n";
-        echo "      <div class='col-xs-12 col-md-5'>\n";
-        echo "          <span name='{$id}' id='{$id}'>{$content}</span>\n";
-        echo "      </div>\n";
-        echo "      <div class='col-md-3'></div>\n";
-        echo "  </div>\n";
-        echo "</div>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-xs-12 col-md-1 right-text'>";
+        echo "<label class='control-label' for='{$id}'>{$label}:</label>";
+        echo "</div>";
+        echo "<div class='col-xs-12 col-md-5'>";
+        echo "<span name='{$id}' id='{$id}'>{$content}</span>";
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -362,28 +362,28 @@ Class FormWidgets {
         if ($required) {
             $this->validate = true;
         }
-        echo "<div class='form-group'>\n";
-        echo "  <div class='row'>\n";
-        echo "      <div class='col-md-3'><!-- Desktop spacing --></div>\n";
-        echo "      <div class='col-xs-12 col-md-1 right-text'>\n";
-        echo "          <label class='control-label' for='{$name}'>{$label}:</label>\n";
-        echo "      </div>\n";
-        echo "      <div class='col-md-5 col-xs-12'>\n";
-        echo "      <label class='error' for='{$name}' generated='true'></label>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'><!-- Desktop spacing --></div>";
+        echo "<div class='col-xs-12 col-md-1 right-text'>";
+        echo "<label class='control-label' for='{$name}'>{$label}:</label>";
+        echo "</div>";
+        echo "<div class='col-md-5 col-xs-12'>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
         foreach($value as $lb => $val) {
-            echo "          <div class='radio'>\n";
-            echo "              <label><input type='radio' name='{$name}' value='{$val}' ";
+            echo "<div class='radio'>";
+            echo "<label><input type='radio' name='{$name}' value='{$val}' ";
             if ($required) echo "required";
-            echo " />{$lb}</label>\n";
-            echo "          </div>\n";
+            echo " />{$lb}</label>";
+            echo "</div>";
         }
         if (!is_null($helpBlock)) {
-            echo "<span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "</div>\n";
-        echo "<div class='col-md-3'><!-- Desktop Spacing --></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        echo "</div>";
+        echo "<div class='col-md-3'><!-- Desktop Spacing --></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -436,28 +436,28 @@ Class FormWidgets {
         $this->uploadhack = true;
         if ($required) $this->addValidation($name,$required);
         $name = $multiple ? "{$name}[]" : $name;
-        echo "<div class='form-group'>\n";
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "<div class='col-xs-12 col-md-1 right-text'><label>{$label}:</label></div>\n";
-        echo "<div class='col-xs-12 col-md-5'>\n";
-        echo "<div class='input-group'>\n";
-        echo "<label class='input-group-btn'>\n";
-        echo "<span class='btn btn-info'>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-xs-12 col-md-1 right-text'><label>{$label}:</label></div>";
+        echo "<div class='col-xs-12 col-md-5'>";
+        echo "<div class='input-group'>";
+        echo "<label class='input-group-btn'>";
+        echo "<span class='btn btn-info'>";
         echo "Browse&hellip;";
         echo "<input type='file' name='{$name}' style='display:none;' ";
         if ($multiple) echo "mulitple ";
         if ($required) echo "required ";
-        echo "/>\n";
-        echo "</span>\n";
-        echo "</label>\n";
-        echo "<input type='text' class='form-control' readonly>\n";
-        echo "</div>\n";
-        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        echo "/>";
+        echo "</span>";
+        echo "</label>";
+        echo "<input type='text' class='form-control' readonly>";
+        echo "</div>";
+        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>";
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -482,25 +482,25 @@ Class FormWidgets {
         if ($required) {
             $this->addValidation($name, $required);
         }
-        echo "<div class='form-group'>\n";
-        echo "  <div class='row'>\n";
-        echo "      <div class='col-md-3'></div>\n";
-        echo "      <div class='col-md-1 col-xs-12 right-text'>\n";
-        echo "          <label class='control-label' for='{$name}'>{$label[0]}:</label>\n";
-        echo "      </div>\n";
-        echo "      <div class='col-md-5 col-xs-12'>\n";
-        echo "          <div class='checkbox'>\n";
-        if (!is_null($default)) echo "              <input type='hidden' name='{$name}' value='{$default}' />\n";
-        echo "              <label><input type='checkbox' id='{$name}' name='{$name}' value='{$value}' />{$label[1]}</label>\n";
-        echo "          </div>\n";
-        echo "          <label class='error' for='{$name}' generated='true'></label>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-md-1 col-xs-12 right-text'>";
+        echo "<label class='control-label' for='{$name}'>{$label[0]}:</label>";
+        echo "</div>";
+        echo "<div class='col-md-5 col-xs-12'>";
+        echo "<div class='checkbox'>";
+        if (!is_null($default)) echo "<input type='hidden' name='{$name}' value='{$default}' />";
+        echo "<label><input type='checkbox' id='{$name}' name='{$name}' value='{$value}' />{$label[1]}</label>";
+        echo "</div>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
         if (!is_null($helpBlock)) {
-            echo "          <span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "      </div>\n";
-        echo "      <div class='col-md-3'></div>\n";
-        echo "  </div>\n";
-        echo "</div>\n";
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -535,28 +535,28 @@ Class FormWidgets {
         if ($required) {
             $this->addValidation($name, $required);
         }
-        echo "<div class='form-group'>\n";
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "<div class='col-md-1 col-xs-12 right-text'>\n";
-        echo "<label class='control-label' for='{$name}'>{$label}:</label>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-5 col-xs-12'>\n";
-        echo "<select class='form-control' name='{$name}' id='{$name}'>\n";
-        if (!is_null($default)) echo "<option value='{$default[0]}' selected='selected'>{$default[1]}</option>\n";
-        else echo "<option value='' selected='selected'></option>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-md-1 col-xs-12 right-text'>";
+        echo "<label class='control-label' for='{$name}'>{$label}:</label>";
+        echo "</div>";
+        echo "<div class='col-md-5 col-xs-12'>";
+        echo "<select class='form-control' name='{$name}' id='{$name}'>";
+        if (!is_null($default)) echo "<option value='{$default[0]}' selected='selected'>{$default[1]}</option>";
+        else echo "<option value='' selected='selected'></option>";
         foreach($value as $opt) {
-            echo "<option value='{$opt[0]}'>{$opt[1]}</option>\n";
+            echo "<option value='{$opt[0]}'>{$opt[1]}</option>";
         }
-        echo "</select>\n";
-        echo "<label class='error' for='{$name}' generated='true'></label>\n";
+        echo "</select>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
         if (!is_null($helpBlock)) {
-            echo "<span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "</div>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";
     }
 
     /**
@@ -578,24 +578,24 @@ Class FormWidgets {
             $this->addValidation($name, $required);
         }
         $this->newForm();
-        echo "<div class='form-group'>\n";
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-3'><!-- Desktop spacing --></div>\n";
-        echo "<div class='col-md-6 col-xs-12'>\n";
-        echo "<label class='error' for='{$name}' generated='true'></label>\n";
-        echo "<div class='input-group'>\n";
-        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' >\n";
-        echo "<div class='input-group-btn'>\n";
-        echo "<button class='btn btn-default' type='submit'>\n";
-        echo "<span class='glyphicon glyphicon-search'></span>\n";
-        echo "</button>\n";
-        echo "</div>\n";
-        echo "</div>\n";
-        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-3'><!-- Desktop Spacing --></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'><!-- Desktop spacing --></div>";
+        echo "<div class='col-md-6 col-xs-12'>";
+        echo "<label class='error' for='{$name}' generated='true'></label>";
+        echo "<div class='input-group'>";
+        echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' >";
+        echo "<div class='input-group-btn'>";
+        echo "<button class='btn btn-default' type='submit'>";
+        echo "<span class='glyphicon glyphicon-search'></span>";
+        echo "</button>";
+        echo "</div>";
+        echo "</div>";
+        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>";
+        echo "</div>";
+        echo "<div class='col-md-3'><!-- Desktop Spacing --></div>";
+        echo "</div>";
+        echo "</div>";
         $this->endForm();
     }
 
@@ -617,18 +617,18 @@ Class FormWidgets {
         if (is_null($id)) {
             $id = uniqid();
         }
-        echo "<div class='form-group'>\n";
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-3'><!-- Desktop spacing --></div>\n";
-        echo "<div class='col-md-6 col-xs-12'>\n";
-        echo "<textarea class='form-control' name='{$name}' id='{$id}'>{$value}</textarea>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'><!-- Desktop spacing --></div>";
+        echo "<div class='col-md-6 col-xs-12'>";
+        echo "<textarea class='form-control' name='{$name}' id='{$id}'>{$value}</textarea>";
         if (!is_null($helpBlock)) {
-            echo "<span class='help-block'>{$helpBlock}</span>\n";
+            echo "<span class='help-block'>{$helpBlock}</span>";
         }
-        echo "</div>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";      
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";      
     }
 
     /**
@@ -643,18 +643,18 @@ Class FormWidgets {
     public function standardFileUpload ($name, $label = 'File', $value = null, $multiple = false, $required = false, $helpBlock = null) {
         if ($required) $this->addValidation($name,$required);
         $name = $multiple ? "{$name}[]" : $name;
-        echo "<div class='form-group'>\n";
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "<div class='col-xs-12 col-md-1'><label class='control-label' for='{$name}'>{$label}:</label></div>\n";
+        echo "<div class='form-group'>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-3'></div>";
+        echo "<div class='col-xs-12 col-md-1'><label class='control-label' for='{$name}'>{$label}:</label></div>";
         echo "<div class='col-xs-12 col-md-5'><input class='form-control' type='file' name='{$name}' ";
         if (!is_null($value)) echo "value='{$value}' ";
         if ($multiple) echo "multiple ";
         echo "/>";
-        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-3'></div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
+        if (!is_null($helpBlock)) echo "<span class='help-block'>{$helpBlock}</span>";
+        echo "</div>";
+        echo "<div class='col-md-3'></div>";
+        echo "</div>";
+        echo "</div>";
     }
 }

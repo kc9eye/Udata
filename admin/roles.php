@@ -63,7 +63,14 @@ function main () {
     $view->h1("User Roles",true);
     echo "<p class='font-weight-light'>Clicking on each role button will allow you to add or remove ";
     echo "permissions from that specific role. Permissions are assigned to Roles, and in turn, Roles are ";
-    echo "assigned to Users. Custom roles can be created, giving great flexibility in the security model.</p>";
+    echo "assigned to Users. Custom roles can be created, giving great flexibility in the security model. ";
+    echo "Each View Controller has access permissions which can be seen at the bottom of each view for administrators.";
+    echo "These are the permissions that must be set on a users role to access that view or parts of that view. ";
+    echo "A permission that is listed as <mark>Required for Access</mark>, must be in a role assigned to a user to access ";
+    echo "that particular view. Permissions that are listed under <mark>Page Access Permissions</mark>, are required for ";
+    echo "accessing only parts of the that specific view. <strong>Note:</strong> the <i>adminAll</i> permission is listed ";
+    echo "for all views as it is required to view the permission listing. The <i>adminAll</i> permission should never be assigned ";
+    echo "to a nomral users role sets. It should be reserved for 'Adminstrators' <strong>only</strong>.</p>";
     foreach($app->getRole() as $role) {
         $unused = array();
         foreach($app->unusedPermissionSet($role['id']) as $set)

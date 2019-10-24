@@ -140,11 +140,11 @@ Class Instance {
         $view = new ViewMaker($this);
         $view->ViewData['pagetitle'] = 'DEBUG CONTENT';
         $view->header();
-        echo "<pre class='scrollable'>\n";
+        echo "<pre class='scrollable'>";
         echo "Your debug info:\n----------\n{$debug}\n---------\n\n";
         echo "Session info\n--------\n".print_r($_SESSION, true)."\n----------\n\n";
         echo "Server Variables\n-----------\n".print_r($_SERVER, true)."\n-----------\n\n";
-        echo "</pre>\n";
+        echo "</pre>";
         $view->footer();
         die();
     }
@@ -234,15 +234,15 @@ Class Instance {
         $dialog = function($feedback){
             $feedback = is_null($feedback) ? 'Processing' : $feedback;
             $view = $this->getViewer('Processing...');
-            echo "<div class='row'><div class='col-md-3'></div>\n";
-            echo "<div class='col-md-6 col-xs-12 vertical-center'><h3>{$feedback}...</h3><div class='progress'>\n";
-            echo "<div class='progress-bar progress-bar-striped active' style='width:100%;'>Please Wait...";
-            echo "</div></div></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div>";
+            echo "<div class='col-md-6 col-xs-12 vertical-center'><h3>{$feedback}...</h3><div class='progress'>";
+            echo "<div class='progress-bar progress-bar-striped progress-bar-animated' style='width:100%;'>Please Wait...";
+            echo "</div></div></div><div class='col-md-3'></div></div>";
             echo "<script>
             setTimeout(function(){
                 window.open('{$view->PageData['approot']}{$_SESSION['bg_process']['pid']}','_self');
             },3000);";
-            echo "</script>\n";
+            echo "</script>";
             $view->footer();
         };
 
@@ -589,6 +589,33 @@ Class Instance {
         
         $_SESSION['login-redirect'] = $uri;
         return true;
+    }
+
+    /**
+     * Records attempts by users to access views beyond their permissions
+     * @param String $uid The users UID
+     * @param String $api The URL to the API attempted to be accessed
+     * @return Void
+     */
+    public function userRightsEscalation ($uid, $api) {
+        $log = INCLUDE_ROOT.'/var/access_log.xml';
+        $xml = "<attempt><id>".uniqid()."</id><date>".date('c')."</date><uid>{$uid}</uid><api>$api</api></attempt>\n";
+        if (!file_exists($log)) {
+            $fh = fopen($log, 'w');
+            flock($fh,LOCK_EX);
+            fwrite($fh,"<?xml version='1.0' ?>\n");
+            fwrite($fh,"<access_log>\n");
+        }
+        else {
+            $fh = fopen($log, 'c');
+            flock($fh,LOCK_EX);
+            fseek($fh,-14,SEEK_END);
+            fwrite($fh,$xml);
+        }
+        fwrite($fh,$xml);
+        fwrite($fh,"\n</access_log>\n");
+        flock($fh,LOCK_UN);
+        fclose($fh);
     }
 
     private function runservice () {

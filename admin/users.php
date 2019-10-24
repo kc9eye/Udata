@@ -32,6 +32,41 @@ if (!empty($_REQUEST['action'])) {
         case 'view':
             displayUserAdmin();
         break;
+        case 'addrole':
+            $server->processingDialog(
+                [new Application($server->pdo),'addRoleToUser'],
+                [$_REQUEST['rid'],$_REQUEST['uid']],
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
+            );
+        break;
+        case 'removerole':
+            $server->processingDialog(
+                [new Application($server->pdo),'removeRoleFromUser'],
+                [$_REQUEST['uid'],$_REQUEST['rid']],
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
+            );
+        break;
+        case 'delete':
+            $server->processingDialog(
+                [new Application($server->pdo),'deleteUser'],
+                [$_REQUEST['uid'],$_REQUEST['pid']],
+                $server->config['application-root'].'/admin/users'
+            );
+        break;
+        case 'addnotification':
+            $server->processingDialog(
+                [new Notification($server->pdo,$server->mailer),'addNotificationToUser'],
+                [$_REQUEST['nid'],$_REQUEST['uid']],
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
+            );
+        break;
+        case 'removenotification':
+            $server->processingDialog(
+                [new Notification($server->pdo,$server->mailer), 'removeNotificationFromUser'],
+                [$_REQUEST['nid'], $_REQUEST['uid']],
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
+            );
+        break;
         default: main(); break;
     }
 }
@@ -86,6 +121,7 @@ function displayAllUsers () {
 function displayUserAdmin () {
     global $server;
     include('submenu.php');
+    //Data gathering and manipulation
     $app = new Application($server->pdo);
     $notifier = new Notification($server->pdo,$server->mailer);
     $user = $app->getUserData($_REQUEST['uid']);
@@ -98,10 +134,13 @@ function displayUserAdmin () {
     foreach($notifier->getUnusedNotifications($_REQUEST['uid']) as $row) 
         array_push($unusedalerts,[$row['id'],$row['description']]);
 
+    //View starte here
     $view = $server->getViewer("Admin: Users");
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
     $view->h2("User Info ".$view->linkButton('/admin/users?action=delete&uid='.$_REQUEST['uid'].'&pid='.$user['pid'],'Delete','danger',true));
+    
+    //Users info
     $view->responsiveTableStart();
     echo "<tr><th>UID:</th><td>{$user['id']}</td></tr>\n";
     echo "<tr><th>Username:</th><td>{$user['username']}</td></tr>\n";
@@ -110,6 +149,7 @@ function displayUserAdmin () {
     echo "<tr><th>Alt. Email:</th><td>{$user['alt_email']}</td></tr>\n";
     $view->responsiveTableClose();
 
+    //Users Roles
     $view->h2("User Roles");
     $view->responsiveTableStart();
     foreach($roles as $row) {
@@ -127,6 +167,7 @@ function displayUserAdmin () {
     echo "</td></tr>\n";
     $view->responsiveTableClose();
 
+    //Users notifications
     $view->h2("User Notifications");
     $view->responsiveTableStart();
     foreach($notifications as $row) {

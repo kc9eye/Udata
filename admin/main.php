@@ -61,24 +61,3 @@ foreach($server->config as $index => $value) {
     }
 }
 $view->responsiveTableClose();
-
-//Error log
-$view->hr();
-$view->h2("Error Log");
-$view->br();
-if (file_exists($server->config['error-log-file-path'])) {
-    $view->linkButton('/admin/errlog?id=reset','Reset Log File','danger');
-    $view->br();
-    $log = simplexml_load_file($server->config['error-log-file-path']);
-    $entries = $log->xpath('error');
-    $entries = array_reverse($entries);
-    echo "<div class='list-group' style='height:300px;overflow-y:scroll;width:100%'>";
-    foreach($entries as $err) {
-        echo "<a href='{$view->PageData['approot']}/admin/errlog?id={$err->id}' class='list-group-item list-group-item-action'>";
-        $view->bold("Error:&nbsp;");
-        echo "{$err->id} <span class='badge badge-info float-right m-2'>{$err->date}</span></a>";
-    }
-    echo "</div>";
-}
-$view->addScrollTopBtn();
-$view->footer();

@@ -162,7 +162,7 @@ Class ViewMaker implements ViewWidgets {
             echo "<div class='dropdown-menu' aria-labelledby='navbarDropDown'>";
             if ($this->ViewData['admin']) {
                 echo "<a class='dropdown-item' href='{$this->PageData['approot']}/admin/main'>";
-                echo "<span class='oi oi-cog' title='settings' aria-hidden='true'></span>Admin Settings</a>";
+                echo "<span class='oi oi-cog' title='settings' aria-hidden='true'></span>&#160;Settings</a>";
             }
             echo "<a class='dropdown-item' href='{$this->PageData['approot']}/user/myaccount'>";
             echo "<span class='oi oi-dashboard' title='dashboard' aria-hidden='true'></span>&#160;My Account</a>";
