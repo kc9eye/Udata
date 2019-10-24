@@ -56,15 +56,16 @@ if (!empty($_REQUEST['action'])) {
             }
             displayCell();
         break;
-    }
-}
-elseif (!empty($_REQUEST['cell_search'])) {
-    $wc = new WorkCells($server->pdo);
-    if (!empty(($pntr = $wc->searchCells($_REQUEST['cell_search'])))) {
-        displaySearchBar($pntr);
-    }
-    else {
-        displaySearchBar("{$_REQUEST['cell_search']} not found.");
+        case 'search':
+            $wc = new WorkCells($server->pdo);
+            if (!empty(($pntr = $wc->searchCells($_REQUEST['cell_search'])))) {
+                displaySearchBar($pntr);
+            }
+            else {
+                displaySearchBar("{$_REQUEST['cell_search']} not found.");
+            }
+        break;
+        default: displaySearchBar();
     }
 }
 else {
