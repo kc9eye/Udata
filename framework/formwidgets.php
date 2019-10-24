@@ -153,11 +153,11 @@ Class FormWidgets {
         if ($this->wysiwyg) {
             echo "<script src='{$this->third_party}/tinymce/tinymce.min.js'></script>";
             echo "<script>";
-            echo "  $(document).ready(function(){";
-            echo "      tinymce.init({";
-            echo "          selector: 'textarea', plugins: 'autoresize'";
-            echo "      });";
-            echo "  });";
+            echo "$(document).ready(function(){";
+            echo "tinymce.init({";
+            echo "selector: 'textarea', plugins: 'autoresize'";
+            echo "});";
+            echo "});";
             echo "</script>";
         }   
         if ($this->uploadhack) {

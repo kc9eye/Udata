@@ -171,6 +171,7 @@ function displayOngoingReview ($revid) {
         echo "</div>";
     }
     $view->endBtnCollapse();
+    
     //Your appraisal
     $myArray = $review->getUserAppraisal($server->currentUserID);
     $form->newForm('My Appraisal');
