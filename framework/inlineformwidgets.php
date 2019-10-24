@@ -142,6 +142,16 @@ class InlineFormWidgets extends FormWidgets {
             echo "$(document).ready(function(){ $('#{$this->formid}').validate(".str_replace('"','',json_encode(['rules'=>$this->rules],JSON_FORCE_OBJECT)).");});";
             echo "</script>";
         }
+        if ($this->wysiwyg) {
+            echo "<script src='{$this->third_party}/tinymce/tinymce.min.js'></script>";
+            echo "<script>";
+            echo "$(document).ready(function(){";
+            echo "tinymce.init({";
+            echo "selector: 'textarea', plugins: 'autoresize'";
+            echo "});";
+            echo "});";
+            echo "</script>";
+        } 
         else {
             echo "</form>";
         }
