@@ -17,12 +17,16 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-
-if (!empty($_REQUEST['emp_search'])) {
-    $model = new Employees($server->pdo);
-    $formater = new SearchStringFormater();
-    $results = $model->searchEmployees($formater->formatSearchString($_REQUEST['emp_search']));
-    resultsDisplay($results);
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'search':
+            $model = new Employees($server->pdo);
+            $formater = new SearchStringFormater();
+            $results = $model->searchEmployees($formater->formatSearchString($_REQUEST['emp_search']));
+            resultsDisplay($results);
+        break;
+        default: searchDisplay(); break;
+    }
 }
 else searchDisplay();
 
