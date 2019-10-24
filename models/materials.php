@@ -372,7 +372,8 @@ class Materials {
                 (SELECT number FROM material WHERE id = a.partid) as number,
                 (SELECT description FROM material WHERE id = a.partid) as description,
                 qty as quantity,
-                _date as date
+                _date as date,
+                type
             FROM discrepancies as a
             WHERE (SELECT to_tsvector(description) FROM products WHERE product_key = a.prokey)
             ||':'||(SELECT search||':'||to_tsvector(number) FROM material WHERE id = a.partid)
