@@ -1,6 +1,6 @@
 <?php
 /* This file is part of UData.
- * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
+ * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,91 +17,141 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-$server->userMusthavePermission('adminAll');
+$server->userMustHavePermission('adminAll');
 
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
-        case 'addrole':
+        case 'search':
             $app = new Application($server->pdo);
+            $results = $app->searchUsers($_REQUEST['user_search']);
+            main($results);
+        break;
+        case 'listall':
+            displayAllUsers();
+        break;
+        case 'view':
+            displayUserAdmin();
+        break;
+        case 'addrole':
             $server->processingDialog(
-                [$app,'addRoleToUser'],
+                [new Application($server->pdo),'addRoleToUser'],
                 [$_REQUEST['rid'],$_REQUEST['uid']],
-                $server->config['application-root'].'/admin/users?uid='.$_REQUEST['uid']
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
             );
         break;
         case 'removerole':
-            $app = new Application($server->pdo);
             $server->processingDialog(
-                [$app,'removeRoleFromUser'],
+                [new Application($server->pdo),'removeRoleFromUser'],
                 [$_REQUEST['uid'],$_REQUEST['rid']],
-                $server->config['application-root'].'/admin/users?uid='.$_REQUEST['uid']
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
             );
         break;
         case 'delete':
-            $app = new Application($server->pdo);
             $server->processingDialog(
-                [$app,'deleteUser'],
+                [new Application($server->pdo),'deleteUser'],
                 [$_REQUEST['uid'],$_REQUEST['pid']],
-                $server->config['application-root'].'/admin/main'
+                $server->config['application-root'].'/admin/users'
             );
         break;
         case 'addnotification':
-            $notify = new Notification($server->pdo,$server->mailer);
             $server->processingDialog(
-                [$notify,'addNotificationToUser'],
+                [new Notification($server->pdo,$server->mailer),'addNotificationToUser'],
                 [$_REQUEST['nid'],$_REQUEST['uid']],
-                $server->config['application-root'].'/admin/users?uid='.$_REQUEST['uid']
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
             );
         break;
         case 'removenotification':
-            $notify = new Notification($server->pdo,$server->mailer);
             $server->processingDialog(
-                [$notify, 'removeNotificationFromUser'],
+                [new Notification($server->pdo,$server->mailer), 'removeNotificationFromUser'],
                 [$_REQUEST['nid'], $_REQUEST['uid']],
-                $server->config['application-root'].'/admin/users?uid='.$_REQUEST['uid']
+                $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
             );
         break;
-        default:
-            displayUser();
-        break;
+        default: main(); break;
     }
 }
-else 
-    displayUser();
+else {
+    main();
+}
 
-function displayUser () {
+function main ($search_results = null) {
+    global $server;
+    include('submenu.php');
+    $view = $server->getViewer('Admin: Users');
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->sideDropDownMenu($submenu);
+    $view->h1("User Account Adminstration",true);
+    $view->linkButton('/admin/users?action=listall','List All Users','info');
+    $view->br();
+    echo "&#160;";
+    $form->fullPageSearchBar('user_search','Search Users');
+    if (!is_null($search_results)) {
+        if (empty($search_results)) $view->bold('Nothing Found');
+        else {
+             $view->responsiveTableStart();
+            foreach($search_results as $row) 
+                $view->tableRow([[
+                    "<span class='oi oi-person title='User' aria-hidden='true'></span>&#160;<a href='{$view->PageData['approot']}/admin/users?action=view&uid={$row['id']}'>{$row['firstname']} {$row['lastname']}</a>",
+                    "{$row['username']}"
+                ]]);
+            $view->responsiveTableClose();
+        }
+    }
+    $view->footer();
+}
+
+function displayAllUsers () {
     global $server;
     include('submenu.php');
     $app = new Application($server->pdo);
-    $notify = new Notification($server->pdo,$server->mailer);
+    $view = $server->getViewer('Admin: Users');
+    $view->sideDropDownMenu($submenu);
+    $view->h1("User Account Administartion");
+    $view->responsiveTableStart();
+    foreach($app->getUserList() as $row) {
+        $view->tableRow([[
+            "<span class='oi oi-person' title='User' aria-hidden='true'></span>&#160;<a href='{$view->PageData['approot']}/admin/users?action=view&uid={$row['id']}'>{$row['firstname']} {$row['lastname']}</a>",
+            $row['username']
+        ]]);
+    }
+    $view->responsiveTableClose();
+    $view->footer();
+}
+
+function displayUserAdmin () {
+    global $server;
+    include('submenu.php');
+    //Data gathering and manipulation
+    $app = new Application($server->pdo);
+    $notifier = new Notification($server->pdo,$server->mailer);
     $user = $app->getUserData($_REQUEST['uid']);
     $roles = $app->getUserRoles($_REQUEST['uid']);
+    $notifications = $notifier->getUserNotifications($_REQUEST['uid']);
+    $unusedroles = array();
+    $unusedalerts = array();
+    foreach($app->unusedRoleSet($_REQUEST['uid']) as $row)
+        array_push($unusedroles,[$row['id'],$row['name']]);
+    foreach($notifier->getUnusedNotifications($_REQUEST['uid']) as $row) 
+        array_push($unusedalerts,[$row['id'],$row['description']]);
 
-    #this is needed for the selectBox array form
-    $rawunsed = $app->unusedRoleSet($_REQUEST['uid']);
-    $unused = [];
-    foreach($rawunsed as $array) {
-        array_push($unused, [$array['id'],$array['name']]);
-    }
-    
-    $view = $server->getViewer("Application Settings");
-    $view->sideDropDownMenu($submenu);
+    //View starte here
+    $view = $server->getViewer("Admin: Users");
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
-    $view->h3(
-        "User Info ".
-        $view->linkButton('/admin/users?action=delete&uid='.$_REQUEST['uid'].'&pid='.$user['pid'],'Delete','danger',true),
-        true
-    );
-    $view->responsiveTableStart(null,true);
+    $view->sideDropDownMenu($submenu);
+    $view->h2("User Info ".$view->linkButton('/admin/users?action=delete&uid='.$_REQUEST['uid'].'&pid='.$user['pid'],'Delete','danger',true));
+    
+    //Users info
+    $view->responsiveTableStart();
     echo "<tr><th>UID:</th><td>{$user['id']}</td></tr>\n";
     echo "<tr><th>Username:</th><td>{$user['username']}</td></tr>\n";
     echo "<tr><th>First Name:</th><td>{$user['firstname']}</td></tr>\n";
     echo "<tr><th>Last Name:</th><td>{$user['lastname']}</td></tr>\n";
     echo "<tr><th>Alt. Email:</th><td>{$user['alt_email']}</td></tr>\n";
-    $view->responsiveTableClose(true);
+    $view->responsiveTableClose();
 
-    $view->h3("User Roles",true);
-    $view->responsiveTableStart(null,true);
+    //Users Roles
+    $view->h2("User Roles");
+    $view->responsiveTableStart();
     foreach($roles as $row) {
         echo "<tr><td>{$row['name']}</td><td>";
         $view->trashBtnSm('/admin/users?action=removerole&rid='.$row['id'].'&uid='.$_REQUEST['uid']);
@@ -111,19 +161,16 @@ function displayUser () {
     $form->newInlineForm();
     $form->hiddenInput('action','addrole');
     $form->hiddenInput('uid',$_REQUEST['uid']);
-    $form->inlineSelectBox('rid','Add Role',$unused,true);
+    $form->inlineSelectBox('rid','Add Role',$unusedroles,true);
     $form->inlineSubmit();
     $form->endInlineForm();
     echo "</td></tr>\n";
-    $view->responsiveTableClose(true);
+    $view->responsiveTableClose();
 
-    $unused_notifications = array();
-    foreach ($notify->getUnusedNotifications($_REQUEST['uid']) as $row) {
-        array_push($unused_notifications, [$row['id'],$row['description']]);
-    }
-    $view->h3("User Notifications",true);
-    $view->responsiveTableStart(null,true);
-    foreach($notify->getUserNotifications($_REQUEST['uid']) as $row) {
+    //Users notifications
+    $view->h2("User Notifications");
+    $view->responsiveTableStart();
+    foreach($notifications as $row) {
         echo "<tr><td>{$row['description']}</td><td>";
         $view->trashBtnSm('/admin/users?action=removenotification&uid='.$_REQUEST['uid'].'&nid='.$row['id']);
         echo "</td></tr>\n";
@@ -132,10 +179,10 @@ function displayUser () {
     $form->newInlineForm();
     $form->hiddenInput('action','addnotification');
     $form->hiddenInput('uid',$_REQUEST['uid']);
-    $form->inlineSelectBox('nid',"Add Notification",$unused_notifications,true);
+    $form->inlineSelectBox('nid',"Add Notification",$unusedalerts,true);
     $form->inlineSubmit();
     $form->endInlineForm();
     echo "</td></tr>\n";
-    $view->responsiveTableClose(true);
+    $view->responsiveTableClose();
     $view->footer();
 }

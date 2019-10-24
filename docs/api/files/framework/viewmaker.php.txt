@@ -73,53 +73,106 @@ Class ViewMaker implements ViewWidgets {
      * @todo rewrite to use `echo` instead of hard coded html
      */
     public function header () {
-        echo "<!DOCTYPE html>\n";
-        echo "<html>\n";
-        echo "  <head>\n";
-        echo "      <title>{$this->ViewData['pagetitle']}</title>\n";
-        echo "      <meta charset='utf-8' />\n";
-        echo "      <meta name='viewport' content='width=device-width, initial-scale=1' />\n";
-        echo "      <meta name='Copyright' content='2010-19 Paul W. Lane' />\n";
-        echo "      <meta name='License' content='MIT' />\n";
-        echo "      <meta name='msapplication-TileColor' content='#ffffff'>\n";
-        echo "      <meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>\n";
-        echo "      <meta name='theme-color' content='#ffffff'>\n";
-        echo "      <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' />\n";
-        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />\n";
-        echo "      <link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='60x60' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-60x60.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='72x72' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-72x72.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='76x76' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-76x76.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='114x114' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-114x114.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='120x120' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-120x120.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='144x144' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-144x144.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='152x152' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-152x152.png' />\n";
-        echo "      <link rel='apple-touch-icon' sizes='180x180' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-180x180.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='192x192'  href='{$this->PageData['wwwroot']}/images/favicons/android-icon-192x192.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='32x32' href='{$this->PageData['wwwroot']}/images/favicons/favicon-32x32.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='96x96' href='{$this->PageData['wwwroot']}/images/favicons/favicon-96x96.png' />\n";
-        echo "      <link rel='icon' type='image/png' sizes='16x16' href='{$this->PageData['wwwroot']}/images/favicons/favicon-16x16.png' />\n";
-        echo "      <link rel='manifest' href='{$this->PageData['wwwroot']}/scripts/manifest.json' />\n";
-        echo "      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>\n";
-        echo "      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>\n";
-        echo "      <script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>\n";
-        echo "      <script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>\n";
+        echo "<!DOCTYPE html>";
+        echo "<html>";
+        echo "<head>";
+        echo "<title>{$this->ViewData['pagetitle']}</title>";
+        echo "<meta charset='utf-8' />";
+        echo "<meta name='viewport' content='width=device-width, initial-scale=1' />";
+        echo "<meta name='Copyright' content='2010-19 Paul W. Lane' />";
+        echo "<meta name='License' content='MIT' />";
+        echo "<meta name='msapplication-TileColor' content='#ffffff'>";
+        echo "<meta name='msapplication-TileImage' content='{$this->PageData['wwwroot']}/images/favicons/ms-icon-144x144.png'>";
+        echo "<meta name='theme-color' content='#ffffff'>";
+        echo "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>";
+        echo "<link rel='stylesheet' href='{$this->PageData['approot']}/third-party/open-iconic-master/font/css/open-iconic-bootstrap.css' />";
+        echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/dark-header.css' />";
+        echo "<link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/print.css' />";
+        echo "<link rel='apple-touch-icon' sizes='57x57' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-57x57.png' />";
+        echo "<link rel='apple-touch-icon' sizes='60x60' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-60x60.png' />";
+        echo "<link rel='apple-touch-icon' sizes='72x72' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-72x72.png' />";
+        echo "<link rel='apple-touch-icon' sizes='76x76' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-76x76.png' />";
+        echo "<link rel='apple-touch-icon' sizes='114x114' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-114x114.png' />";
+        echo "<link rel='apple-touch-icon' sizes='120x120' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-120x120.png' />";
+        echo "<link rel='apple-touch-icon' sizes='144x144' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-144x144.png' />";
+        echo "<link rel='apple-touch-icon' sizes='152x152' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-152x152.png' />";
+        echo "<link rel='apple-touch-icon' sizes='180x180' href='{$this->PageData['wwwroot']}/images/favicons/apple-icon-180x180.png' />";
+        echo "<link rel='icon' type='image/png' sizes='192x192'  href='{$this->PageData['wwwroot']}/images/favicons/android-icon-192x192.png' />";
+        echo "<link rel='icon' type='image/png' sizes='32x32' href='{$this->PageData['wwwroot']}/images/favicons/favicon-32x32.png' />";
+        echo "<link rel='icon' type='image/png' sizes='96x96' href='{$this->PageData['wwwroot']}/images/favicons/favicon-96x96.png' />";
+        echo "<link rel='icon' type='image/png' sizes='16x16' href='{$this->PageData['wwwroot']}/images/favicons/favicon-16x16.png' />";
+        echo "<link rel='manifest' href='{$this->PageData['wwwroot']}/scripts/manifest.json' />";
+        echo "<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>";
+        echo "<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>";
+        echo "<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>";
+        echo "<script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>";
+        echo "<script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>";
         if (!empty($this->ViewData['theme']))
-            echo "      <script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script>\n";
+            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
-                echo "{$insert}\n";
+                echo "{$insert}";
             }
         }
-        echo "</head>\n";
-        echo "<body>\n";
-        echo "  <div class='page-header' id='template-header'>\n";
-        echo "      <h1>{$this->PageData['company-name']}</h1>\n";
-        echo "      <span>{$this->PageData['company-motto']}</span>\n";
-        echo "  </div>\n";
+        echo "</head>";
+        echo "<body>";
+        echo "<div class='page-header' id='template-header'>";
+        echo "<h1>{$this->PageData['company-name']}</h1>";
+        echo "<span>{$this->PageData['company-motto']}</span>";
+        echo "</div>";
         $this->navBar();
-        echo "  <div class='container-float view-content'>\n";
+        echo "<div class='container-float view-content'>";
+    }
+
+    
+    /**
+     * Generates the upper interface view navigation bar.
+     * 
+     * This method should not be called standalone as the `ViewMaker::header()`
+     * method calls it as part of the standard interface. It is a seperate method
+     * only as it would make the header method overly complex.
+     * @uses ViewMaker::PageData
+     * @uses ViewMaker::ViewData
+     * @uses ViewMaker::security
+     * @uses ViewMaker::config
+     * @return Void
+     */
+    public function navBar () {
+        echo "<nav class='navbar navbar-expand-lg bg-dark navbar-dark sticky-top'>";
+        echo "<a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>";
+        echo "<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#toggledNavSm' aria-controls='toggledNavSm' aria-expanded='false' aria-label='Toggle navigation'>";
+        echo "<span class='navbar-toggler-icon'></span>";
+        echo "</button>";
+        echo "<div class='collapse navbar-collapse' id='toggledNavSm'>";
+        echo "<ul class='navbar-nav mr-auto'>";
+        foreach($this->PageData['navbar-links'] as $name=>$link) {
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}{$link}'>{$name}</a></li>";
+        }
+        echo "</ul>";
+        echo "<ul class='navbar-nav'>";
+        if (is_null($this->ViewData['user'])) {
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}/user/createaccount'>Create Account</a></li>";
+            echo "<li class='nav-item'><a class='nav-link' href='{$this->PageData['approot']}/user/login'>Sign In</a></li>";
+        }
+        else {
+            echo "<li class='nav-item dropdown'>";
+            echo "<a class='nav-link dropdown-toggle' id='navbarDropDown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'>";
+            echo "<span class='oi oi-person' title='person' aria-hidden='true'></span>&#160;";
+            echo "{$this->ViewData['user']->getFullName()}</a>";
+            echo "<div class='dropdown-menu' aria-labelledby='navbarDropDown'>";
+            if ($this->ViewData['admin']) {
+                echo "<a class='dropdown-item' href='{$this->PageData['approot']}/admin/main'>";
+                echo "<span class='oi oi-cog' title='settings' aria-hidden='true'></span>Admin Settings</a>";
+            }
+            echo "<a class='dropdown-item' href='{$this->PageData['approot']}/user/myaccount'>";
+            echo "<span class='oi oi-dashboard' title='dashboard' aria-hidden='true'></span>&#160;My Account</a>";
+            echo "<a class='dropdown-item' href='{$this->PageData['approot']}/user/logout'>";
+            echo "<span class='oi oi-delete' title='delete' aria-hidden='true'></span>&#160;Log Out</a>";
+            echo "</div>";        
+        }
+        echo "</ul>";
+        echo "</div>";
+        echo "</nav>";
     }
 
     /**
@@ -135,116 +188,57 @@ Class ViewMaker implements ViewWidgets {
      */
     public function footer (Array $script_links = null) {
         if ($this->PageData['sidenav']) {
-            echo "</div></div>\n";
+            echo "</div></div>";
         }
-        echo "</div>\n";
+        echo "</div>";
         if (!empty($_SESSION['controller-security'])) {
-            echo "<div class='panel panel-default' id='admin-perms'>\n";
-            echo "<div class='panel-heading'>\n";
+            echo "<div class='panel panel-default' id='admin-perms'>";
+            echo "<div class='panel-heading'>";
             echo htmlentities('Roles & Permissions on this Page');
-            echo "</div><div class='panel-body'>\n";
+            echo "</div><div class='panel-body'>";
             $displayed = null;
             foreach($_SESSION['controller-security'] as $i=>$y) {
                 if ($i == 'required') {
-                    echo "<strong>Required for Access:</strong>\n";
-                    echo "<ul class='list-group'>\n";
-                    echo "<li class='list-group-item'>{$y}</li>\n";
-                    echo "</ul>\n";
+                    echo "<strong>Required for Access:</strong>";
+                    echo "<ul class='list-group'>";
+                    echo "<li class='list-group-item'>{$y}</li>";
+                    echo "</ul>";
                 }
                 if ($i == 'roles') {
-                    echo "<strong>Page Access Roles:</strong>\n";
-                    echo "<ul class='list-group'>\n";
+                    echo "<strong>Page Access Roles:</strong>";
+                    echo "<ul class='list-group'>";
                     foreach($_SESSION['controller-security']['roles'] as $role) {
                         if ($role == $displayed) continue;
-                        echo "<li class='list-group-item'>{$role}</li>\n";
+                        echo "<li class='list-group-item'>{$role}</li>";
                         $displayed = $role;
                     }
-                    echo "</ul>\n";
+                    echo "</ul>";
                 }
                 if ($i == 'permissions') {
-                    echo "<strong>Page Access Permissions:</strong>\n";
-                    echo "<ul class='list-group'>\n";
+                    echo "<strong>Page Access Permissions:</strong>";
+                    echo "<ul class='list-group'>";
                     foreach($_SESSION['controller-security']['permissions'] as $perm) {
                         if ($perm == $displayed) continue;
-                        echo "<li class='list-group-item'>{$perm}</li>\n";
+                        echo "<li class='list-group-item'>{$perm}</li>";
                         $displayed = $perm;
                     }
-                    echo "</ul>\n";
+                    echo "</ul>";
                 }
             }
-            echo "</div></div>\n";
+            echo "</div></div>";
             unset($_SESSION['controller-security']);
         }
-        echo "<div class='footer'>\n";
-        echo "UData v".APP_VERSION." Copyright (C) 2008-2018 Paul W. Lane";
+        echo "<div class='footer'>";
+        echo "UData v".APP_VERSION." Copyright (C) 2008-2019 Paul W. Lane";
         $this->insertTab(2);
-        echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>\n";
-        echo "</div>\n";
+        echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>";
+        echo "</div>";
         if (!is_null($script_links)) {
             foreach($script_links as $link) {
-                echo "<script src='".$link."'></script>\n";
+                echo "<script src='".$link."'></script>";
             }
         }
-        echo "</body>\n</html>\n";
-    }
-
-    /**
-     * Generates the upper interface view navigation bar.
-     * 
-     * This method should not be called standalone as the `ViewMaker::header()`
-     * method calls it as part of the standard interface. It is a seperate method
-     * only as it would make the header method overly complex.
-     * @uses ViewMaker::PageData
-     * @uses ViewMaker::ViewData
-     * @uses ViewMaker::security
-     * @uses ViewMaker::config
-     * @return Void
-     */
-    public function navBar () {
-        echo "  <nav class='navbar navbar-inverse'>\n";
-        echo "      <div class='container-fluid'>\n";
-        echo "          <div class='navbar-header'>\n";
-        echo "              <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#myNavbar'>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "                  <span class='icon-bar'></span>\n";
-        echo "              </button>\n";
-        echo "              <a class='navbar-brand' href='{$this->PageData['approot']}'>{$this->PageData['home-name']}</a>\n";
-        echo "          </div>\n";
-        echo "          <div class='collapse navbar-collapse' id='myNavbar'>\n";
-        echo "              <ul class='nav navbar-nav'>\n";
-        foreach($this->PageData['navbar-links'] as $label=>$link) {
-            if (is_string($link))
-                echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
-            elseif (is_array($link)) {
-                if ($link[1]) 
-                    echo "                  <li><a href='{$link[0]}'>{$label}</a></li>\n";
-                else
-                    echo "                  <li><a href='{$this->PageData['approot']}{$link}'>{$label}</a></li>\n";
-            }
-        }
-        echo "              </ul>\n";
-        echo "              <ul class='nav navbar-nav navbar-right'>\n";
-        if (!is_null($this->ViewData['user'])) {
-            echo "              <li class='dropdown'>\n";
-            echo "                  <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span>&#160;".$this->ViewData['user']->getFullName()."&#160;<span class='caret'></span></a>\n";
-            echo "                  <ul class='dropdown-menu'>\n";
-            if ($this->ViewData['admin']) {
-                echo "                      <li><a href='{$this->PageData['approot']}/admin/main'><span class='glyphicon glyphicon-cog'></span>&#160;Site Settings</a></li>\n";
-            }
-            echo "                      <li><a href='{$this->PageData['approot']}/user/myaccount'>My Account</a></li>\n";
-            echo "                      <li><a href='{$this->PageData['approot']}/user/logout'>Log Out</a></li>\n";
-            echo "                  </ul>\n";
-            echo "              </li>\n";
-        }
-        else {
-            echo "              <li><a href='{$this->PageData['approot']}/user/createaccount'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>\n";
-            echo "              <li><a href='{$this->PageData['approot']}/user/login'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>\n";
-        }
-        echo "              </ul>\n";
-        echo "          </div>\n";
-        echo "      </div>\n";
-        echo "  </nav>\n";
+        echo "</body></html>";
     }
 
     /**
@@ -260,31 +254,31 @@ Class ViewMaker implements ViewWidgets {
      */
     public function offCanvasSideNav (Array $navLinks = null) {
         $this->PageData['sidenav'] = true;
-        echo "<div class='row'>\n";
-        echo "<div class='col-md-1 col-xs-12'>\n";
-        echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-1 col-xs-12'>";
+        echo "<button type='button' class='btn btn-lg btn-info' id='offCanvasSideNavOpen'>";
         echo "Menu<br />";
-        echo "<span class='glyphicon glyphicon-forward'></span>\n";
-        echo "</button>\n";
-        echo "<div id='offCanvasSideNav' class='offCanvasSideNav'>\n";
-        echo "<a href='javascript:void(0)' class='closebtn' id='offCanvasSideNavClose'>&times;</a>\n";
-        echo "<div class='offCanvasSideNavContent'>\n";
+        echo "<span class='glyphicon glyphicon-forward'></span>";
+        echo "</button>";
+        echo "<div id='offCanvasSideNav' class='offCanvasSideNav'>";
+        echo "<a href='javascript:void(0)' class='closebtn' id='offCanvasSideNavClose'>&times;</a>";
+        echo "<div class='offCanvasSideNavContent'>";
         if (!is_null($navLinks)) {
             foreach($navLinks as $link => $url) {
                 if (is_array($url)){
                     if ($this->security->userHasPermission($url[1])) {
-                        echo "<a href='{$url[0]}'>{$link}</a>\n";
+                        echo "<a href='{$url[0]}'>{$link}</a>";
                     }
                 }
                 else {
-                    echo "<a href='{$url}'>{$link}</a>\n";
+                    echo "<a href='{$url}'>{$link}</a>";
                 }
             }
         }
-        echo "</div>\n";
-        echo "</div>\n";
-        echo "</div>\n";
-        echo "<div class='col-md-11 col-xs-12'>\n";        
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='col-md-11 col-xs-12'>";        
     }
 
     /**
@@ -314,30 +308,30 @@ Class ViewMaker implements ViewWidgets {
      */
     public function sideDropDownMenu (Array $links) {
         $this->PageData['sidenav'] = true;
-        echo "  <div class='row'>\n";
-        echo "      <div class='col-md-2 col-xs-12'>\n";
-        echo "          <div class='dropdown'>\n";
-        echo "              <button class='btn btn-lg btn-info dropdown-toggle' type='button' data-toggle='dropdown'>\n";
-        echo "                  Section Menu <span class='caret'></span>\n";
-        echo "              </button>\n";
-        echo "              <ul class='dropdown-menu'>\n";
+        echo "<div class='row'>";
+        echo "<div class='col-md-2 col-xs-12'>";
+        echo "<div class='dropdown'>";
+        echo "<button class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>";
+        echo "Section Menu <span class='caret'></span>";
+        echo "</button>";
+        echo "<div class='dropdown-menu'>";
         foreach($links as $item => $info) {
             if (is_array($info)) {
                 if ($this->security->userHasPermission($info[1])) {
-                    echo "                  <li><a href='{$info[0]}'>{$item}</a></li>\n";
+                    echo "<a class='dropdown-item' href='{$info[0]}'>{$item}</a>";
                 }
                 else {
-                    echo "                  <li class='disabled'>{$item}</li>\n";
+                    echo "<a class='dropdown-item disabled'>{$item}</a>";
                 }
             }
             else {
-                echo "                      <li><a href='{$info}'>{$item}</a></li>\n";
+                echo "<a class='dropdown-item' href='{$info}'>{$item}</a>";
             }
         }
-        echo "              </ul>\n";
-        echo "          </div>\n";
-        echo "      </div>\n";
-        echo "  <div class='col-md-10 col-xs-12 view-content'>\n";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='col-md-10 col-xs-12 view-content'>";
     }
 
     /**
@@ -396,26 +390,11 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function addScrollTopBtn () {
-        echo "<button type='button'
-                class='btn btn-lg btn-info'
-                onclick='document.body.scrollTop=0;document.documentElement.scrollTop=0;'
-                id='scrollTopBtn'
-                title='Go to top'
-                style='display:none;position:fixed;bottom:20px;right:30px;z-index:99;'>
-                    <span class='glyphicon glyphicon-arrow-up'></span>&#160;Top
-            </button>
-            <script>
-                $(document).ready(function(){
-                    window.onscroll = function() {
-                        if (document.body.scrollTop > 20||document.documentElement.scrollTop > 20) {
-                            $('#scrollTopBtn').css('display','block');
-                        }
-                        else {
-                            $('#scrollTopBtn').css('display','none');
-                        }
-                    };
-                });
-            </script>";
+        echo "<button type='button' class='btn btn-primary' onclick='document.body.scrollTop=0;document.documentElement.scrollTop=0;' ";
+        echo "id='scrollTopBtn' title='Go to top' style='display:none;position:fixed;bottom:20px;right:30px;z-index:99;'>";
+        echo "<span class='oi oi-arrow-thick-top' title='arrow-thick-top' aria-hidden='true'></span>&#160;Top</button>";
+        echo "<script>$(document).ready(function(){window.onscroll = function() {if (document.body.scrollTop > 20||document.documentElement.scrollTop > 20) {";
+        echo "$('#scrollTopBtn').css('display','block');} else {\$('#scrollTopBtn').css('display','none');}};});</script>";
     }
 
     /**
@@ -441,7 +420,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function hr () {
-        echo "<hr />\n";
+        echo "<hr />";
     }
 
     /**
@@ -449,7 +428,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void
      */
     public function br () {
-        echo "<br />\n";
+        echo "<br />";
     }
 
     /**
@@ -459,9 +438,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h1 ($content, $centered=false) {
         if ($centered) 
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h1>{$content}</h1></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h1>{$content}</h1></div><div class='col-md-3'></div></div>";
         else
-            echo "<h1>{$content}</h1>\n";
+            echo "<h1>{$content}</h1>";
     }
 
     /**
@@ -471,9 +450,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h2 ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h2>{$content}</h2></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><h2>{$content}</h2></div><div class='col-md-3'></div></div>";
         else
-            echo "<h2>{$content}</h2>\n";
+            echo "<h2>{$content}</h2>";
     }
 
     /**
@@ -483,9 +462,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function h3 ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-6'><h3>{$content}</h3></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-6'><h3>{$content}</h3></div><div class='col-md-3'></div></div>";
         else
-            echo "<h3>{$content}</h3>\n";
+            echo "<h3>{$content}</h3>";
     }
 
     /**
@@ -493,10 +472,13 @@ Class ViewMaker implements ViewWidgets {
      * 
      * This is an inline method bolding.
      * @param String $content The string to encapsulate.
+     * @param Boolean $return Optionally true to return the string instead of outputting it
      * @return Void
      */
-    public function bold ($content) {
-        echo "<strong>{$content}</strong>";
+    public function bold ($content, $return = false) {
+        $string = "<strong>{$content}</strong>";
+        if ($return) return $string;
+        else echo $string;
     }
 
     /**
@@ -506,9 +488,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function bgInfoParagraph ($content, $centered=false) {
         if ($centered)
-            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-primary'>{$content}</p></div><div class='col-md-3'></div></div>\n";
+            echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><p class='bg-info text-white'>{$content}</p></div><div class='col-md-3'></div></div>";
         else
-            echo "<p class='bg-primary'>{$content}</p>\n";
+            echo "<p class='bg-info text-white'>{$content}</p>";
     }
 
     /**
@@ -519,7 +501,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Mixed Void if $return is false, String if $return true
      */
     public function printButton ($return = false) {
-        $btn = "<button class='btn btn-default' onclick='window.print();'>Print</button>\n";
+        $btn = "<button class='btn btn-secondary' onclick='window.print();'>Print</button>";
         if ($return) return $btn;
         else echo $btn;
     }
@@ -533,7 +515,7 @@ Class ViewMaker implements ViewWidgets {
      */
     public function editBtnSm ($addr, $return = false, $passthru = false) {
         $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
-        $str = "<a href='{$addr}' class='btn btn-sm btn-warning' role='button'><span class='glyphicon glyphicon-pencil'></span></a>";
+        $str = "<a href='{$addr}' class='btn btn-sm btn-warning' role='button'><span class='oi oi-pencil' title='pencil' aria-hidden='true'></span></a>";
         if ($return) return $str;
         else echo $str;
     }
@@ -547,7 +529,7 @@ Class ViewMaker implements ViewWidgets {
      */
     public function trashBtnSm ($addr, $return = false, $passthru = false) {
         $addr = $passthru ? $addr : $this->PageData['approot'].$addr;
-        $str = "<a href='{$addr}' class='btn btn-sm btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>";
+        $str = "<a href='{$addr}' class='btn btn-sm btn-danger' role='button'><span class='oi oi-trash' title='trash' aria-hidden='true'></span></a>";
         if ($return) return $str;
         else echo $str;
     }
@@ -563,15 +545,34 @@ Class ViewMaker implements ViewWidgets {
             echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><div class='table-responsive'><table class='table'>";
         }
         else {
-            echo "<div class='table-responsive'><table class='table'>\n";
+            echo "<div class='table-responsive'><table class='table'>";
         }
         if (!is_null($columnHeadings)) {
             echo "<tr>";
             foreach($columnHeadings as $heading) {
                 echo "<th>{$heading}</th>";
             }
-            echo "</tr>\n";
+            echo "</tr>";
         }
+    }
+
+    /**
+     * Outputs a table row based on the given array
+     * @param Array $rows Multi-dimensional array in the form [[cell-data,...],...]
+     * @param Boolean $return Optionally true, to return the string instead of outputting to stream
+     * @return Mixed Void if not $return, and the array will be output the stream in the for '<tr><td>cell-data</td>...</tr>
+     */
+    public function tableRow (Array $rows, $return = false) {
+        $string = "";
+        foreach($rows as $row) {
+            $string .= "<tr>";
+            foreach($row as $data) {
+                $string .= "<td>{$data}</td>";
+            }
+            $string .= "</tr>";
+        }
+        if ($return) return $string;
+        else echo $string;
     }
 
     /**
@@ -580,16 +581,16 @@ Class ViewMaker implements ViewWidgets {
      */
     public function responsiveTableClose ($centered = false) {
         if ($centered)
-            echo "</table>\n</div>\n</div><div class='col-md-3'></div></div>\n";
+            echo "</table></div></div><div class='col-md-3'></div></div>";
         else
-            echo "</table></div>\n";
+            echo "</table></div>";
     }
 
     /**
      * Outputs a link formatted as a Bootstrap info button
      * @param String $link Application centric link for the button
      * @param String $name The name to display on the button
-     * @param String $type Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'
+     * @param String $type Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'|'secondary'
      * @param Boolean $return Optional, if set true then the output is returned and not output to the stream buffer
      * @param String $target Optional target argument to launch new window, default is '_self'
      * @param Boolean $passthru Optional, if set true then the link is passed through unaltered.
@@ -600,19 +601,20 @@ Class ViewMaker implements ViewWidgets {
         $class = 'btn ';
         if (!is_null($type)) {
             switch($type) {
-                case 'default': $class .= 'btn-default'; break;
+                case 'default': $class .= 'btn-light'; break;
                 case 'primary': $class .= 'btn-primary'; break;
                 case 'success': $class .= 'btn-success'; break;
                 case 'info': $class .= 'btn-info'; break;
                 case 'warning': $class .= 'btn-warning'; break;
                 case 'danger': $class .= 'btn-danger'; break;
-                default: $class .= 'btn-info'; break;
+                case 'secondary': $class .= 'btn-secondary';break;
+                default: $class .= 'btn-info';
             }
         }
         else {
             $class .= 'btn-info';
         }
-        $string = "<a href='{$link}' class='{$class}' role='button' target='{$target}'>{$name}</a>\n";
+        $string = "<a href='{$link}' class='{$class}' role='button' target='{$target}'>{$name}</a>";
         if ($return) return $string;
         else echo $string;
     }
@@ -628,9 +630,9 @@ Class ViewMaker implements ViewWidgets {
      * @return Void This method outputs to the stream and returns nothing.
      */
     public function beginBtnCollapse ($name = 'Show/Hide Content',$id = null) {
-        if (is_null($id)) $id = uniqid();
-        echo "<button data-toggle='collapse' data-target='#{$id}' class='btn btn-default'>{$name}</button>\n";
-        echo "<div id='{$id}' class='collapse'>\n";
+        if (is_null($id)) $id = uniqid('collapse-');
+        echo "<button data-toggle='collapse' data-target='#{$id}' class='btn btn-secondary'>{$name}</button>";
+        echo "<div id='{$id}' class='collapse'>";
     }
 
     /**
@@ -639,29 +641,29 @@ Class ViewMaker implements ViewWidgets {
      * @see ViewMaker::beginBtnCollapse()
      */
     public function endBtnCollapse () {
-        echo "</div>\n";
+        echo "</div>";
     }
 
     /**
-     * Inserts a bootstrap well into the stream
-     * 
-     * Adds content encapsulated in a bootstrap well.
-     * @param String $content The content to wrapped in a well
-     * @param Boolean $centered Centers the well on page
-     * @return Void Output is sent directly to the stream and nothing is returned
+     * Inserts a bootstrap card into the stream
+     * @param String $body The body text of the card
+     * @param String $header Optional $header for the card
+     * @param String $footer Optional $footer for the card
+     * @param Boolean $centered Optional true to center the card in one of three rows on md screens
+     * @param Boolean $return Optional true to return the card, otherwise it is ouput to the buffer
+     * @return Mixed Void if $return is false, otherwise returns a String.
      */
-    public function wrapInWell ($content, $centered = false) {
-        if ($centered) {
-            echo "<div class='row'>\n";
-            echo "<div class='col-md-3'></div>\n";
-            echo "<div class='col-xs-12 col-md-6'>\n";
-        }
-        echo "<div class='well'>\n{$content}\n</div>\n";
-        if ($centered) {
-            echo "</div>\n";
-            echo "<div class='col-md-3'></div>\n";
-            echo "</div>\n";
-        }
+    public function wrapInCard ($body, $header = null, $footer = null, $centered = false, $return = false) {
+        $string = "";
+        if ($centered) $string .= "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'>";
+        $string .= "<div class='card'>";
+        if (!is_null($header)) $string .= "<div class='card-header'>{$header}</div>";
+        $string .= "<div class='card-body'><div class='card-text'>{$body}</div></div>";
+        if (!is_null($footer)) $string .= "<div class='card-footer'>{$footer}</div>";
+        $string .= "</div>";
+        if ($centered) $string .= "</div><div class='col-md-3'></div></div>";
+        if ($return) return $string;
+        else echo $string;
     }
 
     /**
@@ -670,7 +672,7 @@ Class ViewMaker implements ViewWidgets {
      * @return Void Outputs directly to the stream and returns nothing
      */
     public function wrapInPre ($content) {
-        echo "<pre class='pre-scrollable'>\n{$content}\n</pre>\n";
+        echo "<pre class='pre-scrollable'>{$content}</pre>";
     }
 
     /**
@@ -679,7 +681,7 @@ Class ViewMaker implements ViewWidgets {
      * @param Boolean $return Optional true if the method should return the image instead of inserting to the stream
      */
     public function responsiveImage ($file, $return = false) {
-        $image = "<img class='img-responsive' src='{$file}' alt='[IMAGE]' />";
+        $image = "<img class='img-fluid' src='{$file}' alt='[IMAGE]' />";
         if ($return) return $image;
         else echo $image;
     }

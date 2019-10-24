@@ -44,7 +44,7 @@ class Application {
     public function getRole ($rid = null) {
         try {
             if (is_null($rid)) {
-                $sql = 'SELECT * FROM roles';
+                $sql = 'SELECT * FROM roles ORDER BY name ASC';
                 $pntr = $this->dbh->query($sql);
                 return $pntr->fetchAll(PDO::FETCH_ASSOC);
             }
@@ -119,7 +119,8 @@ class Application {
         'SELECT perms.id,perms.name
         FROM perms
         INNER JOIN role_perms ON perms.id = role_perms.pid
-        WHERE role_perms.rid = ?';
+        WHERE role_perms.rid = ?
+        ORDER BY perms.name ASC';
         try {
             $pntr = $this->dbh->prepare($sql);
             $pntr->execute([$rid]);

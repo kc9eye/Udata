@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">451</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-559530921"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1381649766"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-559530921" class="accordion-body collapse in">
+            <div id="namespace-1381649766" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -233,8 +233,8 @@ Instance class. In so doing all the heavy lifting is done for you.</p>
                             <section class="span4">
                                                                     <a href="../classes/Indexer.html#method___construct" class="">__construct()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_header" class="">header()</a><br />
-                                                                    <a href="../classes/ViewMaker.html#method_footer" class="">footer()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_navBar" class="">navBar()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_footer" class="">footer()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_offCanvasSideNav" class="">offCanvasSideNav()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_preDebug" class="">preDebug()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_sideDropDownMenu" class="">sideDropDownMenu()</a><br />
@@ -252,11 +252,12 @@ Instance class. In so doing all the heavy lifting is done for you.</p>
                                                                     <a href="../classes/ViewMaker.html#method_editBtnSm" class="">editBtnSm()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_trashBtnSm" class="">trashBtnSm()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_responsiveTableStart" class="">responsiveTableStart()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_tableRow" class="">tableRow()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_responsiveTableClose" class="">responsiveTableClose()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_linkButton" class="">linkButton()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_beginBtnCollapse" class="">beginBtnCollapse()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_endBtnCollapse" class="">endBtnCollapse()</a><br />
-                                                                    <a href="../classes/ViewMaker.html#method_wrapInWell" class="">wrapInWell()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_wrapInCard" class="">wrapInCard()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_wrapInPre" class="">wrapInPre()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_responsiveImage" class="">responsiveImage()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_imageThumbnail" class="">imageThumbnail()</a><br />
@@ -621,6 +622,43 @@ to push data to an interface.                            </article>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_navBar" name="method_navBar" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">navBar()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">navBar() : Void</pre>
+                <p><em>Generates the upper interface view navigation bar.</em></p>
+                <p>This method should not be called standalone as the <code>ViewMaker::header()</code>
+method calls it as part of the standard interface. It is a seperate method
+only as it would make the header method overly complex.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    Void
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>ViewMaker::PageData</dd>
+                                            <dd>ViewMaker::ViewData</dd>
+                                            <dd>ViewMaker::security</dd>
+                                            <dd>ViewMaker::config</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_footer" name="method_footer" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">footer()</h3>
@@ -653,43 +691,6 @@ that may be required for you content.</p></td>
                     <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
                                                                                             <dt>Uses</dt>
                                                                 <dd>ViewMaker::sideNav</dd>
-                                                </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_navBar" name="method_navBar" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">navBar()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">navBar() : Void</pre>
-                <p><em>Generates the upper interface view navigation bar.</em></p>
-                <p>This method should not be called standalone as the <code>ViewMaker::header()</code>
-method calls it as part of the standard interface. It is a seperate method
-only as it would make the header method overly complex.</p>
-
-                
-                
-                                    <h4>Returns</h4>
-                    Void
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
-                                                                                            <dt>Uses</dt>
-                                                                <dd>ViewMaker::PageData</dd>
-                                            <dd>ViewMaker::ViewData</dd>
-                                            <dd>ViewMaker::security</dd>
-                                            <dd>ViewMaker::config</dd>
                                                 </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -1141,7 +1142,7 @@ of HTML nonbreaking spaces.</p>
             <article class="method">
                 <h3 class="public ">bold()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">bold(String  <span class="argument">$content</span>) : Void</pre>
+                <pre class="signature" style="margin-right: 54px;">bold(String  <span class="argument">$content</span>, Boolean  <span class="argument">$return = false</span>) : Void</pre>
                 <p><em>Encapsulates `$content` in an HTML strong section.</em></p>
                 <p>This is an inline method bolding.</p>
 
@@ -1151,6 +1152,11 @@ of HTML nonbreaking spaces.</p>
                                 <td>String</td>
                                 <td>$content </td>
                                 <td><p>The string to encapsulate.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optionally true to return the string instead of outputting it</p></td>
                             </tr>
                                             </table>
                 
@@ -1396,6 +1402,50 @@ of HTML nonbreaking spaces.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_tableRow" name="method_tableRow" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">tableRow()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">tableRow(Array  <span class="argument">$rows</span>, Boolean  <span class="argument">$return = false</span>) : Mixed</pre>
+                <p><em>Outputs a table row based on the given array</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$rows </td>
+                                <td><p>Multi-dimensional array in the form [[cell-data,...],...]</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optionally true, to return the string instead of outputting to stream</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Void if not $return, and the array will be output the stream in the for '<tr><td>cell-data</td>...</tr></p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_responsiveTableClose" name="method_responsiveTableClose" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">responsiveTableClose()</h3>
@@ -1455,7 +1505,7 @@ of HTML nonbreaking spaces.</p>
                                                     <tr>
                                 <td>String</td>
                                 <td>$type </td>
-                                <td><p>Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'</p></td>
+                                <td><p>Available format options 'default'|'primary'|'success'|'info'|'warning'|'danger'|'secondary'</p></td>
                             </tr>
                                                     <tr>
                                 <td>Boolean</td>
@@ -1575,32 +1625,47 @@ is called.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_wrapInWell" name="method_wrapInWell" class="anchor"></a>
+            <a id="method_wrapInCard" name="method_wrapInCard" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">wrapInWell()</h3>
+                <h3 class="public ">wrapInCard()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">wrapInWell(String  <span class="argument">$content</span>, Boolean  <span class="argument">$centered = false</span>) : Void</pre>
-                <p><em>Inserts a bootstrap well into the stream</em></p>
-                <p>Adds content encapsulated in a bootstrap well.</p>
+                <pre class="signature" style="margin-right: 54px;">wrapInCard(String  <span class="argument">$body</span>, String  <span class="argument">$header = null</span>, String  <span class="argument">$footer = null</span>, Boolean  <span class="argument">$centered = false</span>, Boolean  <span class="argument">$return = false</span>) : Mixed</pre>
+                <p><em>Inserts a bootstrap card into the stream</em></p>
+                
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>String</td>
-                                <td>$content </td>
-                                <td><p>The content to wrapped in a well</p></td>
+                                <td>$body </td>
+                                <td><p>The body text of the card</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$header </td>
+                                <td><p>Optional $header for the card</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$footer </td>
+                                <td><p>Optional $footer for the card</p></td>
                             </tr>
                                                     <tr>
                                 <td>Boolean</td>
                                 <td>$centered </td>
-                                <td><p>Centers the well on page</p></td>
+                                <td><p>Optional true to center the card in one of three rows on md screens</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optional true to return the card, otherwise it is ouput to the buffer</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    Void
-                                            &mdash; <p>Output is sent directly to the stream and nothing is returned</p>
+                    Mixed
+                                            &mdash; <p>Void if $return is false, otherwise returns a String.</p>
                                     				
                             </article>
         </div>
@@ -2027,7 +2092,7 @@ is called.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 9th, 2019 at 14:45.
+                    on October 23rd, 2019 at 13:05.
                 </section>
             </section>
         </section>
