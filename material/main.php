@@ -21,15 +21,15 @@ $server->userMustHavePermission('viewMaterial');
 
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
+        case 'search':
+            $materials = new Materials($server->pdo);
+            $formater = new SearchStringFormater($_REQUEST['mat_search']);
+            searchDisplay($materials->searchMaterial($formater->formatedString));
+        break;
         default:
             searchDisplay();
         break;
     }
-}
-elseif (!empty($_REQUEST['mat_search'])) {
-    $materials = new Materials($server->pdo);
-    $formater = new SearchStringFormater($_REQUEST['mat_search']);
-    searchDisplay($materials->searchMaterial($formater->formatedString));
 }
 else {
     searchDisplay();
