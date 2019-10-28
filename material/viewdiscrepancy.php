@@ -27,7 +27,7 @@ if (!empty($_REQUEST['action'])) {
             $discrepancies = $materials->searchDiscrepancies($search_string->formatedString);
             resultsDisplay($discrepancies);
         break;
-        case view:
+        case 'view':
             $discrepancy = new MaterialDiscrepancy($server->pdo,$_REQUEST['id']);
             discrepancyDisplay($discrepancy);
         break;
