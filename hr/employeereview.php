@@ -164,8 +164,9 @@ function displayOngoingReview ($revid) {
     else {
         echo "<div class='card bg-light'>"; 
         foreach($otherappraisals as $row) {
-             echo "<div class='card-header bg-info text-white'>Reviewers Appraisal</div>";
-            echo "<div class='panel-text'>{$row['comments']}</div>";
+            echo "<div class='card-header bg-info text-white'>Reviewers Appraisal</div>";
+            echo "<div class='card-body'>";
+            echo "<div class='card-text'>{$row['comments']}</div>";
             echo "</div>";
         }
         echo "</div>";
