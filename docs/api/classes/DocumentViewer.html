@@ -116,7 +116,7 @@
                             </li>
                             <li>
                                 <a href="../reports/deprecated.html">
-                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">1</span>
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
                                 </a>
                             </li>
                         </ul>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2146218037"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1220323443"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-2146218037" class="accordion-body collapse in">
+            <div id="namespace-1220323443" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -306,6 +306,7 @@ else {
                                                                     <a href="../classes/ViewMaker.html#method_h2" class="">h2()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_h3" class="">h3()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_bold" class="">bold()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_inlineList" class="">inlineList()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_bgInfoParagraph" class="">bgInfoParagraph()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_printButton" class="">printButton()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_editBtnSm" class="">editBtnSm()</a><br />
@@ -319,7 +320,7 @@ else {
                                                                     <a href="../classes/ViewMaker.html#method_wrapInCard" class="">wrapInCard()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_wrapInPre" class="">wrapInPre()</a><br />
                                                                     <a href="../classes/ViewMaker.html#method_responsiveImage" class="">responsiveImage()</a><br />
-                                                                    <a href="../classes/ViewMaker.html#method_imageThumbnail" class="">imageThumbnail()</a><br />
+                                                                    <a href="../classes/ViewMaker.html#method_imageThumbnail" class="deprecated">imageThumbnail()</a><br />
                                                                     <a href="../classes/DocumentViewer.html#method_setDocument" class="">setDocument()</a><br />
                                                                     <a href="../classes/DocumentViewer.html#method_displayDoc" class="">displayDoc()</a><br />
                                                                     <a href="../classes/DocumentViewer.html#method_editDisplay" class="">editDisplay()</a><br />
@@ -1572,6 +1573,50 @@ of HTML nonbreaking spaces.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_inlineList" name="method_inlineList" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inlineList()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inlineList(Array  <span class="argument">$list</span>, Boolean  <span class="argument">$return = false</span>) : Mixed</pre>
+                <p><em>Outputs a given array as an unordered inline list</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$list </td>
+                                <td><p>In the form ['list-item','list-item',...]</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$return </td>
+                                <td><p>Optional true to return the list as a string, otherwise output to buffer</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>Void without $return, otherwise string.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_bgInfoParagraph" name="method_bgInfoParagraph" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">bgInfoParagraph()</h3>
@@ -2157,7 +2202,7 @@ is called.</p>
         <div class="span8 content class">
             <a id="method_imageThumbnail" name="method_imageThumbnail" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">imageThumbnail()</h3>
+                <h3 class="public deprecated">imageThumbnail()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">imageThumbnail(String  <span class="argument">$file</span>, Boolean  <span class="argument">$return = false</span>) </pre>
                 <p><em>Inserts an image thumbnail to stream, or returns as such</em></p>
@@ -2183,7 +2228,11 @@ is called.</p>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    replaced by Bootstrap 4 card class
+                </aside>
+                        <dl>
                                                     <dt>Inherited from</dt>
                     <dd><a href="../classes/ViewMaker.html"><div class="path-wrapper">\ViewMaker</div></a></dd>
                                                             </dl>
@@ -2669,7 +2718,7 @@ and the access permissions given in the $access property</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 23rd, 2019 at 13:05.
+                    on October 28th, 2019 at 18:55.
                 </section>
             </section>
         </section>
