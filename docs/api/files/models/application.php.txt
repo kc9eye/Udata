@@ -51,11 +51,11 @@ class Application {
             else {
                 $sql = 'SELECT * FROM roles WHERE id = ?';
                 $pntr = $this->dbh->prepare($sql);
-                $pntr->execute([$rid]);
+                if (!$pntr->execute([$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
                 return $pntr->fetchAll(PDO::FETCH_ASSOC);
             }
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
         }
@@ -71,11 +71,11 @@ class Application {
         try {
             $this->dbh->beginTransaction();
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([':id'=>uniqid(),':name'=>$role]);
+            if (!$pntr->execute([':id'=>uniqid(),':name'=>$role])) throw new Exception(print_r($pntr->errorInfo(),true));
             $this->dbh->commit();
             return true;
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             $this->dbh->rollBack();
             trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
@@ -97,12 +97,12 @@ class Application {
             $this->dbh->beginTransaction();
             foreach ($sql as $statement) {
                 $pntr = $this->dbh->prepare($statement);
-                $pntr->execute([$rid]);
+                if (!$pntr->execute([$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
             }
             $this->dbh->commit();
             return true;
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
@@ -117,16 +117,16 @@ class Application {
     public function getPermsFromRole ($rid) {
         $sql = 
         'SELECT perms.id,perms.name
-        FROM perms
-        INNER JOIN role_perms ON perms.id = role_perms.pid
-        WHERE role_perms.rid = ?
-        ORDER BY perms.name ASC';
+         FROM perms
+         INNER JOIN role_perms ON perms.id = role_perms.pid
+         WHERE role_perms.rid = ?
+         ORDER BY perms.name ASC';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$rid]);
+            if (!$pntr->execute([$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
         }
@@ -143,11 +143,11 @@ class Application {
         try {
             $this->dbh->beginTransaction();
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([':permid'=>$permid,':rid'=>$rid]);
+            if (!$pntr->execute([':permid'=>$permid,':rid'=>$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
             $this->dbh->commit();
             return true;
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             $this->dbh->rollBack();
             trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
@@ -165,7 +165,7 @@ class Application {
         try{
             $this->dbh->beginTransaction();
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([':permid'=>$permid,':rid'=>$rid]);
+            if (!$pntr->execute([':permid'=>$permid,':rid'=>$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
             $this->dbh->commit();
             return true;
         }
@@ -188,10 +188,10 @@ class Application {
              )';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$uid]);
+            if (!$pntr->execute([$uid])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -212,7 +212,7 @@ class Application {
             else {
                 $sql = 'SELECT * FROM perms WHERE id = ?';
                 $pntr = $this->dbh->prepare($sql);
-                $pntr->execute([$permid]);
+                if (!$pntr->execute([$permid])) throw new Exception(print_r($pntr->errorInfo(),true));
                 return $pntr->fetchAll(PDO::FETCH_ASSOC);
             }
         }
@@ -232,7 +232,7 @@ class Application {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':id'=>uniqid(),':name'=>$name])) {
-                throw new Exception("Failed to insert: {$sql}");
+                throw new Exception(print_r($pntr->errorInfo(),true));
             }
             return true;
         }
@@ -256,7 +256,7 @@ class Application {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([$permid])) {
-                throw new Exception("Failed to delete: {$sql}");
+                throw new Exception(print_r($pntr->errorInfo(),true));
             }
             return true;
         }
@@ -285,10 +285,10 @@ class Application {
                  )';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$rid]);
+            if (!$pntr->execute([$rid])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -310,7 +310,7 @@ class Application {
         
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$search_term]);
+            if (!$pntr->execute([$search_term])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (PDOException $e) {
@@ -332,7 +332,7 @@ class Application {
         $sql = 'SELECT * FROM user_accts WHERE id = ?';
         try{
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$uid]);
+            if (!$pntr->execute([$uid])) throw new Exception(print_r($pntr->errorInfo(),true));
             if (count(($data = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
                 return false;
             }
@@ -340,7 +340,7 @@ class Application {
                 return $data[0];
             }
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -358,10 +358,10 @@ class Application {
              WHERE user_roles.uid = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$uid]);
+            if (!$pntr->execute([$uid])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -378,7 +378,7 @@ class Application {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':rid'=>$rid,':uid'=>$uid])) {
-                throw new Exception("Insert failed: {$sql}");
+                throw new Exception(print_r($pntr->errorInfo(),true));
             }
             return true;
         }
@@ -403,7 +403,7 @@ class Application {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':uid'=>$uid, ':rid'=>$rid])) {
-                throw new Exception("Delete failed: {$sql}");;
+                throw new Exception(print_r($pntr->errorInfo(),true));;
             }
             return true;
         }
@@ -434,7 +434,7 @@ class Application {
             for($cnt = 0; $cnt < count($sql); $cnt++) {
                 $pntr = $this->dbh->prepare($sql[$cnt]);
                 if (!$pntr->execute($data[$cnt])) {
-                    throw new Exception("Delete failed: {$sql[$cnt]}");
+                    throw new Exception(print_r($pntr->errorInfo(),true));
                 }
             }
             $this->dbh->commit();
@@ -448,6 +448,23 @@ class Application {
         catch (Exception $e) {
             $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns an array containing a listing of all registered users
+     * @return Array Multi-dimensional array of a users record, or false on error
+     */
+    public function getUserList () {
+        $sql = 'SELECT * FROM user_accts ORDER BY firstname ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
         }
     }

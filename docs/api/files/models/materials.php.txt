@@ -372,7 +372,8 @@ class Materials {
                 (SELECT number FROM material WHERE id = a.partid) as number,
                 (SELECT description FROM material WHERE id = a.partid) as description,
                 qty as quantity,
-                _date as date
+                _date as date,
+                type
             FROM discrepancies as a
             WHERE (SELECT to_tsvector(description) FROM products WHERE product_key = a.prokey)
             ||':'||(SELECT search||':'||to_tsvector(number) FROM material WHERE id = a.partid)
@@ -385,6 +386,34 @@ class Materials {
         catch (PDOException $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns the last 5 discrepancies added
+     * @return Array In the form [['product'=>string,'number'=>string,'description'=>string,'quantity'=>string,'date'=>string,'type'=string],...]
+     */
+    public function getRecentDiscrepancies () {
+        $sql = 
+            "SELECT 
+                id,
+                (SELECT description FROM products WHERE product_key = a.prokey) as product,
+                (SELECT number FROM material WHERE id = a.partid) as number,
+                (SELECT description FROM material WHERE id = a.partid) as description,
+                qty as quantity,
+                _date as date,
+                type
+            FROM discrepancies as a
+            ORDER BY date DESC
+            LIMIT 5";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
