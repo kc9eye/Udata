@@ -67,6 +67,7 @@ function resultsDisplay ($discrepancies) {
 
 function searchDisplay () {
     global $server,$submenu;
+    $handler = new Materials($server->pdo);
     $view = $server->getViewer('Material:Discrepancy');
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
@@ -76,6 +77,13 @@ function searchDisplay () {
     $view->br();
     $view->insertTab();
     $form->fullPageSearchBar('dis_search');
+    $view->h3('Latest Added');
+    $view->responsiveTableStart(['View','Qty','Material#','Type','Date','Product']);
+    foreach($handler->getRecentDiscrepancies() as $row) {
+        echo "<tr><td>".$view->linkButton("/material/viewdiscrepancy?action=view&id={$row['id']}","<span class='oi oi-eye'></span>",'secondary',true)."</td>";
+        echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>{$row['date']}</td><td>{$row['product']}</td></tr>";
+    }
+    $view->responsiveTableClose();
     $view->footer();
 }
 

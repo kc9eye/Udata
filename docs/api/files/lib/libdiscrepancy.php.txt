@@ -84,7 +84,7 @@ function addNewPDN ($materials,$file) {
             }
             else {
                 $body = file_get_contents($server->config['template-root'].'/email/newdiscrepancy.html');
-                $body .= "<a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$materials->addedDiscrepancyID}'>New PDN Type</a>";
+                $body .= "<a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$materials->addedDiscrepancyID}'>New PDN Type</a>";
                 $notify = new Notification($server->pdo,$server->mailer);
                 $notify->notify('New PDN','New PDN Notification', $body);
                 return true;
@@ -110,7 +110,7 @@ function addNewPDIH ($materials) {
         $notify = new Notification($server->pdo,$server->mailer);
         $body = file_get_contents($server->config['template-root'].'/email/newdiscrepancy.html');
         if (!$materials->addDiscrepancy($_REQUEST)) throw new Exception("Failed ot add discrepancy");
-        $body .= "<a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$materials->addedDiscrepancyID}'>New PDIH Type</a>";
+        $body .= "<a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$materials->addedDiscrepancyID}'>New PDIH Type</a>";
         $notify->notify('New PDIH','New PDIH Notification',$body);
         return true;
     }
