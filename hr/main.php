@@ -35,26 +35,40 @@ function searchDisplay () {
     include('submenu.php');
     $server->userMustHavePermission('viewProfiles');
     $view = $server->getViewer('HR: Profiles');
-    $view->sideDropDownMenu($submenu);
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->sideDropDownMenu($submenu);
+
+    $buttongrp['List Active Profiles'] = "window.open(\"{$view->PageData['approot']}/hr/lists?action=activeprofiles\",\"_self\");";
+    if ($server->checkPermsArray(['initEmployeeReview','reviewEmployee']))
+        $buttongrp['List Open Reviews'] = "window.open(\"{$view->PageData['approot']}/hr/lists?action=openreviews\",\"_self\");";
     if ($server->checkPermission('addNewProfile'))
-        $view->h1('Search Employee Profiles '.$view->linkButton('/hr/addnew',"<span class='glyphicon glyphicon-plus'></span> Add New Employee",'info',true));
-    else
-        $view->h1('Search Employee Profiles');
+        $buttongrp['Add New Profile'] = "window.open(\"{$view->PageData['approot']}/hr/addnew\",\"_self\");";
+
+    $view->h1('Search Employee Profiles');
+    $form->inlineButtonGroup($buttongrp);
+    $view->br();
+    echo "&#160;";
     $form->fullPageSearchBar('emp_search','Employee Search',null,false,"Search for people to add injuries,training,comments");
     $view->footer();
 }
 
 function resultsDisplay ($results) {
     global $server;
-    $view = $server->getViewer("HR: Employees");
     include('submenu.php');
+    $view = $server->getViewer("HR: Employees");
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');    
     $view->sideDropDownMenu($submenu);
-    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    
+    $buttongrp['List Active Profiles'] = "window.open(\"{$view->PageData['approot']}/hr/lists?action=activeprofiles\",\"_self\");";
+    if ($server->checkPermsArray(['initEmployeeReview','reviewEmployee']))
+        $buttongrp['List Open Reviews'] = "window.open(\"{$view->PageData['approot']}/hr/lists?action=openreviews\",\"_self\");";
     if ($server->checkPermission('addNewProfile'))
-        $view->h1('Search Employee Profiles '.$view->linkButton('/hr/addnew',"<span class='glyphicon glyphicon-plus'></span> Add New Employee",'info',true));
-    else
-        $view->h1('Search Employee Profiles');
+        $buttongrp['Add New Profile'] = "window.open(\"{$view->PageData['approot']}/hr/addnew\",\"_self\");";
+
+    $view->h1('Search Employee Profiles');
+    $form->inlineButtonGroup($buttongrp);
+    $view->br();
+    echo "&#160;";
     $form->fullPageSearchBar('emp_search','Employee Search',null,false,"Search for people to add injuries,training,comments");
     if (empty($results)) {
         $view->bold("Nothing Found matching: {$_REQUEST['emp_search']}");

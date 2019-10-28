@@ -55,7 +55,7 @@ function employeeViewDisplay () {
                 class='img-fluid'
                 src='{$server->config['application-root']}/data/files?file=".$emp->getImageFilename()."'
                 alt='[IMAGE NOT FOUND]'
-                style='max-width:200px;max-height:400px;'
+                style='max-width:400px;max-height:400px;'
              />
              </a>";
         echo "</td>";
