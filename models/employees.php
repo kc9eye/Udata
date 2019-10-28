@@ -96,6 +96,32 @@ class Employees extends Profiles {
     }
 
     /**
+     * Returns a multi-dimensional array of active employees and their UID
+     * 
+     * Meaning any profiles from the employee table not listing as terminated
+     * @return Array In the form [['eid'=>string,'name'=>string],...]
+     */
+    public function getActiveEmployeeList () {
+        $sql = 
+            "SELECT
+                employees.id as eid,
+                profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other as name
+            FROM employees
+            INNER JOIN profiles ON profiles.id = employees.pid
+            WHERE employees.end_date IS NULL
+            ORDER BY name ASC";
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
      * Handles updating a profile for an employee
      * @param Array $data The data array in the form:
      * `['eid'=>string,uid'=>string,'start_date'=>string,'status'=>string,'first'=>string,'middle'=>string,
