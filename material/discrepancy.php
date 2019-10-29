@@ -57,7 +57,7 @@ function selectedDisplay () {
     $form->labelContent('Number',$_REQUEST['number']);
     $form->labelContent('Description',$material->material['description']);
     $form->textArea('description','Discreapncy','',true);
-    $form->fileUpload(FileIndexer::UPLOAD_NAME,"Photo",null,false,true,"Only one file maybe assigned to this discrepancy");
+    $form->fileUpload(FileIndexer::UPLOAD_NAME,"Photo",null,false,true,"Only one file maybe assigned to this discrepancy, of 2MB or less size.");
     $form->submitForm('Submit',false,$view->PageData['approot'].'/material/viewdiscrepancy');
     $form->endForm();
 
