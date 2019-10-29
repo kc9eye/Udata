@@ -125,25 +125,17 @@ class Products {
      * 
      * Either returns an array of matches found or false if
      * no matches were found.
-     * @param String $search_term The terms to search for
+     * @param String $search_term A formatted search string
      * @return Mixed Either an array of found rows, or false
      */
     public function searchProducts($search_term) {
-        $search = new SearchStringFormater();
-        $search_term = $search->formatSearchString($search_term);
         $sql = 'SELECT * FROM products WHERE to_tsquery(?) @@ search';
         try {
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$search_term]);
-            $result = $pntr->fetchAll(PDO::FETCH_ASSOC);
-            if (count($result) != 0) {
-                return $result;
-            }
-            else {
-                return false;
-            }
+            if (!$pntr->execute([$search_term])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return false;
         }

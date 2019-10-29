@@ -108,7 +108,7 @@ Class ViewMaker implements ViewWidgets {
         echo "<script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>";
         echo "<script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>";
         if (!empty($this->ViewData['theme']))
-            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
+            echo "<script src='{$this->PageData['wwwroot']}/scripts/themes/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
                 echo "{$insert}";
@@ -710,5 +710,25 @@ Class ViewMaker implements ViewWidgets {
         $image = "<img class='img-thumbnail' src='{$file}' alt='[IMAGE]' />";
         if ($return) return $image;
         else echo $image;
+    }
+
+    /**
+     * Converts given time format strings to user designated ones
+     * @param String $timestamp The timestamp to format
+     * @param String $format The users format string
+     * @param Boolean $return Optionally true to return a string, otherwise result is output to the stream
+     * @return Mixed If $return then string, else void, false on error
+     */
+    public function formatTimestamp ($timestamp, $format, $return = false) {
+        try {
+            if (($unix = strtotime($timestamp)) === false) throw new Exception("Timestamp invalid english timestamp");
+            $string = date($format,$unix);
+            if ($return) return $string;
+            else echo $string;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
     }
 }

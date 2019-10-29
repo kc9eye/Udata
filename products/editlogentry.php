@@ -16,7 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once(dirname(__DIR__).'/lib/init.php');
-include('./submenu.php');
 
 $product = new Products($server->pdo);
 
@@ -51,12 +50,10 @@ if (!empty($_REQUEST['action'])) {
 
 #Controller view starts here
 $view = $server->getViewer("Products: Update QC Log");
-//$view->sideDropDownMenu($submenu);
+
 $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
 $form->newForm(
-    "<small>Edit:</small> Log Entry 
-    <a href='?action=delete&id={$_REQUEST['id']}' class='btn btn-lg btn-danger' role='button'>
-    <span class='glyphicon glyphicon-trash'></span></a>"
+    "<small>Edit:</small> Log Entry ".$view->trashBtnSm("/products/editlogentry?action=delete&id={$_REQUEST['id']}",true)
 );
 $form->hiddenInput('action','update');
 $form->hiddenInput('uid',$server->currentUserID);
@@ -65,6 +62,6 @@ $form->inputCapture('serial',htmlentities('Serial#'),$entry['serial_number'],tru
 $form->inputCapture('misc','Misc.',$entry['misc'],true);
 $form->inputCapture('ftc','FTC',$entry['ftc'],true);
 $form->inputCapture('comments','Comments',$entry['comments']);
-$form->submitForm('Update',false,$view->PageData['approot'].'/products/main');
+$form->submitForm('Update',false,$view->PageData['approot'].'/products/viewproduct?prokey='.$entry['prokey']);
 $form->endForm();
 $view->footer();

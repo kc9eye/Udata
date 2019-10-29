@@ -210,6 +210,15 @@ class User {
     }
 
     /**
+     * Returns the users choosen date format string
+     * @return String
+     */
+    public function getUserDateFormat () {
+        if (is_null($this->data['profile']['date_display'])) return 'c';
+        else return $this->data['profile']['date_display'];
+    }
+
+    /**
      * Returns an array of the users current Notificions list
      * @return Array
      */
