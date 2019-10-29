@@ -711,4 +711,24 @@ Class ViewMaker implements ViewWidgets {
         if ($return) return $image;
         else echo $image;
     }
+
+    /**
+     * Converts given time format strings to user designated ones
+     * @param String $timestamp The timestamp to format
+     * @param String $format The users format string
+     * @param Boolean $return Optionally true to return a string, otherwise result is output to the stream
+     * @return Mixed If $return then string, else void, false on error
+     */
+    public function formatTimestamp ($timestamp, $format) {
+        try {
+            if (($unix = strtotime($timestamp)) === false) throw new Exception("Timestamp invalid english timestamp");
+            $string = date($format,$unix);
+            if ($return) return $string;
+            else echo $string;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }
