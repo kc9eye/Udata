@@ -78,7 +78,7 @@ if (!empty($_REQUEST['action'])) {
         break;
         case 'complete':
             if ($_SESSION['cell_transfer']['material'] !== true) {
-                $feedback = $_SESSION['cell_transfer']['materal'];
+                $feedback = $_SESSION['cell_transfer']['material'];
                 $_SESSION['cell_transfer']['material'] = true;
                 cancelOptionDialog("Material transfer failed",'complete');
             }
@@ -129,11 +129,13 @@ function selectionDisplay () {
 function cancelOptionDialog ($feedback, $section) {
     global $server;
     $view = $server->getViewer("Options");
-    $view->wrapInWell(
-        "<h2>{$feedback}</h2><h3>Do you wish to continue?</h3>".
+    $view->wrapInCard(
+        "<h2 class='card-title'>{$feedback}</h2><h3>Do you wish to continue?</h3>".
         $view->linkButton('/cells/transfer?action='.$section,'Yes','info',true).
         "&nbsp;".
         $view->linkButton('/cells/transfer?action=abort','No','info',true),
+        "Problem Found",
+        null,
         true
     );
     $view->footer();
