@@ -719,7 +719,7 @@ Class ViewMaker implements ViewWidgets {
      * @param Boolean $return Optionally true to return a string, otherwise result is output to the stream
      * @return Mixed If $return then string, else void, false on error
      */
-    public function formatTimestamp ($timestamp, $format) {
+    public function formatTimestamp ($timestamp, $format, $return = false) {
         try {
             if (($unix = strtotime($timestamp)) === false) throw new Exception("Timestamp invalid english timestamp");
             $string = date($format,$unix);
