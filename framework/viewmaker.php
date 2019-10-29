@@ -108,7 +108,7 @@ Class ViewMaker implements ViewWidgets {
         echo "<script src='{$this->PageData['wwwroot']}/scripts/header.js'></script>";
         echo "<script>function getAppRoot() {return '{$this->PageData['approot']}';}</script>";
         if (!empty($this->ViewData['theme']))
-            echo "<script src='{$this->PageData['wwwroot']}/scripts/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
+            echo "<script src='{$this->PageData['wwwroot']}/scripts/themes/{$this->ViewData['theme']}'></script><link rel='stylesheet' href='{$this->PageData['wwwroot']}/css/theme-header.css' />";
         if (!empty($this->PageData['headinserts']) && is_array($this->PageData['headinserts'])) {
             foreach($this->PageData['headinserts'] as $insert) {
                 echo "{$insert}";

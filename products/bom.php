@@ -46,8 +46,7 @@ if (!is_null($product->pBOM)) {
     foreach($product->pBOM as $row) {
         echo "<tr><td>{$row['number']}</td><td>{$row['description']}</td><td>{$row['qty']}</td>";
         if ($edit) {
-            echo "<td><a href={$view->PageData['approot']}/products/editbom?id={$row['id']} class='btn btn-sm btn-warning' role='button'>";
-            echo "<span class='glyphicon glyphicon-pencil'></span></a></td>";
+            echo "<td>".$view->editBtnSm("/products/editbom?id={$row['id']}",true)."</td>";
         }
         echo "</tr>\n";
     }

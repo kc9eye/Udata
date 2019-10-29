@@ -29,6 +29,13 @@ if (!empty($_REQUEST['action'])) {
                 $server->config['application-root'].'/user/myaccount'
             );
         break;
+        case 'date_format':
+            $server->processingDialog(
+                [new UserServices($server),'updateAccountDateFormat'],
+                [$_REQUEST['format'],$_REQUEST['pid']],
+                $server->config['application-root'].'/user/myaccount'
+            );
+        break;
         case 'updateprofile':
             $handler = new UserServices($server);
             $server->processingDialog(
@@ -47,45 +54,42 @@ else {
 function main () {
     global $server;
     $user = new User($server->pdo,$server->currentUserID);
+
+    //Theme selection is now a glob of the themes directory. Placing a new 
+    //theme file in that directory, will be automatically included.
+    $themes = [['','Dark']];
+    foreach(glob(\INCLUDE_ROOT.'/wwwroot/scripts/themes/*.js') as $theme) {
+        array_push($themes,[basename($theme),basename($theme,'.js')]);
+    }
+
+    //Available formats for the date property
+    $formats = [
+        ['c','ISO 8601'],
+        ['Y/m/d H:i','Year/Month/Day 24H:00'],
+        ['Y-m-d H:i','Year-Month-Day 24H:00'],
+        ['m/d/Y H:i','Month/Day/Year 24H:00'],
+        ['m-d-y H:i','Month-Day-Year 24H:00'],
+        ['Y/m/d g:i a','Year/Month/Day 12H:00 am/pm'],
+        ['Y-m-d g:i a','Year-Month-Day 12H:00 am/pm'],
+        ['m/d/Y g:i a','Month/Day/Year 12H:00 am/pm'],
+        ['m-d-Y g:i a','Month-Day-Year 12H:00 am/pm'],
+        ['Y/m/d','Year/Month/Day'],
+        ['Y-m-d','Year-Month-Day'],
+        ['m/d/Y','Month/Day/Year']
+    ];
+
     $view = $server->getViewer('My Account');
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->h1('<small>UData Account Settings for:</small>'.$user->getFullName());
     $view->hr();
     $view->h3('Account Actions');
     $view->linkButton('/user/password_reset?username='.$user->getUserName(),'Reset Password','warning');
-    $view->hr();
-    $view->h3('Account Settings');
-    $view->bold('My Notifications');
-    $view->responsiveTableStart();
-    foreach($user->getUserNotifications() as $row) {
-        echo "<tr><td>{$row['description']}</td></tr>\n";
-    }
-    $view->responsiveTableClose();
 
-    $form->newInlineForm();
-    $form->hiddenInput('action','updatetheme');
-    $form->hiddenInput('pid',$user->pid);
-    $form->inlineSelectBox(
-        'theme',
-        'Theme',
-        [
-            ['','Dark'],
-            ['light-theme.js','Light'],
-            ['uhaul-theme.js','Uhaul'],
-            ['bears-theme.js','Chicago Bears'],
-            ['cubs-theme.js','Chicago Cubs'],
-            ['chsox-theme.js','Chicago White Sox'],
-            ['bulls-theme.js','Chicago Bulls'],
-            ['blackhawks-theme.js','Chicago Blackhawks'],
-            ['chfire-theme.js','Chicago Fire'],
-            ['ford-theme.js','Ford Oval'],
-            ['beach-theme.js','Lazy Beach'],
-            ['owl-theme.js','Overwatch League']
-        ]
-    );
-    $form->inlineSubmit();
-    $form->endInlineForm();
-    $view->hr();
+    $view->br();
+    $view->insertTab();
+    $view->br();
+
+    $view->beginBtnCollapse('Update Profile');
     $view->h3('Account Profile');
     $profile = $user->getProfileArray();
     $form->newForm();
@@ -108,5 +112,40 @@ function main () {
     $form->inputCapture('e_contact_number','Emergency Number',$profile['e_contact_number']);
     $form->submitForm('Update');
     $form->endForm();
-    $view->footer();
+    $view->endBtnCollapse();
+
+    $view->br();
+    $view->insertTab();
+    $view->br();
+
+    $view->bold("Change UI Theme");
+    $view->br();
+    $form->newInlineForm();
+    $form->hiddenInput('action','updatetheme');
+    $form->hiddenInput('pid',$user->pid);
+    $form->inlineSelectBox('theme','',$themes);
+    $form->inlineSubmit();
+    $form->endInlineForm();
+
+    $view->br();
+    $view->insertTab();
+    $view->br();
+
+    $view->bold("Change Date Formating");
+    $view->br();
+    $form->newInlineForm();
+    $form->hiddenInput('action','date_format');
+    $form->hiddenInput('pid',$user->pid);
+    $form->inlineSelectBox('format','',$formats);
+    $form->inlineSubmit();
+    $form->endInlineForm();
+
+    $view->hr();
+    $view->h3('Notifications I Receive');
+    $view->responsiveTableStart();
+    foreach($user->getUserNotifications() as $row) {
+        echo "<tr><td>{$row['description']}</td></tr>\n";
+    }
+    $view->responsiveTableClose();
+
 }

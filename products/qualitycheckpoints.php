@@ -55,7 +55,7 @@ echo "<div class='table-responsive'><table class='table'>\n";
 echo "<tr><th>Number</th><th>Description</th><th>Cell</th><th>Remove</th></tr>\n";
 foreach($products->getCheckPoints($_REQUEST['prokey']) as $row) {
     echo "<tr><td>{$cnt}</td><td>{$row['description']}</td><td>{$row['cell']}</td>";
-    echo "<td><a href='?action=remove&id={$row['id']}&prokey={$_REQUEST['prokey']}' class='btn btn-xs btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a></td></tr>\n";
+    echo "<td>".$view->trashBtnSm("/products/qualitycheckpoints?action=remove&id={$row['id']}&prokey={$_REQUEST['prokey']}",true)."</td></tr>";
     $cnt++;
 }
 echo "</table>,</div>\n";
