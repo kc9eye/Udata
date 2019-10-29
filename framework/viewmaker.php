@@ -715,14 +715,15 @@ Class ViewMaker implements ViewWidgets {
     /**
      * Converts given time format strings to user designated ones
      * @param String $timestamp The timestamp to format
-     * @param String $format The users format string
      * @param Boolean $return Optionally true to return a string, otherwise result is output to the stream
      * @return Mixed If $return then string, else void, false on error
      */
-    public function formatTimestamp ($timestamp, $format, $return = false) {
+    public function formatUserTimestamp ($timestamp,$return = false) {
         try {
-            if (($unix = strtotime($timestamp)) === false) throw new Exception("Timestamp invalid english timestamp");
-            $string = date($format,$unix);
+            if (empty($this->ViewData['user']->getUserDateFormat())) 
+                $string = $timestamp;
+            else
+                $string = date($this->ViewData['user']->getUserDateFormat(),strtotime($timestamp));
             if ($return) return $string;
             else echo $string;
         }

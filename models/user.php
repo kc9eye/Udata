@@ -214,8 +214,7 @@ class User {
      * @return String
      */
     public function getUserDateFormat () {
-        if (is_null($this->data['profile']['date_display'])) return 'c';
-        else return $this->data['profile']['date_display'];
+        return $this->data['profile']['date_display'];
     }
 
     /**

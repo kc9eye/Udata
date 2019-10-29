@@ -80,8 +80,8 @@ function displayOngoingReview ($revid) {
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
     $view->h1("<small>Ongoing Review for:</small> ".$review->getFullName());
-    $view->h3("<small>Began:</small> ".$view->formatTimestamp($review->getStartDate(),$view->ViewData['user']->getUserDateFormat(),true));
-    $view->h3("<small>Ends:</small> ".$view->formatTimestamp($review->getEndDate(),$view->ViewData['user']->getUserDateFormat(),true));
+    $view->h3("<small>Began:</small> ".$view->formatUserTimestamp($review->getStartDate(),true));
+    $view->h3("<small>Ends:</small> ".$view->formatUserTimestamp($review->getEndDate(),true));
     echo "<span class='bg-info text-white'>The following data represents this timeframe: <mark>".Review::DATA_TIMEFRAME."</mark></span>";
     $view->bgInfoParagraph(
         "The purpose of conducting the Performace Appraisal is to:

@@ -55,7 +55,7 @@ function resultsDisplay ($discrepancies) {
         foreach($discrepancies as $row) {
             echo "<tr><td>";
             echo "<a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$row['id']}'>{$row['id']}</a></td>";
-            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatTimestamp($row['date'],$view->ViewData['user']->getUserDateFormat(),true)."</td><td>{$row['product']}</td></tr>\n";
+            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td><td>{$row['product']}</td></tr>\n";
         }
         $view->responsiveTableClose();
     }
@@ -81,7 +81,7 @@ function searchDisplay () {
     $view->responsiveTableStart(['View','Qty','Material#','Type','Date','Product']);
     foreach($handler->getRecentDiscrepancies() as $row) {
         echo "<tr><td>".$view->linkButton("/material/viewdiscrepancy?action=view&id={$row['id']}","<span class='oi oi-eye'></span>",'secondary',true)."</td>";
-        echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatTimestamp($row['date'],$view->ViewData['user']->getUserDateFormat(),true)."</td><td>{$row['product']}</td></tr>";
+        echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td><td>{$row['product']}</td></tr>";
     }
     $view->responsiveTableClose();
     $view->footer();
@@ -98,7 +98,7 @@ function discrepancyDisplay (MaterialDiscrepancy $dis) {
     $view->responsiveTableStart(null,true);
     echo "<tr><th>ID:</th><td>{$dis->id}</td></tr>\n";
     echo "<tr><th>Type:</th><td>{$dis->type}</td></tr>\n";
-    echo "<tr><th>Date:</th><td>".$view->formatTimestamp($dis->date,$view->ViewData['user']->getUserDateFormat(),true)."</td></tr>\n";
+    echo "<tr><th>Date:</th><td>".$view->formatUserTimestamp($dis->date,true)."</td></tr>\n";
     echo "<tr><th>Author:</th><td>{$dis->author}</td></tr>\n";
     echo "<tr><th>Product:</th><td>{$dis->product}</td></tr>\n";
     echo "<tr><th>Quantity:</th><td>{$dis->quantity}</td></tr>\n";

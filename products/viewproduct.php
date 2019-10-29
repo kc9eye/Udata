@@ -58,7 +58,10 @@ else {
 }
 
 //Indicate the product and heading
-$view->h3("<small>Created by: <strong>{$product->pCreator}</strong>, on: <strong>{$product->pCreateDate}</strong></small>");
+$view->h3("<small>Created by: <strong>{$product->pCreator}</strong>, on: <strong>"
+    .$view->formatUserTimestamp($product->pCreateDate,true)
+    ."</strong></small>"
+);
 
 //Determine the users permissions for control bar
 $control_bar = [];
@@ -102,7 +105,7 @@ if ($server->checkPermission('addProduct')) {
     $view->responsiveTableStart(['Number','Checkpoint','Associated Cell','Date Implemented']);
     $cnt = 1;
     foreach($products->getCheckPoints($_REQUEST['prokey']) as $row) {
-        echo "<tr><td>{$cnt}</td><td>{$row['description']}</td><td>{$row['cell']}</td><td>".date('Y/m/d',strtotime($row['_date']))."</td></tr>";
+        echo "<tr><td>{$cnt}</td><td>{$row['description']}</td><td>{$row['cell']}</td><td>".$view->formatUserTimestamp($row['_date'],true)."</td></tr>";
         $cnt++;
     }
     $view->responsiveTableClose();
@@ -129,7 +132,7 @@ if ($server->checkPermission('viewProductLog')) {
         if ($edit) echo "<td>".$view->editBtnSm("/products/editlogentry?id={$row['id']}",true)."</td>";
         echo "<td>{$row['sequence_number']}</td>";
         echo "<td>{$row['serial_number']}</td><td>{$row['misc']}</td>";
-        echo "<td>{$row['ftc']}</td><td>".$view->formatTimestamp($row['_date'],$view->ViewData['user']->getUserDateFormat(),true)."</td>";
+        echo "<td>{$row['ftc']}</td><td>".$view->formatUserTimestamp($row['_date'],true)."</td>";
         echo "<td>{$row['comments']}</td><td>{$row['inspector']}</td></tr>\n";
     }
     $view->responsiveTableClose();

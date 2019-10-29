@@ -64,6 +64,7 @@ function main () {
 
     //Available formats for the date property
     $formats = [
+        ['','Unformated'],
         ['c','ISO 8601'],
         ['Y/m/d H:i','Year/Month/Day 24H:00'],
         ['Y-m-d H:i','Year-Month-Day 24H:00'],
