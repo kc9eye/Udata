@@ -71,13 +71,13 @@ function amendDisplay () {
     echo "<tr><td colspan='2'>";
     switch(pathinfo($server->config['data-root'].'/'.$dis->file,PATHINFO_EXTENSION)) {
         case 'gif':
-            echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
+            $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
         break;
         case 'jpg':
-            echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}' />\n";
+            $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
         break;
         case 'png':
-            echo "<img class='img-responsive' src='{$server->config['application-root']}/data/files?dis=inline&file='{$dis->file}' />\n";
+            $view->responsiveImage("{$server->config['application-root']}/data/files?dis=inline&file={$dis->file}");
         break;
         default:
             $view->linkButton('/data/files?dis=inline&file='.$dis->file,'Download File','info');
