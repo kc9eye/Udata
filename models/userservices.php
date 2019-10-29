@@ -382,6 +382,25 @@ class UserServices {
     }
 
     /**
+     * Updates a users profile date display format
+     * @param String $format A date format string, in the same form used by the PHP `date()` function
+     * @param String $pid The users Profile id (pid);
+     * @return Boolean True on success, false otherwise
+     */
+    public function updateAccountDateFormat ($format, $pid) {
+        $sql = 'UPDATE profiles SET date_display = :format WHERE id = :pid';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([':format'=>$format,':pid'=>$pid])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
      * Updates an existing user profile
      * @param Array $data The users profile data to update
      * in the form ['pid'=>string,'first'=>string,'middle'=>string,'last'=>string,'other'=>string,

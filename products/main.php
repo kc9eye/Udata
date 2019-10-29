@@ -16,50 +16,63 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 require_once(dirname(__DIR__).'/lib/init.php');
-//include('./submenu.php'); Removed leagcy build
 
 $server->userMustHavePermission('viewProduct');
 
-$products = new Products($server->pdo);
-
-$view = $server->getViewer("Production: Main");
-//$view->sideDropDownMenu($submenu); Removed leagcy build
-$view->h1("Products");
-
-$form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
-
-#Production Manager options
-if ($server->checkPermission('addProduct')) 
-    $control_panel['Add Product'] = "window.open(\"{$view->PageData['approot']}/products/addnewproduct\",\"_self\");";
-if (!empty($control_panel))
-    $form->inlineButtonGroup($control_panel);$view->hr();
-
-#search bar
-$form->fullPageSearchBar('product_search','Product Search');
-if (!empty($_REQUEST['product_search'])) {
-    if (($content = $products->searchProducts($_REQUEST['product_search'])) === false) {
-        $content = "{$_REQUEST['product_search']} not found..";
-    }
-    if (is_array($content)) {
-        echo "<div class='table-responsive'>\n<table class='table'>\n";
-        echo "<tr><th>Product</th><th>Active Production</th></tr>\n";
-        foreach($content as $row) {
-            echo "<tr>\n";
-            echo "<td><a href='{$view->PageData['approot']}/products/viewproduct?prokey={$row['product_key']}'>{$row['description']}</a></td>\n";
-            echo "<td>";
-            if ($row['active'] == 'true') {
-                echo "Yes";
-            }
-            else {
-                echo "No";
-            }
-            echo "</td>\n</tr>\n";
-        }
-        echo "</table>\n</div>\n";
-    }
-    else {
-        echo $content;
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'search':
+            $formater = new SearchStringFormater();
+            $search_term = $formater->formatSearchString($_REQUEST['product_search']);
+            $handler = new Products($server->pdo);
+            main($handler->searchProducts($search_term));
+        break;
+        default: main(); break;
     }
 }
+else main();
 
-$view->footer();
+function main ($results = null) {
+    global $server;
+    $products = new Products($server->pdo);
+
+    $view = $server->getViewer("Production: Main");
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->h1("Products");
+
+    #Production Manager options
+    if ($server->checkPermission('addProduct')) 
+        $view->linkButton('/products/addnewproduct','Add New Product','success');
+
+    $view->br();
+    $view->insertTab();
+    $view->br();
+
+    $form->fullPageSearchBar('product_search','Product Search');
+    if (!is_null($results)) {
+        $view->hr();
+        if (!empty($results)) {
+            $view->responsiveTableStart();
+            foreach($results as $row) {
+                echo "<tr><td><span class='oi oi-eye' title='View' aria-hidden='true'>&#160;";
+                echo "<a href='{$view->PageData['approot']}/products/viewproduct?prokey={$row['product_key']}'>";
+                echo "{$row['description']}</a></td></tr>";
+            }
+            $view->responsiveTableClose();
+        }
+        else $view->bold('Nothing Found');
+    }
+    else {
+        $view->hr();
+        $view->h3('Current Active Products');
+        $view->responsiveTableStart();
+        foreach($products->getActiveProducts() as $row) {
+            echo "<tr><td><span class='oi oi-eye' title='View' aria-hidden='true'></span>&#160;";
+            echo "<a href='{$view->PageData['approot']}/products/viewproduct?prokey={$row['product_key']}'>";
+            echo "{$row['description']}</a></td></tr>";
+        }
+        $view->responsiveTableClose();
+    }
+
+    $view->footer();
+}
