@@ -72,7 +72,7 @@ function transfer_safety (Array $data) {
     $wc = new WorkCells($server->pdo);
     try {
         $pntr = $server->pdo->prepare($sql);
-        if (!$pntr->execute([$data['request']['cellid']])) throw new Exception("Select failed: {$sql}");
+        if (!$pntr->execute([$data['request']['cellid']])) throw new Exception(print_r($pntr->errorInfo(),true));
         elseif (empty(($safety = $pntr->fetchAll(PDO::FETCH_ASSOC)[0]))) {
             $_SESSION['cell_transfer']['safety'] = "No safety data found to transfer.";
             return false;
