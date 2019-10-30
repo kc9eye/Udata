@@ -234,7 +234,7 @@ function viewPastInspections () {
     if (!empty($inspect->PastInspections)) {
         $view->responsiveTableStart(['Date','Inspector','Comments']);
         foreach($inspect->PastInspections as $row) {
-            echo "<tr><td>".$view->formatTimestamp($row['_date'],$view->ViewData['user']->getUserDateFormat(),true)."</td><td>{$row['inspector']}</td><td>{$row['comments']}</tr>\n";
+            echo "<tr><td>".$view->formatUserTimestamp($row['_date'],true)."</td><td>{$row['inspector']}</td><td>{$row['comments']}</tr>\n";
         }
         $view->responsiveTableClose();
     }

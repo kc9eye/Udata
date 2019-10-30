@@ -41,12 +41,8 @@ class Notification {
                 nid = (SELECT id FROM notifications WHERE description = ?)';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$notification])) throw new Exception("Select failed: {$sql}");
+            if (!$pntr->execute([$notification])) throw new Exception(print_r($pntr->errorInfo(),true));
             else $results = $pntr->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (PDOException $e) {
-            trigger_error($e->getMessage(),E_USER_WARNING);
-            return false;
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);

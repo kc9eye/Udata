@@ -60,6 +60,7 @@ function listActiveEmployeeProfiles () {
         echo "&#160;{$row['name']}</a></td></tr>";
     }
     $view->responsiveTableClose();
+    $view->addScrollTopBtn();
     $view->footer();
 }
 
@@ -81,5 +82,6 @@ function listOpenReviews () {
         }
     }
     $view->responsiveTableClose();
+    $view->addScrollTopBtn();
     $view->footer();
 }

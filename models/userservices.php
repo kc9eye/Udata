@@ -258,7 +258,7 @@ class UserServices {
             for($cnt = 0; $cnt < count($sql); $cnt++) {
                 $pntr = $this->dbh->prepare($sql[$cnt]);
                 if (!$pntr->execute($inserts[$cnt])) {
-                    throw new Exception($sql[$cnt].' failed!');
+                    throw new Exception(print_r($pntr->errorInfo(),true));
                 }
             }
             $this->dbh->commit();
@@ -288,7 +288,7 @@ class UserServices {
             $pntr = $this->dbh->prepare($sql);
             $pntr->execute(['Administrator']);
             $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/adminnewacct.html');
-            $body .= '<a href="'.$this->config['application-root'].'/admin/users?action=get&uid='.$uid.'"><strong>Click Here</strong></a>';
+            $body .= '<a href="'.$this->config['application-root'].'/admin/users?action=view&uid='.$uid.'"><strong>Click Here</strong></a>';
             foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
                 $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
             }
