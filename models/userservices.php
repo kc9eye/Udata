@@ -32,7 +32,7 @@ class UserServices {
         try {
             $sql = 'SELECT * FROM user_accts WHERE username = ?';
             $pntr = $this->dbh->prepare($sql);
-            $pntr->execute([$username]);
+            if (!$pntr->execute([$username])) throw new Exception(print_r($pntr->errorInfo(),true));
             if (count(($res = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
                 return false;
             }
@@ -50,7 +50,7 @@ class UserServices {
                 ':verify_code'=>hash('sha256',$code)
             ];
             $this->dbh->beginTransaction();
-            $pntr->execute($insert);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
 
             $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
             $body .= "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>";
