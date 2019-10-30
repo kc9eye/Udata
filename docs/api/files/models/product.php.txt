@@ -259,7 +259,7 @@ class Product {
      * Returns an array of the products production log
      * @return Array production log
      */
-    public function getproductionLog () {
+    public function getProductionLog () {
         return $this->pLog;
     }
 
