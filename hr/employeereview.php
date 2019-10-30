@@ -98,7 +98,7 @@ function displayOngoingReview ($revid) {
     $view->h2("Training");
     $view->responsiveTableStart(['Training','Date','Trainer']);
         foreach($review->getTraining() as $row) {
-            echo "<tr><td>{$row['training']}</td><td>{$row['train_date']}</td><td>{$row['trainer']}</td></tr>\n";
+            echo "<tr><td>{$row['training']}</td><td>".$view->formatUserTimestamp($row['train_date'],true)."</td><td>{$row['trainer']}</td></tr>\n";
         }
     $view->responsiveTableClose();
     $view->endBtnCollapse();
