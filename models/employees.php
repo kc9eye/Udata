@@ -109,7 +109,7 @@ class Employees extends Profiles {
             FROM employees
             INNER JOIN profiles ON profiles.id = employees.pid
             WHERE employees.end_date IS NULL
-            ORDER BY name ASC";
+            ORDER BY profiles.last ASC";
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));

@@ -74,9 +74,6 @@ function main ($request = false) {
     );
     $form->submitForm("Lookup");
     $form->endForm();
-    if ($request !== false) {
-        
-    }
 
     //Script for the bootstrap date picker
     echo "<script>$(document).ready(function(){
@@ -87,7 +84,7 @@ function main ($request = false) {
         $('.input-group input').each(function(){
             $(this).datepicker(options);
         });
-    });\n</script>";
+    });</script>";
     $view->footer();
 }
 
@@ -104,7 +101,7 @@ function displayLostTime ($request) {
     foreach($request as $row) {
         $absent = $row['absent'] ? 'Yes' : 'No';
         $excused = $row['excused'] ? 'Yes' : 'No';
-        echo "<tr><td>{$row['occ_date']}</td><td>{$row['name']}</td>";
+        echo "<tr><td>".$view->formatUserTimestamp($row['occ_date'],true)."</td><td>{$row['name']}</td>";
         echo "<td>{$absent}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td>";
         echo "<td>{$row['description']}</td><td>{$excused}</td><td>{$row['recorder']}</td>";
         echo "<td>{$row['recorded']}</td></tr>\n";
@@ -124,7 +121,7 @@ function displayPerfect ($request) {
     $view->h2("{$count} Perfect Records Found");
     $view->responsiveTableStart(['Name']);
     foreach($request as $row) {
-        echo "<tr><td>{$row['name']}</td></tr>\n";
+        echo "<tr><td>{$row['name']}</td></tr>";
     }
     $view->responsiveTableClose();
     $view->footer();

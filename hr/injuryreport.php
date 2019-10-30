@@ -116,7 +116,7 @@ function editReportDisplay () {
         case true: $form->checkBox('followup_medical',['Clinic','No'],'false',false,null,'true'); break;
         case false: $form->checkBox('followup_medical',['Clinic','Yes'],'true',false,null,'false'); break;
     }
-    $form->textArea('injury_description',null,$report['injury_description'],true,'Amend the report abou the injury and how it occurred');
+    $form->textArea('injury_description',null,$report['injury_description'],true,'Amend the report about the injury and how it occurred');
     $form->submitForm('Amend',false,$server->config['application-root'].'/hr/viewemployee?id='.$report['eid']);
     $form->endForm();
     $view->footer();
@@ -136,7 +136,7 @@ function viewReportDisplay () {
     }
     $view->linkButton('/hr/injuryreport?action=print&id='.$_REQUEST['id'],'Print','default',false,'_blank');
     $view->responsiveTableStart();
-    echo "<tr><th>Injury Date:</th><td>{$report['injury_date']}</td></tr>\n";
+    echo "<tr><th>Injury Date:</th><td>".$view->formatUserTimestamp($report['injury_date'],true)."</td></tr>\n";
     echo "<tr><th>Last Reporter:</th><td>{$report['reporter']}</td></tr>\n";
     echo "<tr><th>Witnesses:</th><td>{$report['witnesses']}</td></tr>\n";
     $recordable = ($report['recordable']) ? 'Yes' : 'No';

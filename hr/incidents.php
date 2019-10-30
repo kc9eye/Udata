@@ -84,7 +84,7 @@ function resultsDisplay (Array $results) {
             $clinic = ($row['followup_medical']) ? 'Yes' : 'No';
             $recordable = ($row['recordable']) ? 'Yes' : 'No';
             echo "<tr><td><a href='{$view->PageData['approot']}/hr/injuryreport?action=view&id={$row['id']}'>{$row['id']}</a></td>";
-            echo "<td>{$row['injury_date']}</td><td>{$row['injured']}</td><td>{$recordable}</td><td>{$clinic}</td><td>{$row['reporter']}</td></tr>\n";
+            echo "<td>".$view->formatUserTimestamp($row['injury_date'],true)."</td><td>{$row['injured']}</td><td>{$recordable}</td><td>{$clinic}</td><td>{$row['reporter']}</td></tr>\n";
         }
         $view->responsiveTableClose();
     }
@@ -105,7 +105,7 @@ function listAllDisplay (Array $results) {
         $recordable = ($row['recordable']) ? 'Yes' : 'No';
         $clinic = ($row['followup_medical']) ? 'Yes' : 'No';
         echo "<tr><td><a href='{$view->PageData['approot']}/hr/injuryreport?action=view&id={$row['id']}'>{$row['id']}</a></td>";
-        echo "<td>{$row['injured']}</td><td>{$row['injury_date']}</td><td>{$recordable}</td><td>{$clinic}</td><td>{$row['reporter']}</td></tr>\n";
+        echo "<td>{$row['injured']}</td><td>".$view->formatUserTimestamp($row['injury_date'],true)."</td><td>{$recordable}</td><td>{$clinic}</td><td>{$row['reporter']}</td></tr>\n";
     }
     $view->responsiveTableClose();
     $view->footer();

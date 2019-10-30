@@ -51,7 +51,7 @@ function amendDisplay () {
     $view->responsiveTableStart(null,true);
     echo "<tr><th>ID:</th><td>{$dis->id}</td></tr>\n";
     echo "<tr><th>Type:</th><td>{$dis->type}</td></tr>\n";
-    echo "<tr><th>Date:</th><td>{$dis->date}</td></tr>\n";
+    echo "<tr><th>Date:</th><td>".$view->formatUserTimestamp($dis->date,true)."</td></tr>\n";
     echo "<tr><th>Author:</th><td>{$dis->author}</td></tr>\n";
     echo "<tr><th>Product:</th><td>{$dis->product}</td></tr>\n";
     echo "<tr><th>Number:</th><td>{$dis->number}</td></tr>\n";

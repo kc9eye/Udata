@@ -178,7 +178,8 @@ function displayCell () {
     $view->h3($heading);
     if (!empty($cell->Safety)) {
         echo "<div class='panel panel-default'>\n";
-        echo "<div class='panel-heading'>Authored by: {$cell->Safety['author']} on {$cell->Safety['_date']}<br />Approved By:{$cell->Safety['approver']} on {$cell->Safety['a_date']}</div>\n";
+        echo "<div class='panel-heading'>Authored by: {$cell->Safety['author']} on ".$view->formatUserTimestamp($cell->Safety['_date'],true);
+        echo "<br />Approved By:{$cell->Safety['approver']} on ".$view->formatUserTimestamp($cell->Safety['a_date'],true)."</div>\n";
         echo "<div class='panel-content'>{$cell->Safety['body']}</div>\n";
         echo "</div>\n";
     }
@@ -219,7 +220,7 @@ function listWorkCells ($cells) {
         echo "<tr><td><a href='?action=view&id={$cell['id']}'>{$cell['cell_name']}</a></td>";
         if ($edit) echo "<td>".round($cell['qc'],2)."%</td>";
         //For #46 ---^^^^^^^^
-        echo "<td>{$cell['_date']}</td><td>{$cell['author']}</td></tr>\n";
+        echo "<td>".$view->formatUserTimestamp($cell['_date'],true)."</td><td>{$cell['author']}</td></tr>\n";
     }
     echo "</table></div><div class='col-md-3'></div>\n";
     echo "</div>\n";

@@ -64,18 +64,22 @@ function main () {
 
     //Available formats for the date property
     $formats = [
+        ['','Unformated'],
         ['c','ISO 8601'],
-        ['Y/m/d H:i','Year/Month/Day 24H:00'],
-        ['Y-m-d H:i','Year-Month-Day 24H:00'],
-        ['m/d/Y H:i','Month/Day/Year 24H:00'],
-        ['m-d-y H:i','Month-Day-Year 24H:00'],
-        ['Y/m/d g:i','Year/Month/Day 12H:00'],
-        ['Y-m-d g:i','Year-Month-Day 12H:00'],
-        ['m/d/Y g:i','Month/Day/Year 12H:00'],
-        ['m-d-Y g:i','Month-Day-Year 12H:00'],
-        ['Y/m/d','Year/Month/Day'],
-        ['Y-m-d','Year-Month-Day'],
-        ['m/d/Y','Month/Day/Year']
+        ['Y/m/d H:i','YYYY/MM/dd 24H:00'],
+        ['Y-m-d H:i','YYYY-MM-dd 24H:00'],
+        ['m/d/Y H:i','MM/dd/YYYY 24H:00'],
+        ['m-d-Y H:i','MM-dd-YYYY 24H:00'],
+        ['n/j/y H:i','M/d/YY 24:00'],
+        ['Y/m/d g:i','YYYY/MM/dd 12H:00'],
+        ['Y-m-d g:i','YYYY-MM-dd 12H:00'],
+        ['m/d/Y g:i','MM/dd/YYYY 12H:00'],
+        ['m-d-Y g:i','MM-dd-YYYY 12H:00'],
+        ['n/j/y g:i','M/d/YY 12H:00'],
+        ['Y/m/d','YYYY/MM/dd'],
+        ['Y-m-d','YYYY-MM-dd'],
+        ['m/d/Y','MM/dd/YYYY'],
+        ['n/j/y','M/d/YY']
     ];
 
     $view = $server->getViewer('My Account');
