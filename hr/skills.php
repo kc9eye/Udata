@@ -49,7 +49,7 @@ function resultsDisplay ($results) {
     $view->sideDropDownMenu($submenu);
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     if ($server->checkPermission('addNewTraining'))
-        $view->h1('Search Employee Skills '.$view->linkButton('/hr/addtraining',"<span class='glyphicon glyphicon-plus'></span> Add Training",'info',true));
+        $view->h1('Search Employee Skills '.$view->linkButton('/hr/addtraining',"<span class='oi oi-plus'></span> Add Training",'info',true));
     else
         $view->h1('Search Employee Skills');
     $form->fullPageSearchBar('skill_search','Employee Search');
@@ -60,7 +60,7 @@ function resultsDisplay ($results) {
         $view->responsiveTableStart(['Name','Training Date']);
         foreach($results as $row) {
             echo "<tr><td><a href='{$server->config['application-root']}/hr/viewemployee?id={$row['eid']}'>{$row['name']}<a></td>";
-            echo "<td>{$row['train_date']}</td></tr>\n";
+            echo "<td>".$view->formatUserTimestamp($row['train_date'],true)."</td></tr>\n";
         }
         $view->responsiveTableClose();
     }

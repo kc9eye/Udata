@@ -118,7 +118,7 @@ function displayOngoingReview ($revid) {
             else $absent = 'No';
             if ($row['excused'] == 'true') $excused = 'Yes';
             else $excused = 'No';
-            echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+            echo "<tr><td>".$view->formatUserTimestamp($row['occ_date'],true)."</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
         }
         $view->responsiveTableClose();
     }
