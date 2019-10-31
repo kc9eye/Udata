@@ -125,5 +125,23 @@ Class Mailer {
         }
     }
 
+    /**
+     * Wraps the given string in the given html email template
+     * @param string $template The name of the template in `$config['template-root']` directory
+     * @param string $wrap The string you want wrapped in the given template
+     * @return string Returns the given string wrapped in the template
+     */
+    public function wrapInTemplate($template,$wrap) {
+        try {
+            $string = file_get_contents($this->config['template-root'].'/email/'.$template);
+            $string .= $wrap;
+            $string .= file_get_contents($this->config['template-root'].'/email/htmlclose.html');
+            return $string;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 
 }

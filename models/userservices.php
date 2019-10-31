@@ -52,12 +52,16 @@ class UserServices {
             $this->dbh->beginTransaction();
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
 
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
-            $body .= "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>";
+            $body = $this->mailer->wrapInTemplate(
+                'verifyemail.html',
+                "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>"
+            );
             $this->mailer->sendMail(['to'=>$res[0]['username'],'subject'=>'Password Reset','body'=>$body]);
             if (!empty($res[0]['alt_email'])) {
-                $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/twofactorverify.html');
-                $body .= "<a href='{$this->config['error-support-link']}'><strong>Contact Support</strong></a>";
+                $body = $this->mailer->wrapInTemplate(
+                    'twofactorverify.html',
+                    "<a href='{$this->config['error-support-link']}'><strong>Contact Support</strong></a>"
+                );
                 $this->mailer->sendMail(['to'=>$res[0]['alt_email'],'subject'=>'Security Notice','body'=>$body]);
             }
             $this->dbh->commit();
@@ -188,8 +192,10 @@ class UserServices {
             $this->dbh->beginTransaction();
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
 
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
-            $body .= '<a href="'.$this->config['application-root'].'/user/verify?action=verify&id='.urlencode($insert[':verifycode']).'"><strong>Verify Email</strong></a>';
+            $body = $this->mailer->wrapInTemplate(
+                "verifyemail.html",
+                "<a href='{$this->config['application-root']}/user/verify?action=verify&id=".urlencode($insert[':verifycode'])."'><strong>Verify Email</strong></a>"
+            );
             if ($this->mailer->sendMail(['to'=>$data['email'],'subject'=>'Verify Email/Changes','body'=>$body]) !== true)
                 throw new Exception("Failed to send verification mail.");            
             $this->dbh->commit();
@@ -287,8 +293,10 @@ class UserServices {
                 )';
             $pntr = $this->dbh->prepare($sql);
             $pntr->execute(['Administrator']);
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/adminnewacct.html');
-            $body .= '<a href="'.$this->config['application-root'].'/admin/users?action=view&uid='.$uid.'"><strong>Click Here</strong></a>';
+            $body = $this->mailer->wrapInText(
+                "adminnewacct.html",
+                "<a href='{$this->config['application-root']}/admin/users?action=view&uid={$uid}'><strong>Click Here</strong></a>"
+            );
             foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
                 $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
             }

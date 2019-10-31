@@ -32,11 +32,10 @@ class SupervisorComments {
             ':comments' => $data['comments'],
             ':eid' => $data['eid']
         ];
-        trigger_error(var_export($sql,true).var_export($insert,true),E_USER_WARNING);
         try {
             $pntr = $this->dbh->prepare($sql);
             
-            if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             $this->newCommentID = $insert[':id'];
             return true;
         }
