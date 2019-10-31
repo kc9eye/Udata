@@ -100,8 +100,10 @@ function amendDiscrepancy () {
     global $server;
     $materials = new Materials($server->pdo);
     $notify = new Notification($server->pdo,$server->mailer);
-    $body = file_get_contents($server->config['template-root'].'/email/updateddiscrepancy.html');
-    $body .= "<a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$_REQUEST['id']}'>Updated Material Discrepancy</a>";
+    $body = $server->mailer->wraptInTemplate(
+        "updateddiscrepancy.html",
+        "<a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$_REQUEST['id']}'>Updated Material Discrepancy</a>"
+    );
     if ($materials->amendDiscrepancy($_REQUEST)) {
         $notify->notify('Updated Discrepancy','Discrepancy Updated',$body);
         return true;

@@ -52,12 +52,16 @@ class UserServices {
             $this->dbh->beginTransaction();
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
 
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
-            $body .= "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>";
+            $body = $this->mailer->wrapInTemplate(
+                'verifyemail.html',
+                "<a href='{$this->config['application-root']}/user/password_reset?id={$code}'><strong>Reset Password</strong></a>"
+            );
             $this->mailer->sendMail(['to'=>$res[0]['username'],'subject'=>'Password Reset','body'=>$body]);
             if (!empty($res[0]['alt_email'])) {
-                $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/twofactorverify.html');
-                $body .= "<a href='{$this->config['error-support-link']}'><strong>Contact Support</strong></a>";
+                $body = $this->mailer->wrapInTemplate(
+                    'twofactorverify.html',
+                    "<a href='{$this->config['error-support-link']}'><strong>Contact Support</strong></a>"
+                );
                 $this->mailer->sendMail(['to'=>$res[0]['alt_email'],'subject'=>'Security Notice','body'=>$body]);
             }
             $this->dbh->commit();
@@ -188,8 +192,10 @@ class UserServices {
             $this->dbh->beginTransaction();
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
 
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/verifyemail.html');
-            $body .= '<a href="'.$this->config['application-root'].'/user/verify?action=verify&id='.urlencode($insert[':verifycode']).'"><strong>Verify Email</strong></a>';
+            $body = $this->mailer->wrapInTemplate(
+                "verifyemail.html",
+                "<a href='{$this->config['application-root']}/user/verify?action=verify&id=".urlencode($insert[':verifycode'])."'><strong>Verify Email</strong></a>"
+            );
             if ($this->mailer->sendMail(['to'=>$data['email'],'subject'=>'Verify Email/Changes','body'=>$body]) !== true)
                 throw new Exception("Failed to send verification mail.");            
             $this->dbh->commit();
@@ -278,26 +284,22 @@ class UserServices {
     }
 
     private function emailAdmin ($uid) {
-        try {
-            $sql = 
-                'SELECT DISTINCT username FROM user_accts WHERE id in (
-                    SELECT uid FROM user_roles WHERE rid = (
-                        SELECT id FROM roles WHERE name = ?
-                    )
-                )';
-            $pntr = $this->dbh->prepare($sql);
-            $pntr->execute(['Administrator']);
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/adminnewacct.html');
-            $body .= '<a href="'.$this->config['application-root'].'/admin/users?action=view&uid='.$uid.'"><strong>Click Here</strong></a>';
-            foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
-                $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
-            }
-            return true;
+        $sql = 
+            'SELECT DISTINCT username FROM user_accts WHERE id in (
+                SELECT uid FROM user_roles WHERE rid = (
+                    SELECT id FROM roles WHERE name = ?
+                )
+            )';
+        $pntr = $this->dbh->prepare($sql);
+        $pntr->execute(['Administrator']);
+        $body = $this->mailer->wrapInTemplate(
+            "adminnewacct.html",
+            "<a href='{$this->config['application-root']}/admin/users?action=view&uid={$uid}'><strong>Click Here</strong></a>"
+        );
+        foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
+            $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
         }
-        catch (Exception $e) {
-            trigger_error($e->message,E_USER_WARNING);
-            return false;
-        }
+        return true;
     }
 
     public function deleteUserAccount ($uid) {
@@ -449,6 +451,42 @@ class UserServices {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Returns an array of results of pending users
+     * @return array An array in the form ['id'=>string,'email'=>string,'firstname'=>string,'lastname'=>string,'alt_email'=>string,'date'=>timestamp,'code'=>string],
+     * or false on error
+     */
+    public function getPendingUsers () {
+        $sql = 'SELECT id,username AS "email",firstname,lastname,alt_email,_date as "date",verify_code as "code" FROM user_accts_holding';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Removes a pending user from pending status
+     * @param string $id The ID of the request to cancel
+     * @return boolean True on success, false otheriwse
+     */
+    public function cancelPendingUser ($id) {
+        $sql = 'DELETE FROM user_accts_holding WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$id])) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
         }
         catch (Exception $e) {

@@ -348,8 +348,10 @@ class Employees extends Profiles {
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             $employee = new Employee($this->dbh,$eid);
             $notifier = new Notification($this->dbh,$server->mailer);
-            $body = file_get_contents($server->config['template-root'].'/email/reviewinitialized.html');
-            $body .= "<a href='{$server->config['application-root']}/hr/employeereview?eid={$eid}'>".$employee->getFullName()."</a>";
+            $body = $server->mailer->wrapInTemplate(
+                'reviewinitialized.html',
+                "<a href='{$server->config['application-root']}/hr/employeereview?eid={$eid}'>".$employee->getFullName()."</a>"
+            );
             if (!$notifier->notify('Review Started','Review Process Initialized',$body)) {
                 $sql = "DELETE FROM reviews WHERE id = '{$insert[':id']}'";
                 $pntr = $this->dbh->query($sql);
