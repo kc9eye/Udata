@@ -284,28 +284,22 @@ class UserServices {
     }
 
     private function emailAdmin ($uid) {
-        try {
-            $sql = 
-                'SELECT DISTINCT username FROM user_accts WHERE id in (
-                    SELECT uid FROM user_roles WHERE rid = (
-                        SELECT id FROM roles WHERE name = ?
-                    )
-                )';
-            $pntr = $this->dbh->prepare($sql);
-            $pntr->execute(['Administrator']);
-            $body = $this->mailer->wrapInTemplate(
-                "adminnewacct.html",
-                "<a href='{$this->config['application-root']}/admin/users?action=view&uid={$uid}'><strong>Click Here</strong></a>"
-            );
-            foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
-                $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
-            }
-            return true;
+        $sql = 
+            'SELECT DISTINCT username FROM user_accts WHERE id in (
+                SELECT uid FROM user_roles WHERE rid = (
+                    SELECT id FROM roles WHERE name = ?
+                )
+            )';
+        $pntr = $this->dbh->prepare($sql);
+        $pntr->execute(['Administrator']);
+        $body = $this->mailer->wrapInTemplate(
+            "adminnewacct.html",
+            "<a href='{$this->config['application-root']}/admin/users?action=view&uid={$uid}'><strong>Click Here</strong></a>"
+        );
+        foreach($pntr->fetchAll(PDO::FETCH_ASSOC) as $res) {
+            $this->mailer->sendMail(['to'=>$res['username'],'subject'=>'New Account Created','body'=>$body]);
         }
-        catch (Exception $e) {
-            trigger_error($e->message,E_USER_WARNING);
-            return false;
-        }
+        return true;
     }
 
     public function deleteUserAccount ($uid) {
