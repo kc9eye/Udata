@@ -20,6 +20,19 @@ $server->userMustHavePermission('adminAll');
 include('submenu.php');
 include(UpdateDatabase::DB_VERSION_FILE);
 
+$app = new Application($server->pdo);
+
+if (!empty($_REQUEST['action'])) {
+    switch($_REQUEST['action']) {
+        case 'logoutuser':
+            $server->processingDialog(
+                [$app,'logoutPersistentUser'],
+                [$_REQUEST['id']],
+                $server->config['application-root'].'/admin/main'
+            );
+        break;
+    }
+}
 $view = $server->getViewer("Application Settings");
 $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
 $view->sideDropDownMenu($submenu);
@@ -61,3 +74,13 @@ foreach($server->config as $index => $value) {
     }
 }
 $view->responsiveTableClose();
+$view->hr();
+$view->beginBtnCollapse('Persistent Logins');
+$view->responsiveTableStart(['Username','Login Date','Logout']);
+foreach($app->getPersitentLogins() as $row) {
+    echo "<tr><td>{$row['username']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td>";
+    echo "<td>".$view->trashBtnSm('/admin/main?action=logoutuser&id='.$row['id'],true)."</td></tr>";
+}
+$view->responsiveTableClose();
+$view->endBtnCollapse();
+$view->footer();

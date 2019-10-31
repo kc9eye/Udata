@@ -458,4 +458,40 @@ class UserServices {
             return false;
         }
     }
+
+    /**
+     * Returns an array of results of pending users
+     * @return array An array in the form ['id'=>string,'email'=>string,'firstname'=>string,'lastname'=>string,'alt_email'=>string,'date'=>timestamp,'code'=>string],
+     * or false on error
+     */
+    public function getPendingUsers () {
+        $sql = 'SELECT id,username AS "email",firstname,lastname,alt_email,_date as "date",verify_code as "code" FROM user_accts_holding';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Removes a pending user from pending status
+     * @param string $id The ID of the request to cancel
+     * @return boolean True on success, false otheriwse
+     */
+    public function cancelPendingUser ($id) {
+        $sql = 'DELETE FROM user_accts_holding WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$id])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }

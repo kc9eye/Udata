@@ -67,6 +67,13 @@ if (!empty($_REQUEST['action'])) {
                 $server->config['application-root'].'/admin/users?action=view&uid='.$_REQUEST['uid']
             );
         break;
+        case 'cancelpending':
+            $server->processingDialog(
+                [new UserServices($server),'cancelPendingUser'],
+                [$_REQUEST['id']],
+                $server->config['application-root'].'/admin/users'
+            );
+        break;
         default: main(); break;
     }
 }
@@ -96,6 +103,17 @@ function main ($search_results = null) {
                 ]]);
             $view->responsiveTableClose();
         }
+    }
+    else {
+        $handler = new UserServices($server);
+        $view->h3('Pending Users');
+        $view->responsiveTableStart();
+        foreach($handler->getPendingUsers() as $row) {
+            echo "<tr><td>{$row['firstname']} {$row['lastname']}</td>";
+            echo "<td>{$row['email']}</td><td>Requested: ".$view->formatUserTimestamp($row['date'],true)."</td>";
+            echo "<td>".$view->trashBtnSm("/admin/users?action=cancelpending&id={$row['id']}",true)."</td></tr>";
+        }
+        $view->responsiveTableClose();
     }
     $view->footer();
 }
