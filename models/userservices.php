@@ -293,7 +293,7 @@ class UserServices {
                 )';
             $pntr = $this->dbh->prepare($sql);
             $pntr->execute(['Administrator']);
-            $body = $this->mailer->wrapInText(
+            $body = $this->mailer->wrapInTemplate(
                 "adminnewacct.html",
                 "<a href='{$this->config['application-root']}/admin/users?action=view&uid={$uid}'><strong>Click Here</strong></a>"
             );
