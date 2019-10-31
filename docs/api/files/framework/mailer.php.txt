@@ -83,18 +83,15 @@ Class Mailer {
                     $mailer->addAttachment($file);
                 }
             }
-            $pntr = $mailer->send();
-            unset($mail, $mailer);
-            return $pntr;            
+            $mailer->send();
+            return true;            
         }
         catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            unset($mail,$mailer);
+            trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
         catch (\Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
-            unset($mail,$mailer);
             return false;
         }
     }
@@ -119,12 +116,10 @@ Class Mailer {
             return $mailer;
         }
         catch (Exception $e) {
-            unset($mailer);
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
         catch (\Exception $e) {
-            unset($mailer);
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }

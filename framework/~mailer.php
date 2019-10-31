@@ -1,6 +1,6 @@
 <?php
 /* This file is part of UData.
- * Copyright (C) 2019 Paul W. Lane <kc9eye@outlook.com>
+ * Copyright (C) 2018 Paul W. Lane <kc9eye@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,17 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+/**
+ * The application mailer.
+ * 
+ * The application mailer uses PHPMailer as it's background 
+ * worker.
+ * @package UData\Framework\PHPMailer
+ * @uses https://github.com/PHPMailer/PHPMailer
+ * @author Paul W. Lane
+ * @see etc/config.php
+ */
+#PHPMailer is used by UData
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -24,10 +35,29 @@ require_once(PHPMAILER_DIR.'/POP3.php');
 require_once(PHPMAILER_DIR.'/SMTP.php');
 require_once(PHPMAILER_DIR.'/PHPMailer.php');
 
-class Mailer {
-    protected $config;
+/**
+ * The mailer, requires PHPMailer
+ * 
+ * This class is instantiated by the Instance server.
+ * It can be used stand alone if needed, but should be
+ * used through the Instance server for this application.
+ * @see Instance::$mailer
+ * @package UData
+ * @author Paul W. Lane
+ * @link https://github.com/PHPMailer/PHPMailer
+ */
+Class Mailer {
 
-    public function __construct (Array $config) {
+    /**
+     * @var Array $config The application configuraion array
+     */
+    protected $config;
+    
+    /**
+     * Class constructor
+     * @param Array $config The application configuration array
+     */
+    public function __construct ($config) {
         $this->config = $config;
     }
 
@@ -38,10 +68,35 @@ class Mailer {
      * of the mail being sent should be given in the array.
      * It is not possible to send mail as anyone other than the server with this method.     * 
      * @param Array $mail The mail array describing the mail to send. In the form    
-     * ['to'=>string|array(string),'subject'=>string,'body'=>string,'attach=>['filepath',...]]
+     * `['to'=>'to_address','subject'=>'mail_subject','body'=>'message_body','attach=>['attach_filepath',...]]`
      * @return Boolean True on success, false otherwise.
      */
     public function sendMail (Array $mail) {
+        try {
+            if (($mailer = $this->spoolMailer()) === false) throw new Exception("PHPMailer failed to start.");
+            $mailer->addAddress($mail['to']);
+            $mailer->setFrom($this->config['mailer-default-from-addr'], $this->config['mailer-default-from-name']);
+            $mailer->Subject = $mail['subject'];
+            $mailer->msgHTML($mail['body'], INCLUDE_ROOT.'/wwwroot/images');
+            if (!empty($mail['attach'])) {
+                foreach($mail['attach'] as $file) {
+                    $mailer->addAttachment($file);
+                }
+            }
+            $mailer->send();
+            return true;            
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        catch (\Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    private function spoolMailer () {
         try {
             $mailer = new PHPMailer(true);
             switch($this->config['mailer-type']) {
@@ -58,29 +113,9 @@ class Mailer {
             }
             $mailer->Host = $this->config['mailer-host'];
             $mailer->Port = $this->config['mailer-port'];
-            $mailer->setFrom($this->config['mailer-default-from-addr'], $this->config['mailer-default-from-name']);
-            $mailer->Subject = $mail['subject'];
-            $mailer->msgHTML($mail['body'], $this->config['template-root'].'/email/images');
-            if (!empty($mail['attach'])) {
-                foreach($mail['attach'] as $file) {
-                    $mailer->addAttachment($file);
-                }
-            }
-            if (is_array($mail['to'])) {
-                $mailer->SMTPKeepAlive = true;
-                foreach($mail['to'] as $address) $mailer->addAddress($address);
-            }
-            else 
-                $mailer->addAddress($mail['to']);
-            
-            $mailer->send();
-            $mailer->clearAddresses();
-            $mailer->clearAttachments();
-            return true;
-
+            return $mailer;
         }
         catch (Exception $e) {
-            $mailer->smtp->reset();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
@@ -108,4 +143,5 @@ class Mailer {
             return false;
         }
     }
+
 }

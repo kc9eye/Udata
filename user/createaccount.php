@@ -67,7 +67,7 @@ function createNewAccount () {
         );
     }
     elseif (!$notcreated) {
-        $server->newEndUserDialolg(
+        $server->newEndUserDialog(
             "That username is already registered and awaiting verification, check your email for the verification.",
             DIALOG_FAILURE,
             $server->config['application-root']

@@ -39,7 +39,7 @@ function main () {
     global $server;
     include('submenu.php');
 
-    $view = $server->getViewer('title');
+    $view = $server->getViewer('Permission Escalation');
     $view->sideDropDownMenu($submenu);
     $view->h1('User Privilege Escalation Log&#160;'.$view->linkButton('/admin/accesslog?action=reset','Reset Log File','danger',true));
     if (file_exists(INCLUDE_ROOT.'/var/access_log.xml')) {

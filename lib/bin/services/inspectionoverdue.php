@@ -57,14 +57,16 @@ class inspectionoverdue implements Service {
     }
 
     private function emailNotification () {
-        $body = "<h1><img src='/favicons/favicon-16x16.png' />UData</h1>\n";
-        $body .= "<h2>Inspections Over Due for Equipment:</h2>\n";
-        $body .= "<table border='1'>\n";
-        $body .= "<tr><th>Equipment</th><th>Last Inspection</th>\n";
+        $body = "<!DOCTYPE html>";
+        $body .= "<html><head><title>Inspection Overdue</title></head><body>";
+        $body .= "<h1><img src='/favicons/favicon-16x16.png' />UData</h1>";
+        $body .= "<h2>Inspections Over Due for Equipment:</h2>";
+        $body .= "<table border='1'>";
+        $body .= "<tr><th>Equipment</th><th>Last Inspection</th>";
         foreach($this->data as $row) {
-            $body .= "<tr><td>{$row['equipment']}</td><td>{$row['_date']}</td></tr>\n";
+            $body .= "<tr><td>{$row['equipment']}</td><td>{$row['_date']}</td></tr>";
         }
-        $body .= "</table>\n";
+        $body .= "</table></body></html>";
         $notify = new Notification($this->server->pdo,$this->server->mailer);
         return $notify->notify('Inspection Overdue','Inspection Overdue',$body);
     }
