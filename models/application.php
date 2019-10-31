@@ -478,7 +478,7 @@ class Application {
             'SELECT auth_tokens.id, user_accts.username as "username", auth_tokens._date as "date"
              FROM auth_tokens
              INNER JOIN user_accts ON user_accts.id = auth_tokens.uid
-             ORDER BY auth_tokens._date DESC, user_accts.username ASC';
+             ORDER BY user_accts.username ASC, auth_tokens._date DESC';
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
