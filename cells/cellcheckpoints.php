@@ -40,13 +40,13 @@ $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
 
 $form->newForm("<small>CheckPoints For:</small> {$wc->Name}<br /><small>Assoc. Product:</small> {$wc->Product}");
 
-echo "<div class='row'><div class='col-md-3'></div><div class='col-md-6 col-xs-12'><div class='table-responive'><table class='table'>\n";
-echo "<tr><th>Description</th><th>Remove</th></tr>\n";
+$view->responsiveTableStart(['Description','Delete'],true);
 foreach($wc->QCP as $row) {
-    echo "<tr><td>{$row['description']}</td><td><a href='?action=remove&cellid={$wc->ID}&qcpid={$row['id']}&prokey={$wc->ProductKey}' class='btn btn-sm btn-danger' role='button'>
-    <span class='glyphicon glyphicon-trash'></span></a></td></tr>\n";
+    echo "<tr><td>{$row['description']}</td><td>";
+    $view->trashBtnSm("/cells/cellcheckpoints?action=remove&cellid={$wc->ID}&qcpid={$row['id']}&prokey={$wc->ProductKey}");
+    echo "</td></tr>";
 }
-echo "</table></div></div><div class='col-md-3'></div></div>\n";
+$view->responsiveTableClose(true);
 $form->hiddenInput('action','add');
 $form->hiddenInput('cellid',$_REQUEST['id']);
 $form->hiddenInput('prokey',$wc->ProductKey);
