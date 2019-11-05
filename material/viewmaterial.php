@@ -57,7 +57,7 @@ if (!is_null($part->discrepancies)) {
     $view->responsiveTableStart(["ID","Type","Product","Qty.","Date"]);
     foreach($part->discrepancies as $row) {
         if ($products->isActiveProduct($row['prokey'])) {
-            echo "<tr><td><a href='{$server->config['application-root']}/material/viewdiscrepancy?id={$row['id']}'>{$row['id']}</a></td>";
+            echo "<tr><td><a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$row['id']}'>{$row['id']}</a></td>";
             echo "<td>{$row['type']}</td><td>".$products->getProductDescriptionFromKey($row['prokey'])."</td>";
             echo "<td>{$row['qty']}</td><td>{$row['_date']}</td></tr>\n";
         }

@@ -1,8 +1,8 @@
 <?php
-$update_version = 0.14;
+$update_version = 0.15;
 
 $sql = [
-    'alter table profiles add column date_display varchar'
+    'alter table supervisor_comments add column fid varchar'
 ];
 
 $inserts = [

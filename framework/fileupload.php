@@ -50,15 +50,18 @@ class FileUpload {
      */
     public function __construct ($input_name) {
         $this->files = [];
-        if (is_array($_FILES[$input_name]['error'])) {
-            $this->multiple = true;
-            $this->multipleFiles($input_name);
+        if (!empty($_FILES)) {
+            if (is_array($_FILES[$input_name]['error'])) {
+                $this->multiple = true;
+                $this->multipleFiles($input_name);
+            }
+            else {
+                $this->multiple = false;
+                $this->handleFile($input_name);
+            }
+            return $this;
         }
-        else {
-            $this->multiple = false;
-            $this->handleFile($input_name);
-        }
-        return $this;
+        else return false;
     }
 
     /**
