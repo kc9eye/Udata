@@ -47,12 +47,13 @@ function commentFormDisplay () {
     $view->sideDropDownMenu($submenu);
     $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->h1("<small>Add Comment to:</small> {$emp->Profile['first']} {$emp->Profile['middle']} {$emp->Profile['last']} {$emp->Profile['other']}",true);
-    $form->newForm();
+    $form->newMultipartForm();
     $form->hiddenInput('action','add');
     $form->hiddenInput('eid',$_REQUEST['id']);
     $form->hiddenInput('uid',$server->currentUserID);
     $view->h2('Comments:',true);
     $form->textArea('comments',null,'',true,'Enter comments for the individual',true);
+    $form->fileUpload(FileIndexer::UPLOAD_NAME,'',null,false,false,"Uploaded file can not exceed ".FileUpload::MAX_UPLOAD_SIZE." bytes.");
     $form->submitForm('Submit',false,$server->config['application-root'].'/hr/viewemployee?id='.$_REQUEST['id']);
     $form->endForm();
     $view->footer();
@@ -69,11 +70,18 @@ function viewCommentDisplay () {
     $view->sideDropDownMenu($submenu);
     $view->linkButton('/hr/viewemployee?id='.$comment['eid'],"<span class='glyphicon glyphicon-arrow-left'></span> Back");
     $view->responsiveTableStart();
-    echo "<tr><th>Employee Name:</th><td>{$comment['name']}</td></tr>\n";
-    echo "<tr><th>Comment ID:</th><td>{$comment['id']}</td></tr>\n";
-    echo "<tr><th>Comment Author:</th><td>{$comment['author']}</td></tr>\n";
-    echo "<tr><th>Comment Date/Time:</th><td>{$comment['date']}</td></tr>\n";
-    echo "<tr><th>Comment:</th><td>{$comment['comments']}</td></tr>\n";
+    echo "<tr><th>Employee Name:</th><td>{$comment['name']}</td></tr>";
+    echo "<tr><th>Comment ID:</th><td>{$comment['id']}</td></tr>";
+    echo "<tr><th>Comment Author:</th><td>{$comment['author']}</td></tr>";
+    echo "<tr><th>Comment Date/Time:</th><td>{$comment['date']}</td></tr>";
+    echo "<tr><th>Comment:</th><td>{$comment['comments']}</td></tr>";
+    if (!empty($comment['fid'])){
+        $indexer = new FileIndexer($server->pdo,$server->config['data-root']);
+        $index = $indexer->getIndexByID($comment['fid']);
+        echo "<tr><td colspan='2'>";
+        $view->responsiveImage($view->PageData['approot'].'/data/files?dis=inline&file='.$index[0]['file']);
+        echo "</td></tr>";
+    }
     $view->responsiveTableClose();
     $view->footer();
 }
@@ -81,7 +89,22 @@ function viewCommentDisplay () {
 function addNewComment () {
     global $server;
     $handler = new SupervisorComments($server->pdo);
+    $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
     $notify = new Notification($server->pdo,$server->mailer);
+
+    if ($upload !== false) {
+        if ($upload->multiple) {
+            $server->newEndUserDialog(
+                "Only one file may be associated with this entry.",
+                DIALOG_FAILURE,
+                $server->config['application-root'].'/hr/feedback?id='.$_REQUEST['eid']
+            );
+        }
+        $indexer = new FileIndexer($server->pdo,$server->config['data-root']);
+        if (($indexed = $indexer->indexFiles($upload,$_REQUEST['uid'])) !== false)
+            $_REQUEST['fid'] = $indexed[0];
+    }
+    else $_REQUEST['fid'] = '';
 
     if ($handler->addNewSupervisorFeedback($_REQUEST)) {
         $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/supervisorfeedback.html');

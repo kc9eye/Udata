@@ -25,12 +25,13 @@ class SupervisorComments {
     }
 
     public function addNewSupervisorFeedback (Array $data) {
-        $sql = "INSERT INTO supervisor_comments VALUES (:id,:uid,now(),:comments,:eid)";
+        $sql = "INSERT INTO supervisor_comments VALUES (:id,:uid,now(),:comments,:eid,:fid)";
         $insert = [
             ':id' => uniqid(),
             ':uid'=> $data['uid'],
             ':comments' => $data['comments'],
-            ':eid' => $data['eid']
+            ':eid' => $data['eid'],
+            ':fid' => $data['fid']
         ];
         try {
             $pntr = $this->dbh->prepare($sql);
@@ -55,6 +56,7 @@ class SupervisorComments {
                 id,
                 eid,
                 uid,
+                fid,
                 (
                     SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
                     FROM profiles

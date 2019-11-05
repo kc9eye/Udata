@@ -28,7 +28,7 @@ if (empty($_REQUEST)) {
 
 $file = urldecode($_REQUEST['file']);
 $path = $server->config['data-root'].'/'.$file;
-$mime = empty($_REQUEST['mime']) ? mime_content_type($path) : $_REQUEST['mime'];
+$mime = empty($_REQUEST['mime']) ? _mime_content_type($path) : $_REQUEST['mime'];
 $disposition = empty($_REQUEST['dis']) ? 'attachment' : 'inline';
 
 #Check if the file exists
@@ -65,3 +65,13 @@ while (!feof($fpntr)) {
 }
 fclose($fpntr);
 die();
+
+function _mime_content_type($filename) {
+    $result = new finfo();
+
+    if (is_resource($result) === true) {
+        return $result->file($filename, FILEINFO_MIME_TYPE);
+    }
+
+    return false;
+}
