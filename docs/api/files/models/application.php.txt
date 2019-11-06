@@ -468,4 +468,43 @@ class Application {
             return false;
         }
     }
+
+    /**
+     * Returns a listing of users whom have active persistent logins
+     * @return array On success, false on failure
+     */
+    public function getPersitentLogins () {
+        $sql = 
+            'SELECT auth_tokens.id, user_accts.username as "username", auth_tokens._date as "date"
+             FROM auth_tokens
+             INNER JOIN user_accts ON user_accts.id = auth_tokens.uid
+             ORDER BY user_accts.username ASC, auth_tokens._date DESC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute()) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Deletes the given persistent login 
+     * @param string $id The login ID to delete
+     * @return boolean true on success, false otherwise
+     */
+    public function logoutPersistentUser ($id) {
+        $sql = 'DELETE FROM auth_tokens WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$id])) throw new Exception(print_r($pntr->errorInfo(),true));
+            return true;
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }

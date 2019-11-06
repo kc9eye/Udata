@@ -367,8 +367,10 @@ class WorkCells {
     private function emailReviewer (Array $data, $notification, Mailer $mailer) {
         try {
             $notifier = new Notification($this->dbh, $mailer);
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/docreview.html');
-            $body .= "<a href='{$data['url']}&name={$data['name']}'>{$data['cellname']}</a>";
+            $body = $mailer->wrapInTemplate(
+                "docreview.html",
+                "<a href='{$data['url']}&name={$data['name']}'>{$data['cellname']}</a>"
+            );
             $notifier->notify($notification,'Pending Document Change',$body);
             return true;
         }
