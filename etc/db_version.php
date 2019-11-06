@@ -1,1 +1,1 @@
-<?php $current_version = 0.14;
+<?php $current_version = 0.15;
