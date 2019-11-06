@@ -405,10 +405,12 @@ class DocumentViewer extends ViewMaker {
      */
     public function emailReview ($data) {
         try {
-            $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/docreview.html');
             $url = '?action=approve&id='.$data[':id'];
             if (!empty($data['queryString'])) $url .= '&'.$data['queryString'];
-            $body .= "<a href='{$this->docURL}?action=approve&id={$data[':id']}'><strong>{$data[':name']}</strong></a>";
+            $body = $this->mailer->wrapInTemplate(
+                "docreview.html",
+                "<a href='{$this->docURL}{$url}}'><strong>{$data[':name']}</strong></a>"
+            );
             foreach($this->access[self::APPROVE_ACCESS_NAME] as $perm) {
                 foreach($this->security->getUsersByPerm($perm) as $reviewer) {
                     $this->mailer->sendMail(['to'=>$reviewer['username'],'subject'=>'Pending Document Change','body'=>$body]);
