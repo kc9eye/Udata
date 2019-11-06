@@ -151,5 +151,5 @@ function main () {
         echo "<tr><td>{$row['description']}</td></tr>\n";
     }
     $view->responsiveTableClose();
-
+    $view->footer();
 }

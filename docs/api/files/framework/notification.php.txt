@@ -50,19 +50,18 @@ class Notification {
         }
 
         try {
-            $send = ['subject'=> $subject, 'body'=>$body];
+            $send = ['to'=>[],'subject'=> $subject, 'body'=>$body];
             if (!is_null($attachments)) $send['attach'] = $attachments;
             foreach($results as $user) {
-                $send['to'] = $user['email'];
-                if (!$this->mailer->sendMail($send)) throw new Exception("Failed to send mail to: {$user['email']}");
+                array_push($send['to'],$user['email']);
             }
+            if (!$this->mailer->sendMail($send)) throw new Exception("Failed to send notifications.");
             return true;
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
         }
-
-        return true;
     }
 
     /**
