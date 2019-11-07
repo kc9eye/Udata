@@ -721,10 +721,9 @@ Class ViewMaker implements ViewWidgets {
      */
     public function formatUserTimestamp ($timestamp,$return = false) {
         try {
-            if (empty($this->ViewData['user']->getUserDateFormat())) 
-                $string = $timestamp;
-            else
-                $string = date($this->ViewData['user']->getUserDateFormat(),strtotime($timestamp));
+            if (is_null($this->ViewData['user'])) $string = $timestamp;
+            elseif (empty($this->ViewData['user']->getUserDateFormat())) $string = $timestamp;
+            else $string = date($this->ViewData['user']->getUserDateFormat(),strtotime($timestamp));
             if ($return) return $string;
             else echo $string;
         }
