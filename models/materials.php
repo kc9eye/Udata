@@ -350,7 +350,7 @@ class Materials {
         try {
             $pntr = $this->dbh->prepare($sql);
             $insert = [':notes'=>$data['amendum'],':a_uid'=>$data['uid'],':id'=>$data['id']];
-            if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
         }
         catch (Exception $e) {
