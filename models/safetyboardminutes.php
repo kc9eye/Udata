@@ -33,15 +33,12 @@ class SafetyBoardMinutes {
         $this->storage = $storage;
     }
 
-    public function addNewSBMFile ($data) {
+    public function addNewSBMFile ($data,FileUpload $upload) {
         try {
             $indexer = new FileIndexer($this->dbh, $this->storage);
-            $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
-
             if (($res = $indexer->indexFiles($upload, $data['uid'])) === false) {
                 throw new Exception('Indexer failed to index files');
             }
-
             $insert = [
                 ':id'=>uniqid(),
                 ':date'=>$data['date'],
