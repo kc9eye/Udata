@@ -42,7 +42,7 @@ class LostTime {
                 WHERE occ_date > :begin::date
                 AND occ_date < :end::date
                 AND NOT excused
-             )";
+             ) ORDER BY profiles.last ASC";
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute([':begin'=>$begin,':end'=>$end])) throw new Exception(print_r($pntr->errorInfo(),true));
@@ -66,16 +66,16 @@ class LostTime {
         $sql = 
             "SELECT 
                 (
-                    SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
+                    SELECT profiles.last||' '||profiles.other||', '||profiles.first||' '||profiles.middle 
                     FROM profiles
                     INNER JOIN employees ON employees.pid = profiles.id
                     WHERE employees.id = a.eid
                 ) as name,
                 a.id,a.eid,a.occ_date,a.absent,a.arrive_time,a.leave_time,a.description,a.excused,
                 (
-                    SELECT profiles.first||' '||profiles.middle||' '||profiles.last||' '||profiles.other
-                    FROM profiles
-                    WHERE id = (SELECT pid FROM user_accts WHERE id = a.uid)
+                    SELECT firstname||' '||lastname
+                    FROM user_accts
+                    WHERE id = a.uid
                 ) as recorder,
                 a._date as recorded
             FROM missed_time as a
