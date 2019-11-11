@@ -104,7 +104,7 @@ function displayLostTime ($request) {
         echo "<tr><td>".$view->formatUserTimestamp($row['occ_date'],true)."</td><td>{$row['name']}</td>";
         echo "<td>{$absent}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td>";
         echo "<td>{$row['description']}</td><td>{$excused}</td><td>{$row['recorder']}</td>";
-        echo "<td>{$row['recorded']}</td></tr>\n";
+        echo "<td>".$view->formatUserTimestamp($row['recorded'],true)."</td></tr>\n";
     }
     $view->responsiveTableClose();
     $view->footer();
