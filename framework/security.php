@@ -122,7 +122,7 @@ Class Security {
             #Get the log in data and verify
             $sql = 'SELECT * FROM auth_tokens WHERE selector = ?';
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$split[0]])) throw new Exception("Select failed: {$sql}");
+            if (!$pntr->execute([$split[0]])) throw new Exception(print_r($pntr->errorInfo(),true));
             if (count(($res = $pntr->fetchAll(PDO::FETCH_ASSOC))) != 1) {
                 setcookie(self::COOKIE_ID, '', time() - 1, '/');
                 return false;
