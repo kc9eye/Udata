@@ -105,7 +105,7 @@ function addForm () {
     $form->selectBox('category','Category',$select,['required'=>"'#newcat:blank'"]);
     $form->inputCapture('newcat','New Category',null,['required'=>"'#categroy:blank'"]);
     $form->inputCapture('description','Description',null,true,'The description of the tool being added.');
-    $form->submitForm('Add Tool',true,$view->PageData['apprrot'].'/maintenance/mastertools?action=list');
+    $form->submitForm('Add Tool',true,$view->PageData['approot'].'/maintenance/mastertools?action=list');
     $form->endForm();
     $view->footer();
 }
