@@ -215,7 +215,8 @@ class WorkCells {
      * @return Boolean True on success, false otherwise.
      */
     public function addToolingToCell (Array $data) {
-        $sql = "INSERT INTO cell_tooling VALUES (:id,:cellid,:toolid,:qty,:uid,now())";
+        $sql = 
+            "INSERT INTO cell_tooling VALUES (:id,:cellid,:toolid,:qty,:uid,now(),:tv,:tu,:tl)";
         try {
             $pntr = $this->dbh->prepare($sql);
             $insert = [
@@ -223,7 +224,10 @@ class WorkCells {
                 ':cellid'=>$data['cellid'],
                 ':toolid'=>$data['toolid'],
                 ':qty'=>$data['qty'],
-                ':uid'=>$data['uid']
+                ':uid'=>$data['uid'],
+                ':tv'=>$data['torque_val'],
+                ':tu'=>$data['torque_units'],
+                ':tl'=>$data['torque_label']
             ];
             if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
             return true;

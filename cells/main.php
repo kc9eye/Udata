@@ -152,15 +152,21 @@ function displayCell () {
     $tool_heading = "Tooling ";
     if ($server->checkPermission('editWorkCell')) $tool_heading .= $view->editBtnSm("/cells/celltools?id={$_REQUEST['id']}",true);
     if ($server->checkPermission('maintenanceAccess')) 
-        $tool_heading .= " <a href='{$view->PageData['approot']}/maintenance/toolpicklist?cellid={$_REQUEST['id']}' class='btn btn-sm btn-default' role='button' target='_blank'>Export Pick List</a>"; 
+        $tool_heading .= "&#160;".$view->linkButton("/maintenance/toolpicklist?cellid={$_REQUEST['id']}","Export Pick List",'default',true); 
     $view->h3($tool_heading);
     if (!empty($cell->Tools)) {
-        echo "<div class='table-responsive'><table class='table'>\n";
-        echo "<tr><th>Category</th><th>Description</th><th>Qty.</th></tr>\n";
+        $view->responsiveTableStart(['Qty.','Description','Category','Torque Value','Torque Units','Torque Label']);
         foreach($cell->Tools as $row) {
-            echo "<tr><td>{$row['category']}</td><td>{$row['description']}</td><td>{$row['qty']}</td></tr>\n";
+            echo "<tr><td>{$row['qty']}</td><td>{$row['description']}</td><td>{$row['category']}</td>";
+            echo "<td>{$row['torque_val']}</td><td>{$row['torque_units']}</td><td>{$row['torque_label']}</td></tr>";
         }
-        echo "</table></div>\n";
+        $view->responsiveTableClose();
+        // echo "<div class='table-responsive'><table class='table'>\n";
+        // echo "<tr><th>Category</th><th>Description</th><th>Qty.</th></tr>\n";
+        // foreach($cell->Tools as $row) {
+        //     echo "<tr><td>{$row['category']}</td><td>{$row['description']}</td><td>{$row['qty']}</td></tr>\n";
+        // }
+        // echo "</table></div>\n";
     }
     else {
         $view->bold("No Tooling Found");

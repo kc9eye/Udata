@@ -1,6 +1,6 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1537272105731" ID="ID_890614894" MODIFIED="1573051728491" TEXT="UData Database Structure">
+<node CREATED="1537272105731" ID="ID_890614894" MODIFIED="1573579229432" TEXT="UData Database Structure">
 <node CREATED="1537272972780" FOLDED="true" ID="ID_1015114918" MODIFIED="1572971809317" POSITION="right" TEXT="Security Model">
 <node CREATED="1537274507277" FOLDED="true" ID="ID_1926746816" MODIFIED="1572456033549" TEXT="Description">
 <node CREATED="1537274520537" ID="ID_1785132545" MODIFIED="1537275054153" TEXT="The security model uses the concept of multitiered permission sets.&#xa;The main login information is first collected in &apos;user_accts_holding&apos;&#xa;at first account setup. This information is used to send and then verify&#xa;the users account request through the email they provided. Once verified,&#xa;the information is transferred to the &apos;user_accts&apos; table for permanent storage&#xa;and removed from the holding table. At this point the new user has no roles&#xa;and therefore no permission sets. It is up to the administrator to set the users &#xa;roles, which in turn have that roles permission sets. The roles are stored in the &#xa;&apos;roles&apos; table. The permissions are stored in the &apos;perms&apos; table. The users accounts&#xa;are linked through relation to the roles table by the &apos;user_roles&apos; table. The permissions&#xa;are linked to the roles by relation to the &apos;role_perms&apos; table. The last table is the &#xa;&apos;auth_tokens&apos; table. This table stores the token given when a user successfully logs&#xa;in and requests to remain logged in. This token is stored on the user machine and &#xa;used to verify the user on subsequent accesses."/>
@@ -346,11 +346,11 @@
 </node>
 </node>
 </node>
-<node CREATED="1542040075345" FOLDED="true" ID="ID_1864523633" MODIFIED="1572458111512" POSITION="right" TEXT="Work Cells">
+<node CREATED="1542040075345" FOLDED="true" ID="ID_1864523633" MODIFIED="1573579229427" POSITION="right" TEXT="Work Cells">
 <node CREATED="1542040085325" FOLDED="true" ID="ID_957166309" MODIFIED="1572457706503" TEXT="Description">
 <node CREATED="1572456614463" ID="ID_1840160534" MODIFIED="1572456891323" TEXT="The work cell model follows the scheme of the products model. &#xa;Each work cell is an entity of it&apos;s own with associated attributes that can &#xa;tie it to a specific product. Cell material is tied to the work cell, along with &#xa;cell tooling. Work cell safety assessments are stored as virtual documents&#xa;with the cells id as the documents name attribute. Cell material is tied to the &#xa;cells product bill of materials. Cell tooling is tied to the maintenance tools master."/>
 </node>
-<node CREATED="1542040091385" FOLDED="true" ID="ID_929295122" MODIFIED="1572458110155" TEXT="Tables">
+<node CREATED="1542040091385" FOLDED="true" ID="ID_929295122" MODIFIED="1573579229425" TEXT="Tables">
 <node CREATED="1537282312080" FOLDED="true" ID="ID_1497118570" MODIFIED="1572457707923" TEXT="work_cell">
 <node CREATED="1537282598925" ID="ID_1765825096" MODIFIED="1541535634246" TEXT="id">
 <arrowlink DESTINATION="ID_1638317467" ENDARROW="Default" ENDINCLINATION="515;0;" ID="Arrow_ID_832068557" STARTARROW="None" STARTINCLINATION="515;0;"/>
@@ -388,7 +388,7 @@
 </node>
 <node CREATED="1541079781612" ID="ID_1749391797" MODIFIED="1541079784218" TEXT="_date"/>
 </node>
-<node CREATED="1541426309137" FOLDED="true" ID="ID_1605829248" MODIFIED="1572458108642" TEXT="cell_tooling">
+<node CREATED="1541426309137" FOLDED="true" ID="ID_1605829248" MODIFIED="1573579229424" TEXT="cell_tooling">
 <node CREATED="1541430774378" ID="ID_1468443428" MODIFIED="1541430778091" TEXT="id"/>
 <node CREATED="1541430779034" ID="ID_1665210645" MODIFIED="1541432526858" TEXT="cellid">
 <arrowlink DESTINATION="ID_1765825096" ENDARROW="Default" ENDINCLINATION="406;0;" ID="Arrow_ID_1263096773" STARTARROW="None" STARTINCLINATION="406;0;"/>
@@ -402,6 +402,9 @@
 </node>
 <node CREATED="1541430823431" ID="ID_1491311392" MODIFIED="1541430826116" TEXT="_date"/>
 <node CREATED="1542814420857" ID="ID_30846828" MODIFIED="1542814437565" TEXT="category"/>
+<node CREATED="1573579206635" ID="ID_1561244891" MODIFIED="1573579210479" TEXT="torque_val"/>
+<node CREATED="1573579211613" ID="ID_474016669" MODIFIED="1573579216436" TEXT="torque_units"/>
+<node CREATED="1573579216997" ID="ID_948522460" MODIFIED="1573579222529" TEXT="torque_label"/>
 </node>
 <node CREATED="1550503071981" ID="ID_1709010619" MODIFIED="1566842804445" TEXT="For cell safety, see Virtual Documents description.">
 <arrowlink DESTINATION="ID_1935350342" ENDARROW="Default" ENDINCLINATION="1536;0;" ID="Arrow_ID_1798631880" STARTARROW="None" STARTINCLINATION="1952;-131;"/>
@@ -683,11 +686,11 @@
 </node>
 </node>
 </node>
-<node CREATED="1537881930404" FOLDED="true" ID="ID_783560570" MODIFIED="1572458141667" POSITION="right" TEXT="Maintenance">
+<node CREATED="1537881930404" FOLDED="true" ID="ID_783560570" MODIFIED="1573579229431" POSITION="right" TEXT="Maintenance">
 <node CREATED="1572457246762" FOLDED="true" ID="ID_251545872" MODIFIED="1572458102277" TEXT="Description">
 <node CREATED="1572457263111" ID="ID_1513267727" MODIFIED="1572458097363" TEXT="The maintenance model handles equipment inspections and tooling. Inspections are&#xa;created in insp_forms for equipment  and are stored as a complete inspection in inspections. Tools are a categorical listing, and what users pick from to added to &#xa;a specific work cell."/>
 </node>
-<node CREATED="1537882188176" FOLDED="true" ID="ID_695908925" MODIFIED="1572457914125" TEXT="Tables">
+<node CREATED="1537882188176" FOLDED="true" ID="ID_695908925" MODIFIED="1573579229430" TEXT="Tables">
 <node CREATED="1572457496909" FOLDED="true" ID="ID_37332884" MODIFIED="1572457864999" TEXT="equipment">
 <node CREATED="1572457520059" ID="ID_1418799475" MODIFIED="1572457682276" TEXT="id">
 <linktarget COLOR="#ff0000" DESTINATION="ID_1418799475" ENDARROW="Default" ENDINCLINATION="163;0;" ID="Arrow_ID_1976030318" SOURCE="ID_1127110285" STARTARROW="None" STARTINCLINATION="163;0;"/>
@@ -722,7 +725,7 @@
 </node>
 <node CREATED="1537882246166" ID="ID_1604482400" MODIFIED="1537882249912" TEXT="comments"/>
 </node>
-<node CREATED="1541430839858" FOLDED="true" ID="ID_900613622" MODIFIED="1572458458753" TEXT="tools">
+<node CREATED="1541430839858" FOLDED="true" ID="ID_900613622" MODIFIED="1573579229428" TEXT="tools">
 <node CREATED="1541430849117" ID="ID_1175650038" MODIFIED="1541430899935" TEXT="id">
 <arrowlink COLOR="#ff0000" DESTINATION="ID_1117764118" ENDARROW="Default" ENDINCLINATION="246;0;" ID="Arrow_ID_1305569705" STARTARROW="None" STARTINCLINATION="246;0;"/>
 </node>
