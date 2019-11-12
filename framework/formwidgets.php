@@ -586,8 +586,8 @@ Class FormWidgets {
         echo "<div class='input-group'>";
         echo "<input type='text' class='form-control' placeholder='{$label}' name='{$name}' >";
         echo "<div class='input-group-btn'>";
-        echo "<button class='btn btn-default' type='submit'>";
-        echo "<span class='glyphicon glyphicon-search'></span>";
+        echo "<button class='btn btn-secondary' type='submit'>";
+        echo "<span class='oi oi-magnifying-glass'></span>";
         echo "</button>";
         echo "</div>";
         echo "</div>";

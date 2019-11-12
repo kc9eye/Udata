@@ -54,4 +54,24 @@ class Tool {
             return false;
         }
     }
+
+    public function getID () {
+        return $this->ID;
+    }
+
+    public function getDescription () {
+        return $this->Description;
+    }
+
+    public function getCategory () {
+        return $this->Category;
+    }
+
+    public function getAuthor () {
+        return $this->Author;
+    }
+
+    public function getDate () {
+        return $this->Created;
+    }
 }
