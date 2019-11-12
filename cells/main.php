@@ -152,7 +152,7 @@ function displayCell () {
     $tool_heading = "Tooling ";
     if ($server->checkPermission('editWorkCell')) $tool_heading .= $view->editBtnSm("/cells/celltools?id={$_REQUEST['id']}",true);
     if ($server->checkPermission('maintenanceAccess')) 
-        $tool_heading .= "&#160;".$view->linkButton("/maintenance/toolpicklist?cellid={$_REQUEST['id']}","Export Pick List",'default',true); 
+        $tool_heading .= "&#160;".$view->linkButton("/maintenance/toolpicklist?cellid={$_REQUEST['id']}","Export Pick List",'default',true,'_blank'); 
     $view->h3($tool_heading);
     if (!empty($cell->Tools)) {
         $view->responsiveTableStart(['Qty.','Description','Category','Torque Value','Torque Units','Torque Label']);
