@@ -126,7 +126,7 @@ function listDisplay () {
     foreach($bm->getToolListing() as $row) {
          echo "<tr><td>{$row['category']}</td><td>{$row['description']}</td>";
          if ($edit)
-            echo "<td>".$view->editBtnSm("$view->PageData['approot']}/maintenance/mastertools?action=edit&id={$row['id']}",true,true)."</td>";
+            echo "<td>".$view->editBtnSm("{$view->PageData['approot']}/maintenance/mastertools?action=edit&id={$row['id']}",true,true)."</td>";
         echo "</tr>\n";
     }
     $view->responsiveTableClose();
