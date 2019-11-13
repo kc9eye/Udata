@@ -89,8 +89,16 @@ function viewCommentDisplay () {
 function addNewComment () {
     global $server;
     $handler = new SupervisorComments($server->pdo);
-    $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
     $notify = new Notification($server->pdo,$server->mailer);
+    try {
+        $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
+    }
+    catch (UploadException $e) {
+        if ($e->getCode() != UPLOAD_ERR_NO_FILE) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }    
 
     if ($upload !== false) {
         if ($upload->multiple) {
