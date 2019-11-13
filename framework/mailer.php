@@ -80,7 +80,7 @@ class Mailer {
 
         }
         catch (Exception $e) {
-            $mailer->smtp->reset();
+            // $mailer->smtp->reset();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
