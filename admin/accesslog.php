@@ -43,8 +43,14 @@ function main () {
     $view->sideDropDownMenu($submenu);
     $view->h1('User Privilege Escalation Log&#160;'.$view->linkButton('/admin/accesslog?action=reset','Reset Log File','danger',true));
     if (file_exists(INCLUDE_ROOT.'/var/access_log.xml')) {
+        try {
         $log = simplexml_load_file(INCLUDE_ROOT.'/var/access_log.xml');
         $attempts = array_reverse($log->xpath('attempt'));
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            $attempts = array();
+        }
         echo "<div class='list-group'>";
         foreach($attempts as $attempt) {
             $user = new User($server->pdo,$attempt->uid);
