@@ -39,15 +39,15 @@ elseif (!empty($_REQUEST['action'])) {
         break;
         case 'update':
             $server->userMustHavePermission('editMasterTools');
-            $server->processingDialog([$bm,'updateToolByID'],[$_REQUEST],$server->config['application-root'].'/maintenance/main');
+            $server->processingDialog([$bm,'updateToolByID'],[$_REQUEST],$server->config['application-root'].'/maintenance/mastertools');
         break;
         case 'remove':
             $server->userMustHavePermission('editMasterTools');
-            $server->processingDialog([$bm,'removeToolByID'],[$_REQUEST['id']],$server->config['application-root'].'/maintenance/main');
+            $server->processingDialog([$bm,'removeToolByID'],[$_REQUEST['id']],$server->config['application-root'].'/maintenance/mastertools');
         break;
         case 'submit':
             $server->userMustHavepermission('editMasterTools');
-            $server->processingDialog([$bm,'addNewTool'],[$_REQUEST],$server->config['application-root'].'/maintenance/main?action=add');
+            $server->processingDialog([$bm,'addNewTool'],[$_REQUEST],$server->config['application-root'].'/maintenance/mastertools?action=add');
         break;
         case 'list':
             listDisplay();
@@ -77,14 +77,14 @@ function editDisplay () {
     $view = $server->getViewer("Maintenance: Edit Tool");
     $view->sideDropDownMenu($submenu);
     $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
-    $form->newForm("Edit Tool <a href='?action=remove&id={$_REQUEST['id']}' class='btn btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>");
+    $form->newForm($view->trashBtnSm("/maintenance/mastertools?action=remove&id={$_REQUEST['id']}",true));
     $form->inputCapture('category','Current Cat.',$tool['category'],['required'=>'#newcat:blank'],'To select a category below, you must remove the current category, that is in this box.');
     $form->selectBox('newcat','New Category',$select,['required'=>'#category:blank']);
     $form->inputCapture('description','Description',$tool['description'],true);
     $form->hiddenInput('action','update');
     $form->hiddenInput('uid',$server->currentUserID);
     $form->hiddenInput('id',$_REQUEST['id']);
-    $form->submitForm('Update',false,$server->config['application-root'].'/maintenance/main');
+    $form->submitForm('Update',false,$server->config['application-root'].'/maintenance/mastertools');
     $form->endForm();
     $view->footer();
 }
@@ -92,7 +92,7 @@ function editDisplay () {
 function addForm () {
     global $server,$bm,$submenu;
     $cats = $bm->getExistingCategories();
-    $select = [];
+    $select = [['torque wrench','Torque Wrench']];
     foreach($cats as $cat) {
         array_push($select,[$cat,$cat]);
     }
@@ -105,7 +105,7 @@ function addForm () {
     $form->selectBox('category','Category',$select,['required'=>"'#newcat:blank'"]);
     $form->inputCapture('newcat','New Category',null,['required'=>"'#categroy:blank'"]);
     $form->inputCapture('description','Description',null,true,'The description of the tool being added.');
-    $form->submitForm('Add Tool',true,'?action=list');
+    $form->submitForm('Add Tool',true,$view->PageData['approot'].'/maintenance/mastertools?action=list');
     $form->endForm();
     $view->footer();
 }
@@ -117,8 +117,8 @@ function listDisplay () {
     $view->sideDropDownMenu($submenu);
     $view->h1("Tooling Master List");
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
-    $btns['Master Tool Search'] = 'window.open("'.$view->PageData['approot'].'/maintenance/main","_self");';
-    if ($edit) $btns['Add Tooling'] = 'window.open("?action=add","_self");';
+    $btns['Master Tool Search'] = 'window.open("'.$view->PageData['approot'].'/maintenance/mastertools","_self");';
+    if ($edit) $btns['Add Tooling'] = 'window.open("'.$view->PageData['approot'].'/maintenance/mastertools?action=add","_self");';
     $form->inlineButtonGroup($btns);
     $view->hr();
     $heading = $edit ? ['Category','Description','Edit'] : ['Category','Description'];
@@ -126,7 +126,7 @@ function listDisplay () {
     foreach($bm->getToolListing() as $row) {
          echo "<tr><td>{$row['category']}</td><td>{$row['description']}</td>";
          if ($edit)
-            echo "<td>".$view->editBtnSm("?action=edit&id={$row['id']}",true,true)."</td>";
+            echo "<td>".$view->editBtnSm("{$view->PageData['approot']}/maintenance/mastertools?action=edit&id={$row['id']}",true,true)."</td>";
         echo "</tr>\n";
     }
     $view->responsiveTableClose();
@@ -139,7 +139,7 @@ function searchDisplay () {
     $view->sideDropDownMenu($submenu);
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $btns = ['List All'=>'window.open("?action=list","_self");'];
-    if ($server->checkPermission('editMasterTools')) $btns['Add Tooling'] = 'window.open("?action=add","_self");';
+    if ($server->checkPermission('editMasterTools')) $btns['Add Tooling'] = 'window.open("'.$view->PageData['approot'].'/maintenance/mastertools?action=add","_self");';
     $view->h1("Master Tool List Search");
     $form->inlineButtonGroup($btns);
     $view->hr();
@@ -147,7 +147,7 @@ function searchDisplay () {
     if (is_array($content)) {
         $view->responsiveTableStart(['Description','Category']);
         foreach($content as $row) {
-            echo "<tr><td><a href='?action=edit&id={$row['id']}'>{$row['description']}</a></td><td>{$row['category']}</td></tr>\n";
+            echo "<tr><td><a href='{$view->PageData['approot']}/maintenance/mastertools?action=edit&id={$row['id']}'>{$row['description']}</a></td><td>{$row['category']}</td></tr>\n";
         }
         $view->responsiveTableClose();
     }

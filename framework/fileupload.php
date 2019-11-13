@@ -27,7 +27,7 @@
  */
 class FileUpload {
 
-    const MAX_UPLOAD_SIZE = 2097152; //2MB
+    const MAX_UPLOAD_SIZE = 	3145728; //3MB for Aimee
 
     /**
      * @var Boolean $multiple Whether the file upload contains multiple files
