@@ -145,11 +145,11 @@ class WorkCell {
             id, 
             (SELECT description FROM tools WHERE id = a.toolid),
             (SELECT category FROM tools WHERE id = a.toolid),
-            qty 
+            qty,uid,_date,torque_val,torque_units,torque_label 
             FROM cell_tooling as a 
             WHERE cellid = ? ORDER BY category ASC";
         $pntr = $this->dbh->prepare($sql);
-        if (!$pntr->execute([$this->ID])) throw new Exception("Select failed: {$sql}");
+        if (!$pntr->execute([$this->ID])) throw new Exception(print_r($pntr->errorInfo(),true));
         return $pntr->fetchAll(PDO::FETCH_ASSOC);
     }
 

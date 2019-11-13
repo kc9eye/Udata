@@ -38,6 +38,7 @@ elseif (!empty($_REQUEST['action'])) {
         case 'remove':
             $cells = new WorkCells($server->pdo);
             $server->processingDialog([$cells,'removeToolingFromCell'],[$_REQUEST['toolid']],$server->config['application-root'].'/cells/celltools?id='.$_REQUEST['cellid']);
+        break;
         default:
             editView();
         break;
@@ -58,14 +59,6 @@ function editView () {
             <span class='glyphicon glyphicon-arrow-left'></span> Back
         </a>"
     );
-    $view->hr();
-    $view->responsiveTableStart(['Qty.','Description','Category','Remove'],true);
-    foreach($cell->Tools as $row) {
-        echo "<tr><td>{$row['qty']}</td><td>{$row['description']}</td><td>{$row['category']}</td>";
-        echo "<td><a href='?action=remove&toolid={$row['id']}&cellid={$_REQUEST['id']}' class='btn btn-danger' role='button'><span class='glyphicon glyphicon-trash'></span></a>";
-    }
-    $view->responsiveTableClose(true);
-    $view->hr();
     $form->searchBox('search_tools','Search for Tools to Add',null,false,"To narrow search results include '&' or 'AND' between search terms.");
     if (!empty($search_results)) {
         if (is_array($search_results)) {
@@ -80,6 +73,16 @@ function editView () {
             echo " not found.";
         }
     }
+    $view->hr();
+    $view->responsiveTableStart(['Qty.','Description','Category','Torque Value','Torque Units','Torque Label','Remove']);
+    foreach($cell->Tools as $row) {
+        echo "<tr><td>{$row['qty']}</td><td>{$row['description']}</td><td>{$row['category']}</td><td>{$row['torque_val']}</td>";
+        echo "<td>{$row['torque_units']}</td><td>{$row['torque_label']}</td>";
+        echo "<td>".$view->trashBtnSm("/cells/celltools?action=remove&toolid={$row['id']}&cellid={$_REQUEST['id']}",true)."</td></tr>";
+    }
+    $view->responsiveTableClose();
+    $view->hr();
+
     $view->footer();
 }
 
@@ -96,6 +99,21 @@ function addView () {
     $form->hiddenInput('uid',$server->currentUserID);
     $form->hiddenInput('action','commit');
     $form->inputCapture('qty','Quantity','1',true,'How many of these tools are required?');
+    if ($tool->Category == 'torque wrench') {
+        $value = [];
+        for($cnt=1;$cnt<=500;$cnt++) {
+            array_push($value,["{$cnt}","{$cnt}"]);
+        }
+        $form->selectBox('torque_val','Torque Value',$value,true);
+        $form->selectBox('torque_units','Torque Units',[['in/lbs','Inch Pounds'],['ft/lbs','Foot Pounds'],['nwt/mts','Newton Meters']],true);
+        $form->inputCapture('torque_label','Torque Label',null,true);
+
+    }
+    else {
+        $form->hiddenInput('torque_val','');
+        $form->hiddenInput('torque_units','');
+        $form->hiddenInput('torque_label','');
+    }
     $form->labelContent('Tool',$tool->Description);
     $form->submitForm('Add',false,'?id='.$_REQUEST['cellid']);
     $form->endForm();
