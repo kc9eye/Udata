@@ -17,11 +17,12 @@
  */
 require_once(dirname(__DIR__).'/lib/init.php');
 
-$server->userMustHavePermission('editSupervisorComments');
+
 
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
         case 'add':
+            $server->userMustHavePermission('editSupervisorComments');
             $server->processingDialog(
                 'addNewComment',
                 [],
@@ -41,6 +42,7 @@ else
 
 function commentFormDisplay () {
     global $server;
+    $server->userMustHavePermission('editSupervisorComments');
     include('submenu.php');
     $emp = new Employee($server->pdo,$_REQUEST['id']);
     $view = $server->getViewer('HR: Comments');
@@ -61,6 +63,7 @@ function commentFormDisplay () {
 
 function viewCommentDisplay () {
     global $server;
+    $server->userMustHavePermission('viewSupervisorComments');
     include('submenu.php');
 
     $handler = new SupervisorComments($server->pdo);
