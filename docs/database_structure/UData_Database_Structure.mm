@@ -1,11 +1,11 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node CREATED="1537272105731" ID="ID_890614894" MODIFIED="1573579229432" TEXT="UData Database Structure">
-<node CREATED="1537272972780" FOLDED="true" ID="ID_1015114918" MODIFIED="1572971809317" POSITION="right" TEXT="Security Model">
+<node CREATED="1537272972780" FOLDED="true" ID="ID_1015114918" MODIFIED="1573738430082" POSITION="right" TEXT="Security Model">
 <node CREATED="1537274507277" FOLDED="true" ID="ID_1926746816" MODIFIED="1572456033549" TEXT="Description">
 <node CREATED="1537274520537" ID="ID_1785132545" MODIFIED="1537275054153" TEXT="The security model uses the concept of multitiered permission sets.&#xa;The main login information is first collected in &apos;user_accts_holding&apos;&#xa;at first account setup. This information is used to send and then verify&#xa;the users account request through the email they provided. Once verified,&#xa;the information is transferred to the &apos;user_accts&apos; table for permanent storage&#xa;and removed from the holding table. At this point the new user has no roles&#xa;and therefore no permission sets. It is up to the administrator to set the users &#xa;roles, which in turn have that roles permission sets. The roles are stored in the &#xa;&apos;roles&apos; table. The permissions are stored in the &apos;perms&apos; table. The users accounts&#xa;are linked through relation to the roles table by the &apos;user_roles&apos; table. The permissions&#xa;are linked to the roles by relation to the &apos;role_perms&apos; table. The last table is the &#xa;&apos;auth_tokens&apos; table. This table stores the token given when a user successfully logs&#xa;in and requests to remain logged in. This token is stored on the user machine and &#xa;used to verify the user on subsequent accesses."/>
 </node>
-<node CREATED="1537273065402" FOLDED="true" ID="ID_1104688249" MODIFIED="1572971808505" TEXT="Tables">
+<node CREATED="1537273065402" FOLDED="true" ID="ID_1104688249" MODIFIED="1573738428414" TEXT="Tables">
 <node CREATED="1537273084920" FOLDED="true" ID="ID_613736600" MODIFIED="1572971799021" TEXT="user_accts">
 <node CREATED="1537273301057" ID="ID_441242533" MODIFIED="1572971794590" TEXT="id">
 <linktarget COLOR="#ff0000" DESTINATION="ID_441242533" ENDARROW="Default" ENDINCLINATION="378;0;" ID="Arrow_ID_645422997" SOURCE="ID_691910623" STARTARROW="None" STARTINCLINATION="378;0;"/>
@@ -62,7 +62,7 @@
 <node CREATED="1537274078273" ID="ID_308480037" MODIFIED="1537274081954" TEXT="_date"/>
 <node CREATED="1537274085527" ID="ID_1103625225" MODIFIED="1537274091767" TEXT="verfiy_code"/>
 </node>
-<node CREATED="1537274123107" FOLDED="true" ID="ID_690391872" MODIFIED="1572455763738" TEXT="auth_tokens">
+<node CREATED="1537274123107" ID="ID_690391872" MODIFIED="1573738412750" TEXT="auth_tokens">
 <node CREATED="1537274138845" ID="ID_1417498076" MODIFIED="1537274142137" TEXT="id"/>
 <node CREATED="1537274147971" ID="ID_1032071624" MODIFIED="1537274157393" TEXT="_date"/>
 <node CREATED="1537274160422" ID="ID_752139658" MODIFIED="1537274164400" TEXT="selector"/>
@@ -70,6 +70,7 @@
 <node CREATED="1537274174540" ID="ID_691910623" MODIFIED="1537274222886" TEXT="uid">
 <arrowlink DESTINATION="ID_441242533" ENDARROW="Default" ENDINCLINATION="378;0;" ID="Arrow_ID_645422997" STARTARROW="None" STARTINCLINATION="378;0;"/>
 </node>
+<node CREATED="1573738420015" ID="ID_1898404657" MODIFIED="1573738422567" TEXT="host"/>
 </node>
 <node CREATED="1537274245461" FOLDED="true" ID="ID_230727737" MODIFIED="1572455763738" TEXT="perms">
 <node CREATED="1537274270202" ID="ID_280959185" MODIFIED="1537274467535" TEXT="id">
