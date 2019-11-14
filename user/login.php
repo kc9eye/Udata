@@ -61,6 +61,7 @@ function verifyLogin () {
     global $server;
     if ($server->security->verifyLogOn($_REQUEST['username'],$_REQUEST['password']) === true) {
         $_SESSION['uid'] = $server->security->secureUserID;
+        $server->security->deletePersistentLogOn();
         if (isset($_REQUEST['remember']) && $_REQUEST['remember'] == 1) {
             $server->security->setPersistentLogOn($server->security->secureUserID);
         }
