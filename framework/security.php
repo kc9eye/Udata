@@ -135,11 +135,10 @@ Class Security {
             return false;
         }
 
-        if ( hash_equals( hash('sha256', $split[1]), $res['validator'] ) ) {
+        if ( hash_equals( hash('sha256', $split[1]), $res['validator'] ) && $_SERVER['REMOTE_ADDR'] == $res['host']) {
             #Reset the data cache and exit if valid
             $this->secureUserID = $res['uid'];
             $this->persistentid = $res['id'];
-            $this->updatePersistentLogOn();
             return true;
         }
         return false;
@@ -187,6 +186,7 @@ Class Security {
      * @return Boolean
      */
     public function setPersistentLogOn ($uid) {
+        $sql = 'INSERT INTO auth_tokens VALUES (:id,NOW(),:selector,:validator,:uid,:host)';
         $selector = hash('sha256', uniqid());
         $validator = bin2hex(random_bytes(32));
         $this->persistentid = uniqid();
@@ -194,17 +194,19 @@ Class Security {
             ':selector' => $selector,
             ':validator' => hash('sha256', $validator),
             ':id' => $this->persistentid,
-            ':uid' => $uid
+            ':uid' => $uid,
+            ':host'=>$_SERVER['REMOTE_ADDR']
         );
-
-        $sql = 'INSERT INTO auth_tokens VALUES (:id,NOW(),:selector,:validator,:uid)';
-        $pntr = $this->dbh->prepare($sql);
-        $pntr->execute($dataCache);
-        if ($pntr->rowCount() < 1) {
-            throw new Exception('Unable to insert persistent data into datbase');
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($dataCache)) throw new Exception(print_r($pntr->errorInfo(),true));
+            setcookie(self::COOKIE_ID, $selector.':'.$validator, time()+(60*60*24*365), "/");
+            return true;
         }
-        setcookie(self::COOKIE_ID, $selector.':'.$validator, time()+(60*60*24*365), "/");
-        return true;
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
     }
 
     /**
@@ -216,47 +218,15 @@ Class Security {
      */
     public function deletePersistentLogOn () {
         $sql = 'DELETE FROM auth_tokens WHERE uid = ?';
-        $pntr = $this->dbh->prepare($sql);
-        $pntr->execute([$this->secureUserID]);
-        if ($pntr->rowcount() >= 1) {
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$this->secureUserID])) throw new Exception(print_r($pntr->errorInfo(),true));
             setcookie(self::COOKIE_ID, '', time() - 1, '/');
             return true;
         }
-        else {
-            throw new Exception('Unable to delete database entry for persistent cookie data for user: '.$this->secureUserID);
-        }
-        return false;
-    }
-
-    /**
-     * Updates a persitent log upon successful automatic log in.
-     * 
-     * This method is called if the user has successfully logged on
-     * using a persistent log in ID. This rotates the persistent log
-     * on ID.
-     * @return Boolean
-     */
-    protected function updatePersistentLogOn () {
-        $selector = hash('sha256', uniqid());
-        $validator = bin2hex(random_bytes(32));
-        $dataCache = array(
-            ':selector' => $selector,
-            ':validator' => hash('sha256', $validator),
-            ':date' => 'NOW()',
-            ':id' => $this->persistentid
-        );
-
-        $sql = 'UPDATE auth_tokens SET _date = :date, selector = :selector, validator = :validator WHERE id = :id';
-        $pntr = $this->dbh->prepare($sql);
-        $pntr->execute($dataCache);
-        if ($pntr->rowCount() == 0) {
-            throw new Exception('Updating persistent logon record failed.');
-        }
-        elseif (! setcookie(self::COOKIE_ID, $selector.':'.$validator, time()+60*60*24*365, "/")) {
-            throw new Exception('Unable to update persistent logon cookie, cookie\'s in use?');
-        }
-        else {
-            return true;
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
         }
     }
 
