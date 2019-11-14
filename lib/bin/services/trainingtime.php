@@ -139,7 +139,7 @@ class trainingtime implements Service {
 
     private function mail () {
         $body = "<!DOCTYPE html><html><head><title>Training Elapsed</title></head><body>";
-        $body .= "<h1><img src='/favicons/favicon-16x16.png' alt='[UD]' />UData</h1>";
+        $body .= "<h1><img src='/favicon-16x16.png' alt='[UD]' />UData</h1>";
         $body .= "<h2>Retraining Time Frame Elapsed For:</h2>";
         $body .= "<table border='1'>";
         $body .= "<tr><th>Name</th><th>Training</th><th>Last Training Date</th></tr>";

@@ -89,22 +89,30 @@ function viewCommentDisplay () {
 function addNewComment () {
     global $server;
     $handler = new SupervisorComments($server->pdo);
-    $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
     $notify = new Notification($server->pdo,$server->mailer);
-
-    if ($upload !== false) {
-        if ($upload->multiple) {
-            $server->newEndUserDialog(
-                "Only one file may be associated with this entry.",
-                DIALOG_FAILURE,
-                $server->config['application-root'].'/hr/feedback?id='.$_REQUEST['eid']
-            );
+    try {
+        $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
+        if ($upload !== false) {
+            if ($upload->multiple) {
+                $server->newEndUserDialog(
+                    "Only one file may be associated with this entry.",
+                    DIALOG_FAILURE,
+                    $server->config['application-root'].'/hr/feedback?id='.$_REQUEST['eid']
+                );
+            }
+            $indexer = new FileIndexer($server->pdo,$server->config['data-root']);
+            if (($indexed = $indexer->indexFiles($upload,$_REQUEST['uid'])) !== false)
+                $_REQUEST['fid'] = $indexed[0];
         }
-        $indexer = new FileIndexer($server->pdo,$server->config['data-root']);
-        if (($indexed = $indexer->indexFiles($upload,$_REQUEST['uid'])) !== false)
-            $_REQUEST['fid'] = $indexed[0];
+        else $_REQUEST['fid'] = '';
     }
-    else $_REQUEST['fid'] = '';
+    catch (UploadException $e) {
+        if ($e->getCode() != UPLOAD_ERR_NO_FILE) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        $_REQUEST['fid'] = '';
+    }
 
     if ($handler->addNewSupervisorFeedback($_REQUEST)) {
         $body = file_get_contents(INCLUDE_ROOT.'/wwwroot/templates/email/supervisorfeedback.html');
