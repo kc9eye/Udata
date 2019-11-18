@@ -92,7 +92,7 @@ function editDisplay () {
 function addForm () {
     global $server,$bm,$submenu;
     $cats = $bm->getExistingCategories();
-    $select = [['torque wrench','Torque Wrench']];
+    $select = [['torque wrench','torque wrench']];
     foreach($cats as $cat) {
         array_push($select,[$cat,$cat]);
     }
