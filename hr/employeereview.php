@@ -293,85 +293,97 @@ function displayInitReview () {
 function displayPrintReview ($revid) {
     global $server;
     $review = new Review($server->pdo,$revid);
-    echo "<head>\n";
-    echo "  <title>Review: ".$review->getFullName()."</title>\n";
-    echo "  <link type='text/css' rel='stylesheet' href='{$server->config['application-root']}/wwwroot/css/print.css' />\n";
-    echo "  <script>window.print();</script>\n";
-    echo "  <style>\n";
-    echo "      div.well {\n";
-    echo "          border: 5px solid #000000;\n";
-    echo "          padding: 5px;\n";
-    echo "          }\n";
-    echo "      div.panel {\n";
-    echo "          border: 2px solid #000000;\n";
-    echo "          padding: 1px;\n";
-    echo "          }\n";
-    echo "      div.panel-heading {\n";
-    echo "          border-bottom: 1px inset #000000;\n";
-    echo "          font-weight:bold;\n";
-    echo "          }\n";
-    echo "      div.panel-body {\n";
-    echo "          margin:2px;\n";
-    echo "          padding:1px;\n";
-    echo "          }\n";
-    echo "  </style>\n";
-    echo "</head>\n";
-    echo "<body>\n";
-    echo "  <h1>Review for:".$review->getFullName()."</h1>\n";
-    echo "  <h2>Began: ".$review->getStartDate()."</h2>\n";
-    echo "  <h2>Ended: ".$review->getEndDate()."</h2>\n";
-    echo "  <div class='well'>\n";
-    echo "      <h3>Training</h3>\n";
-    echo "      <table>\n";
-    echo "          <tr><th>Training</th><th>Date</th><th>Trainer</th><tr>\n";
+    echo "<head>";
+    echo "<title>Review: ".$review->getFullName()."</title>";
+    echo "<link type='text/css' rel='stylesheet' href='{$server->config['application-root']}/wwwroot/css/print.css' />";
+    echo "<script>window.print();</script>";
+    echo "<style>";
+    echo "div.well {";
+    echo "border:5px solid #000000;";
+    echo "padding:5px;";
+    echo "}";
+    echo "div.panel {";
+    echo "border:2px solid #000000;";
+    echo "padding:1px;";
+    echo "}";
+    echo "div.panel-heading {";
+    echo "border-bottom:1px inset #000000;";
+    echo "font-weight:bold;";
+    echo "}";
+    echo "div.panel-body {";
+    echo "margin:2px;";
+    echo "padding:1px;";
+    echo "}";
+    echo "</style>";
+    echo "</head>";
+    echo "<body>";
+    echo "<h1>Review for:".$review->getFullName()."</h1>";
+    echo "<h3>Began: ".$review->getStartDate()."</h3>";
+    echo "<h3>Ended: ".$review->getEndDate()."</h3>";
+    echo "<div class='well'>";
+    echo "<h3>Preface</h4>";
+    echo "<p>The purpose of conducting the performance appraisal is to:</p>";
+    echo "<ol>";
+    echo "<li>Develope better communication between the employee and the supervisor.</li>";
+    echo "<li>Improve the quality of work and safety.</li>";
+    echo "<li>Increase productivity and employee development.</li>";
+    echo "</ol>";
+    echo "</div>";
+    echo "<div class='well'>";
+    echo "<h3>Training</h3>";
+    echo "<table>";
+    echo "<tr><th>Training</th><th>Date</th><th>Trainer</th><tr>";
     foreach($review->getTraining() as $row) {
-        echo "              <tr><td>{$row['training']}</td><td>{$row['train_date']}</td><td>{$row['trainer']}</td></tr>\n";
+        echo "<tr><td>{$row['training']}</td><td>{$row['train_date']}</td><td>{$row['trainer']}</td></tr>";
     }
-    echo "      </table>\n";
-    echo "  </div>\n";
-    echo "  <div class='well'>\n";
-    echo "      <h3>Attendance</h3>\n";
+    echo "</table>";
+    echo "</div>";
+    echo "<div class='well'>";
+    echo "<h3>Attendance</h3>";
     $attendance = $review->getReviewAttendance();
     if (empty($attendance)) {
         echo "<strong>No attendance incidents found.</strong>";
     }
     else {
-        echo "      <table>\n";
-        echo "          <tr><th>Date</th><th>Arrived Late</th><th>Left Early</th><th>Absent</th><th>Excused</th><th>Reason</th></tr>\n";
+        echo "<table>";
+        echo "<tr><th>Date</th><th>Arrived Late</th><th>Left Early</th><th>Absent</th><th>Excused</th><th>Reason</th></tr>";
         foreach($attendance as $row) {
             if ($row['absent'] == 'true') $absent = 'Yes';
             else $absent = 'No';
             if ($row['excused'] == 'true') $excused = 'Yes';
             else $excused = 'No';
-            echo "              <tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>\n";
+            echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td><td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td></tr>";
         }
-        echo "      </table>\n";
+        echo "</table>";
     }
-    echo "  </div>\n";
-    echo "  <div class='well'>";
-    echo "      <h3>Management Comments</h3>\n";
+    echo "</div>";
+    echo "<div class='well'>";
+    echo "<h3>Management Comments</h3>";
     $supervisor_comments = $review->getReviewManagementComments();
     if (empty($supervisor_comments)) {
         echo "<strong>No management comments found.</strong>";
     }
     else {
-        echo "      <table>\n";
-        echo "              <tr><th>Date</th><th>Author</th><th>Comments</th></tr>\n";
+        echo "<table>";
+        echo "<tr><th>Date</th><th>Author</th><th>Comments</th></tr>";
         foreach($supervisor_comments as $row) {
-            echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>\n";
+            echo "<tr><td>{$row['date']}</td><td>{$row['author']}</td><td>{$row['comments']}</td></tr>";
         }
-        echo "      </table>\n";
+        echo "</table>";
     }
-    echo "  </div>\n";
-    echo "  <div class='well'>\n";
-    echo "      <h3>Appraisals</h3>\n";
+    echo "</div>";
+    echo "<div class='well'>";
+    echo "<h3>Appraisals</h3>";
     foreach($review->getAllAppraisals() as $row) {
-            echo "      <div class='panel'>\n";
-            echo "          <div class='panel-heading'>{$row['author']} Appraisal</div>\n";
-            echo "          <div class='panel-body'>{$row['comments']}</div>\n";
-            echo "      </div>\n";
+            echo "<div class='panel'>";
+            echo "<div class='panel-heading'>{$row['author']} Appraisal</div>";
+            echo "<div class='panel-body'>{$row['comments']}</div>";
+            echo "</div>";
     }
-    echo "  </div>\n";
-    echo "</body>\n";
-    echo "</html>\n";    
+    echo "</div>";
+    echo "<div class='well' style='min-height:200px'>";
+    echo "<h3>Notes:</h3>";
+    echo "</div>";
+    echo "</body>";
+    echo "</html>";    
 }
