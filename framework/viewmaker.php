@@ -232,7 +232,7 @@ Class ViewMaker implements ViewWidgets {
         echo "UData v".APP_VERSION." Copyright (C) 2008-2019 Paul W. Lane";
         $this->insertTab(2);
         echo "<a href='{$this->PageData['error-support-link']}' target='_blank'>Problem with this page?</a>";
-        echo "<a href='https://github.com/kc9eye/UData/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed' class='mr-2 float-right'>Release Notes</a>";
+        echo "<a href='https://github.com/kc9eye/UData/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed' class='mr-2 float-right' target='_blank'>Release Notes</a>";
         echo "</div>";
         if (!is_null($script_links)) {
             foreach($script_links as $link) {
