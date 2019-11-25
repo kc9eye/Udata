@@ -18,19 +18,21 @@ $(document).ready(function(){
     var iconimg = "<img src='"+getAppRoot()+"/wwwroot/images/theme/wintericon.png' class='rounded float-right border border-dark' style='max-height:75px;max-width:100px;margin-top:-50px;' />";
     $('#template-header').css({
         'background-color':'#9dbfca',
-        'color':'#294f5c',
-        "border": "1px solid #cf0900"
+        'color':'#e6f7ff',
+        "border": "1px solid #05acfa"
     });
+    $('nav').removeClass('bg-dark navbar-dark');
+    $('nav').addClass('bg-light navbar-light');
     $('nav').addClass('winter-theme-nav');
     $('#template-header').append(iconimg);
     $('.view-content').css({
         "padding":"10px",
         "min-height":"65vh",
-        "background":"#eaefff url('" + getAppRoot() + "/wwwroot/images/theme/winterbg.png') center fixed no-repeat",
+        "background":"#edfbff url('" + getAppRoot() + "/wwwroot/images/theme/winterbg.png') center fixed no-repeat",
      });
      $('.footer').css({
         'background-color':'#9dbfca',
-        'color':'#294f5c',
+        'color':'#e6f7ff',
         "border": "1px solid #cf0900"
     });
     $('.footer a:link').css({
