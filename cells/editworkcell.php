@@ -33,7 +33,7 @@ if (!empty($_REQUEST['action'])) {
             $server->processingDialog(
                 [$wc,'updateWorkCell'],
                 [$_REQUEST],
-                $server->config['application-root'].'/cells/main'
+                $server->config['application-root'].'/cells/main?action=view&id='.$_REQUEST['cellid']
             );
         break;
         default:

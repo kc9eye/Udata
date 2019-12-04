@@ -161,13 +161,7 @@ function displayCell () {
             echo "<td>{$row['torque_val']}</td><td>{$row['torque_units']}</td><td>{$row['torque_label']}</td></tr>";
         }
         $view->responsiveTableClose();
-        // echo "<div class='table-responsive'><table class='table'>\n";
-        // echo "<tr><th>Category</th><th>Description</th><th>Qty.</th></tr>\n";
-        // foreach($cell->Tools as $row) {
-        //     echo "<tr><td>{$row['category']}</td><td>{$row['description']}</td><td>{$row['qty']}</td></tr>\n";
-        // }
-        // echo "</table></div>\n";
-    }
+     }
     else {
         $view->bold("No Tooling Found");
     }
