@@ -16,7 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 //Source intialization, and check security access
- require_once(dirname(__DIR__).'/lib/init.php');
+require_once(dirname(__DIR__).'/lib/init.php');
+
 $server->userMustHavePermission('editBOM');
 
 //Controlling section, based on API URL
@@ -53,7 +54,16 @@ if (!empty($_REQUEST['action'])) {
                     $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
                 );
         break;
+        case 'rerebase':
+            $_REQUEST['file'] = new FileUpload(FileIndexer::UPLOAD_NAME);
+            $server->processingDialog(
+                [new BillOfMaterials($server->pdo), 'rebaseExistingBOM'],
+                [$_REQUEST],
+                $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
+            );
+        break;
         case 'addendum': addendumDisplay(); break;
+        case 'rebase': displayRebase(); break;
         default: editMaterial(); break;
     }
 }
@@ -95,6 +105,27 @@ function addendumDisplay () {
     $form->inputCapture('qty','Qty.',null,true);
     $form->inputCapture('number',htmlentities('Part#'),null,true);
     $form->submitForm('Add',true);
+    $form->endForm();
+    $view->footer();
+}
+
+function displayRebase () {
+    global $server;
+    $product = new Product($server->pdo,$_REQUEST['prokey']);
+    $view = $server->getViewer("Rebase BOM with File");
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->h2("Rebase BOM",true);
+    $view->bgInfoParagraph(
+        "Import a new CVS file in format: 'part number(with or without hyphen)',
+        'description','qty'; to be used to rebase an existsing BOM for product; <strong>{$product->pDescription}.",
+        true
+    );
+    $form->newMultipartForm('Import CSV');
+    $form->hiddenInput('action','rerebase');
+    $form->hiddenInput('prokey',$_REQUEST['prokey']);
+    $form->hiddenInput('uid',$server->currentUserID);
+    $form->fileUpload(FileIndexer::UPLOAD_NAME,true);
+    $form->submitForm('Rebase',true);
     $form->endForm();
     $view->footer();
 }

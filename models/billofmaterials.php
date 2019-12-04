@@ -36,21 +36,28 @@ class BillOfMaterials {
 
     public function importBOMCSV ($data) {
         $bom = [];
-        $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
         $this->prokey = $data['prokey'];
         $this->uid = $data['uid'];
         try {
-            $fh = fopen($upload->files[0]['tmp_name'],'r');
+            $fh = fopen($data['file']->files[0]['tmp_name'],'r');
             while(($line = fgetcsv($fh)) !== false) {
                 $line[0] = str_ireplace('-','',$line[0]);
                 $line[1] = trim($line[1]);
                 $line[2] = (float) $line[2];
                 array_push($bom,$line);
             }
-            if ($this->addNewMaterialsFromArray($bom)) 
-                return $this->addBOMArray($bom);
-            else
-                throw new Exception("Failed to add new materials");
+            if ($this->addNewMaterialsFromArray($bom)) {
+                try {
+                    $this->addBOMArray($bom);
+                    $this->removeDupes($this->prokey);
+                    return true;
+                }
+                catch (Exception $e) {
+                    trigger_error($e->getMessage(),E_USER_WARNING);
+                    return false;
+                }
+            }
+ 
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
@@ -80,10 +87,10 @@ class BillOfMaterials {
                     ':id'=>uniqid(),
                     ':prokey'=>$this->prokey,
                     ':num'=>$part[0],
-                    ':qty'=>(float) $part['2'],
+                    ':qty'=>(float) $part[2],
                     ':uid'=>$this->uid
                 ];
-                if (!$pntr->execute($data)) throw new Exception("Insert failed: ".print_r($part,true));
+                if (!$pntr->execute($data)) throw new Exception(print_r($pntr->errorInfo(),true));
             }
             $this->dbh->commit();
             return true;
@@ -113,7 +120,7 @@ class BillOfMaterials {
                 $pntr = $this->dbh->prepare($sql);
                 foreach($addMaterials as $part) {
                     if (!$pntr->execute([':id'=>uniqid(),':number'=>$part[0],':description'=>$part[1],':uid'=>$this->uid]))
-                        throw new Exception("Insert new material failed: ".print_r($part,true));
+                        throw new Exception(print_r($pntr->errorInfo(),true));
                 }
                 $this->dbh->commit();
             }
@@ -320,6 +327,74 @@ class BillOfMaterials {
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Rebase an existing BOM with an addendum file
+     * 
+     * @param Array $data in the form `['file'=>FileUpload Object,'prokey'=>string,'uid'=>string]
+     * @return Boolean True on success, false otherwise
+     */
+    public function rebaseExistingBOM ($data) {
+        $rebase = [];        
+        $this->prokey = $data['prokey'];
+        $this->uid = $data['uid'];
+        try {
+            $fh = fopen($data['file']->files[0]['tmp_name'],'r');
+            while(($line = fgetcsv($fh)) !== false) {
+                $line[0] = str_ireplace('-','',$line[0]);
+                $line[1] = trim($line[1]);
+                $line[2] = (float) $line[2];
+                array_push($rebase,$line);
+            }
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        if ($this->addNewMaterialsFromArray($rebase)) {
+            try {
+                $this->addBOMArray($rebase);
+                $this->removeDupes($this->prokey);
+                return true;
+            }
+            catch (Exception $e) {
+                trigger_error($e->getMessage(),E_USER_WARNING);
+                return false;
+            }
+        }
+    }
+
+    public function removeDupes ($prokey) {
+        $sql = 'SELECT * FROM bom WHERE prokey = ? ORDER BY partid ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $bom = $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        $subtends = [];
+        for($cnt = 0; $cnt < count($bom);$cnt++) {
+            if ($bom[$cnt]['partid'] == $bom[($cnt + 1)]['partid']) array_push($subtends,$bom[($cnt + 1)]);
+        }
+        $sql = 'DELETE FROM bom WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            $this->dbh->beginTransaction();
+            foreach($subtends as $sb) {
+                if (!$pntr->execute([$sb['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            $this->dbh->commit();
+            return true;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
