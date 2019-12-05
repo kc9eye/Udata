@@ -73,7 +73,7 @@ class BillOfMaterials {
         try {
             $sql = 
             'INSERT INTO bom (id,prokey,qty,uid,partid)
-             SELECT :id,:prokey,:qty,:uid,id FROM material WHERE number = :num';
+                SELECT :id, :prokey, :qty, :uid, id FROM material WHERE number = :num';
             $this->dbh->beginTransaction();
             $pntr = $this->dbh->prepare($sql);
             foreach($addMaterials as $part) {
@@ -107,15 +107,19 @@ class BillOfMaterials {
             array_push($addMaterials,$materials);
         }
         unset($materials);
-        #@@DEBUG@@##
-        return $addMaterials;
         try {
             if (!empty($addMaterials)) {
                 $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
-                $this->dbh->beginTransaction();
                 $pntr = $this->dbh->prepare($sql);
+                $this->dbh->beginTransaction();
                 foreach($addMaterials as $part) {
-                    if (!$pntr->execute([':id'=>uniqid(),':number'=>$part[0],':description'=>$part[1],':uid'=>$this->uid]))
+                    $insert = [
+                        ':id'=>uniqid(),
+                        ':number'=>$part[0],
+                        ':description'=>$part[1],
+                        ':uid'=>$this->uid
+                    ];
+                    if (!$pntr->execute($insert))
                         throw new Exception(print_r($pntr->errorInfo(),true));
                 }
                 $this->dbh->commit();
