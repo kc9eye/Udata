@@ -97,41 +97,44 @@ class BillOfMaterials {
     }
 
     public function addNewMaterialsFromArray (Array $materials) {
-        $addMaterials = [];
+        $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
+        $pntr = $this->dbh->prepare($sql);
         if (is_array($materials[0])) {
             foreach($materials as &$part) {
-                if ($this->verifyMaterialNotEntered($part[0])) array_push($addMaterials, $part);
-            }
-        }
-        elseif ($this->verifyMaterialNotEntered($materials[0])) {
-            array_push($addMaterials,$materials);
-        }
-        unset($materials);
-
-        try {
-            if (!empty($addMaterials)) {
-                $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
-                $pntr = $this->dbh->prepare($sql);
-                $this->dbh->beginTransaction();
-                foreach($addMaterials as $part) {
+                if ($this->verifyMaterialNotEntered($part[0])) {
                     $insert = [
                         ':id'=>uniqid(),
                         ':number'=>$part[0],
                         ':description'=>$part[1],
                         ':uid'=>$this->uid
                     ];
-                    if (!$pntr->execute($insert))
-                        throw new Exception(print_r($pntr->errorInfo(),true));
+                    try {
+                        if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+                    }
+                    catch (Exception $e) {
+                        trigger_error($e->getMessage(),E_USER_WARNING);
+                        return false;
+                    }
                 }
-                $this->dbh->commit();
             }
             return true;
         }
-        catch (Exception $e) {
-            $this->dbh->rollBack();
-            trigger_error($e->getMessage(),E_USER_WARNING);
-            return false;
+        elseif (is_string($materials[0]) && $this->verifyMaterialNotEntered($materials[0])) {
+             $insert = [
+                ':id'=>uniqid(),
+                ':number'=>$materials[0],
+                ':description'=>$materials[1],
+                ':uid'=>$this->uid
+            ];
+            try {
+                if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            catch (Exception $e) {
+                trigger_error($e->getMessage(),E_USER_WARNING);
+                return false;
+            }
         }
+        return false;
     }
 
     /**
