@@ -107,6 +107,8 @@ class BillOfMaterials {
             array_push($addMaterials,$materials);
         }
         unset($materials);
+        #@@DEBUG@@##
+        return $addMaterials;
         try {
             if (!empty($addMaterials)) {
                 $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
@@ -349,11 +351,13 @@ class BillOfMaterials {
             return false;
         }
 
+        ##@@DEBUG@@##
+        return $this->addNewMaterialsFromArray($rebase);
+        
         if (!$this->addNewMaterialsFromArray($rebase)) return false;
-        if (!$this->addBOMArray($rebase)) return false;;
+        if (!$this->addBOMArray($rebase)) return false;
         if (!$this->removeDupes($this->prokey)) return false;
         return true;
-
     }
 
     public function removeDupes ($prokey) {
