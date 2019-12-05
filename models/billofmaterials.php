@@ -46,23 +46,17 @@ class BillOfMaterials {
                 $line[2] = (float) $line[2];
                 array_push($bom,$line);
             }
-            if ($this->addNewMaterialsFromArray($bom)) {
-                try {
-                    $this->addBOMArray($bom);
-                    $this->removeDupes($this->prokey);
-                    return true;
-                }
-                catch (Exception $e) {
-                    trigger_error($e->getMessage(),E_USER_WARNING);
-                    return false;
-                }
-            }
- 
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
+        if (!$this->addNewMaterialsFromArray($bom)) return false;
+        if (!$this->addBOMArray($bom)) return false;
+        if (!$this->removeDupes($this->prokey)) return false;
+        return true;
+
+
     }
 
     public function addBOMArray (Array $materials) {
@@ -105,14 +99,14 @@ class BillOfMaterials {
     public function addNewMaterialsFromArray (Array $materials) {
         $addMaterials = [];
         if (is_array($materials[0])) {
-            foreach($materials as $part) {
+            foreach($materials as &$part) {
                 if ($this->verifyMaterialNotEntered($part[0])) array_push($addMaterials, $part);
             }
         }
         elseif ($this->verifyMaterialNotEntered($materials[0])) {
             array_push($addMaterials,$materials);
         }
-
+        unset($materials);
         try {
             if (!empty($addMaterials)) {
                 $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
@@ -241,16 +235,15 @@ class BillOfMaterials {
     }
 
     protected function verifyMaterialNotEntered ($number) {
-        $sql = 'SELECT count(*) FROM material WHERE number = ?';
+        $sql = 'SELECT * FROM material WHERE number = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$number])) throw new Exception("Select faile: {$sql}");
-            if ($pntr->fetch(PDO::FETCH_ASSOC)['count'] == 0) return true;
-            else return false;
+            if (!$pntr->execute([$number])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $result = empty($pntr->fetchAll(PDO::FETCH_COLUMN)) ? true : false;
+            return $result;
         }
         catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            return false;
+            trigger_error($e->getMessage(), E_USER_ERROR);
         }
     }
 
@@ -355,17 +348,12 @@ class BillOfMaterials {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
-        if ($this->addNewMaterialsFromArray($rebase)) {
-            try {
-                $this->addBOMArray($rebase);
-                $this->removeDupes($this->prokey);
-                return true;
-            }
-            catch (Exception $e) {
-                trigger_error($e->getMessage(),E_USER_WARNING);
-                return false;
-            }
-        }
+
+        if (!$this->addNewMaterialsFromArray($rebase)) return false;
+        if (!$this->addBOMArray($rebase)) return false;;
+        if (!$this->removeDupes($this->prokey)) return false;
+        return true;
+
     }
 
     public function removeDupes ($prokey) {
