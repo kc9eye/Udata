@@ -50,5 +50,5 @@ function displayDebug () {
     global $server;
     $_REQUEST['file'] = new FileUpload(FileIndexer::UPLOAD_NAME);
     $bom = new BillOfMaterials($server->pdo);
-    $server->getDebugViewer($bom->rebaseExistingBOM($_REQUEST));
+    $server->getDebugViewer(var_export($bom->rebaseExistingBOM($_REQUEST),true));
 }
