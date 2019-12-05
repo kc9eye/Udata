@@ -15,7 +15,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-require_once(dirname(__DIR__).'/lib/init.php');
+require_once('lib/init.php');
 
 $server->userMustHavePermission('adminAll');
 
