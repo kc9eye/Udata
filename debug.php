@@ -35,7 +35,7 @@ function main () {
     global $server;
     $view = $server->getViewer('DEBUG');
     $view->h1('Debug Content');
-    $form = new FormWidgets($view->PageData['wwwroot']);
+    $form = new FormWidgets($view->PageData['wwwroot'].'/scripts');
     $form->newMultipartForm();
     $form->hiddenInput('action','submit');
     $form->hiddenInput('uid',$server->currentUserID);
