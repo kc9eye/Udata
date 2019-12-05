@@ -359,8 +359,6 @@ class BillOfMaterials {
             return false;
         }
 
-        ##@@DEBUG
-        return $this->addNewMaterialsFromArray($rebase);
         if (!$this->addNewMaterialsFromArray($rebase)) return false;
         if (!$this->addBOMArray($rebase)) return false;
         if (!$this->removeDupes($this->prokey)) return false;
