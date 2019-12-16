@@ -113,7 +113,7 @@ function reviewDisplay () {
 
     $view->h1("<small>Pending Changes for:</small> {$cell->Name}");
     $view->h2("<small>Changes Requested by:</small> {$user->firstname} {$user->lastname}");
-    $view->wrapInWell($cell->SafetyReview['body']);
+    $view->wrapInCard($cell->SafetyReview['body']);
     $form->newForm('Approve');
     $form->hiddenInput('aid',$server->currentUserID);
     $form->hiddenInput('username',$reviewer->username);
