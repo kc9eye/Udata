@@ -20,8 +20,22 @@ require_once(dirname(__DIR__).'/lib/init.php');
 $server->userMustHavePermission('editBOM');
 
 if (!empty($_REQUEST['action'])) {
-   switch($_REQUEST['action']) {
-       default: main(); break;
+    switch($_REQUEST['action']) {
+        case 'deletemultiple':
+            if (!empty($_REQUEST['delete'])) 
+                $server->processingDialog(
+                    [new BillOfMaterials($server->pdo),'deleteFromIDArray'],
+                    [$_REQUEST['delete']],
+                    $server->config['application-root'].'/products/unusedbommats?prokey='.$_REQUEST['prokey']
+                );
+            else
+                $server->newEndUserDialog(
+                    "You must select items to delete!",
+                    DIALOG_FAILURE,
+                    $server->config['application-root'].'/products/unusedbommats?prokey='.$_REQUEST['prokey']
+                );
+        break;
+        default: main(); break;
    }
 }
 else {
@@ -49,12 +63,20 @@ function main () {
     }
     $view->responsiveTableClose();
     $view->endBtnCollapse();
-    $view->responsiveTableStart(['Part#','Description','Qty','Edit']);
+    $view->hr();
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    $form->newInlineForm();
+    $form->hiddenInput('action','deletemultiple');
+    $form->inlineSubmit('Delete Multiple',true);
+    $view->responsiveTableStart(['Delete','Part#','Description','Qty','Edit']);
     foreach($unassigned as $row) {
-        echo "<tr><td>{$row['number']}</td><td>{$row['description']}</td><td>{$row['qty']}</td>";
+        echo "<tr><td>";
+        $form->inlineCheckbox('delete[]','Delete',$row['id']);
+        echo "</td><td>{$row['number']}</td><td>{$row['description']}</td><td>{$row['qty']}</td>";
         echo "<td>".$view->editBtnSm("/products/editbom?id={$row['id']}",true)."</td></tr>\n";
     }
     $view->responsiveTableClose();
+    $form->endInlineForm();
     $view->addScrollTopBtn();
    $view->footer();
 }

@@ -47,6 +47,7 @@ function main () {
             " <a href='{$server->config['application-root']}/products/viewproduct?prokey={$_REQUEST['prokey']}'
             class='btn btn-info' role='button'><span class='glyphicon glyphicon-arrow-left'></span> Back</a>";
         if ($edit) $heading .= " ".$view->linkButton('/products/editbom?action=rebase&prokey='.$_REQUEST['prokey'],"<span class='oi oi-action-redo'></span> Rebase",'danger',true);
+        if ($edit) $heading .= " ".$view->linkButton('/products/editbom?action=multidelete&prokey='.$_REQUEST['prokey'],"<span class='oi oi-trash'></span> Delete Mulitple",'danger',true);
         if ($edit) $heading .= " ".$view->linkButton('/products/editbom?action=addendum&prokey='.$_REQUEST['prokey'],"<span class='oi oi-plus'></span> Addendum",'warning',true);
         if ($edit) $heading .= " ".$view->linkButton('/products/unusedbommats?prokey='.$_REQUEST['prokey'],'List Unused Material','info',true);
         if ($edit) $heading .= " ".$view->linkButton('/products/bomaccounting?prokey='.$_REQUEST['prokey'],'Material Accounting','info',true);
