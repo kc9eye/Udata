@@ -62,6 +62,24 @@ if (!empty($_REQUEST['action'])) {
                 $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
             );
         break;
+        case 'deletemultiple':
+            if (!empty($_REQUEST['delete'])) {
+                $server->processingDialog(
+                    [new BillOfMaterials($server->pdo),'deleteFromIDArray'],
+                    [$_REQUEST['delete']],
+                    $server->config['application-root'].'/products/bom?prokey='.$_REQUEST['prokey']
+                );
+            }
+            else 
+                $server->newEndUserDialog(
+                    "Use must select items to delete!",
+                    DIALOG_FAILURE,
+                    $server->config['application-root'].'/products/editbom?action=multidelete&prokey='.$_REQUEST['prokey']
+                );
+        break;
+        case 'multidelete':
+            displayMultiDelete();
+        break;
         case 'addendum': addendumDisplay(); break;
         case 'rebase': displayRebase(); break;
         default: editMaterial(); break;
@@ -127,5 +145,26 @@ function displayRebase () {
     $form->fileUpload(FileIndexer::UPLOAD_NAME,true);
     $form->submitForm('Rebase',true);
     $form->endForm();
+    $view->footer();
+}
+
+function displayMultiDelete () {
+    global $server;
+    $product = new Product($server->pdo,$_REQUEST['prokey']);
+    $view = $server->getViewer('Edit BOM: MultiDelete');
+    $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
+    $view->h1("<small>Delete Multiple From:</small> {$product->pDescription}");
+    $form->newInlineForm();
+    $form->hiddenInput('action','deletemultiple');
+    $form->inlineSubmit('Delete Multiple',true,$view->PageData['approot'].'/products/bom?prokey='.$_REQUEST['prokey']);
+    $view->responsiveTableStart(['Delete',htmlentities("Part #"),'Description','Qty.']);
+    foreach($product->pBOM as $part) {
+        echo "<tr><td>";
+        $form->inlineCheckbox('delete[]',"Delete",$part['id']);
+        echo "</td><td>{$part['number']}</td><td>{$part['description']}</td><td>{$part['qty']}</td></tr>";
+    }
+    $view->responsiveTableClose();
+    $form->endInlineForm();
+    $view->addScrollTopBtn();
     $view->footer();
 }
