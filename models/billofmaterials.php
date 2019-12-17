@@ -396,4 +396,27 @@ class BillOfMaterials {
             return false;
         }
     }
+
+    /**
+     * Delete multiple items from BOM by ID given in an array
+     * @param Array $deletes An unindexed array containing ID's of row's to delete
+     * @return Boolean True on success, false otherwise. 
+     */
+    public function deleteFromIDArray (Array $deletes) {
+        $sql = 'DELETE FROM bom WHERE id = ?';
+        $this->dbh->beginTransaction();
+        $pntr = $this->dbh->prepare($sql);
+        try {
+            foreach($deletes as $id) {
+                if (!$pntr->execute([$id])) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            $this->dbh->commit();
+            return true;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollBack();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
 }
