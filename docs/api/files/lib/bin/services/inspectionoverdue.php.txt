@@ -59,7 +59,7 @@ class inspectionoverdue implements Service {
     private function emailNotification () {
         $body = "<!DOCTYPE html>";
         $body .= "<html><head><title>Inspection Overdue</title></head><body>";
-        $body .= "<h1><img src='/favicons/favicon-16x16.png' />UData</h1>";
+        $body .= "<h1><img src='/favicon-16x16.png' />UData</h1>";
         $body .= "<h2>Inspections Over Due for Equipment:</h2>";
         $body .= "<table border='1'>";
         $body .= "<tr><th>Equipment</th><th>Last Inspection</th>";

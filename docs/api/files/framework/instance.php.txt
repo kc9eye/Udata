@@ -599,22 +599,28 @@ Class Instance {
      */
     public function userRightsEscalation ($uid, $api) {
         $log = INCLUDE_ROOT.'/var/access_log.xml';
-        $xml = "<attempt><id>".uniqid()."</id><date>".date('c')."</date><uid>{$uid}</uid><api>$api</api></attempt>";
-        if (!file_exists($log)) {
-            $fh = fopen($log, 'w');
-            flock($fh,LOCK_EX);
-            fwrite($fh,"<?xml version='1.0' ?>\n");
-            fwrite($fh,"<access_log>\n");
+        $xml = "<attempt><id>".uniqid()."</id><date>".date('c')."</date><uid>{$uid}</uid><api>".htmlspecialchars($api)."</api></attempt>";
+        try {
+            if (!file_exists($log)) {
+                $fh = fopen($log, 'w');
+                flock($fh,LOCK_EX);
+                fwrite($fh,"<?xml version='1.0' ?>\n");
+                fwrite($fh,"<access_log>\n");
+            }
+            else {
+                $fh = fopen($log, 'c');
+                flock($fh,LOCK_EX);
+                fseek($fh,-14,SEEK_END);
+            }
+            fwrite($fh,$xml);
+            fwrite($fh,"\n</access_log>\n");
+            flock($fh,LOCK_UN);
+            fclose($fh);
         }
-        else {
-            $fh = fopen($log, 'c');
-            flock($fh,LOCK_EX);
-            fseek($fh,-14,SEEK_END);
-         }
-        fwrite($fh,$xml);
-        fwrite($fh,"\n</access_log>\n");
-        flock($fh,LOCK_UN);
-        fclose($fh);
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return true;
+        }
     }
 
     private function runservice () {
