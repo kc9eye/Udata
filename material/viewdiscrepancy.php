@@ -27,6 +27,10 @@ if (!empty($_REQUEST['action'])) {
             $discrepancies = $materials->searchDiscrepancies($search_string->formatedString);
             resultsDisplay($discrepancies);
         break;
+        case 'date_range_lookup':
+            $materials = new Materials($server->pdo);
+            resultsDisplay($materials->getDiscrepanciesByDateRange($_REQUEST['begin_date'],$_REQUEST['end_date'],$_REQUEST['type']));
+        break;
         case 'view':
             $discrepancy = new MaterialDiscrepancy($server->pdo,$_REQUEST['id']);
             discrepancyDisplay($discrepancy);
@@ -51,11 +55,12 @@ function resultsDisplay ($discrepancies) {
     $view->insertTab();
     $form->fullPageSearchBar('dis_search');
     if (!empty($discrepancies)) {
-        $view->responsiveTableStart(['ID','Qty.','Material#','Type','Date','Product']);
+        $view->responsiveTableStart(['View','Qty.','Material#','Description','Type','Date','Product']);
         foreach($discrepancies as $row) {
             echo "<tr><td>";
-            echo "<a href='{$server->config['application-root']}/material/viewdiscrepancy?action=view&id={$row['id']}'>{$row['id']}</a></td>";
-            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td><td>{$row['product']}</td></tr>\n";
+            echo $view->linkButton("/material/viewdiscrepancy?action=view&id={$row['id']}","<span class='oi oi-eye'></span>","secondary",true)."</td>";
+            echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['description']}</td>";
+            echo "<td>{$row['type']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td><td>{$row['product']}</td></tr>\n";
         }
         $view->responsiveTableClose();
     }
@@ -67,8 +72,14 @@ function resultsDisplay ($discrepancies) {
 
 function searchDisplay () {
     global $server,$submenu;
+    $pageOptions = [
+        'headinserts'=> [
+            '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>',
+            '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>'
+        ]
+    ];
     $handler = new Materials($server->pdo);
-    $view = $server->getViewer('Material:Discrepancy');
+    $view = $server->getViewer('Material:Discrepancy',$pageOptions);
     $form = new InlineFormWidgets($view->PageData['wwwroot'].'/scripts');
     $view->sideDropDownMenu($submenu);
     $view->h1('Search Discrepancies',true);
@@ -77,6 +88,32 @@ function searchDisplay () {
     $view->br();
     $view->insertTab();
     $form->fullPageSearchBar('dis_search');
+    $view->hr();
+    $form->newInlineForm("Date Range Lookup");
+    $form->hiddenInput('action','date_range_lookup');
+    //Datreange inputs inline
+    //@todo need method for inline and form
+    echo "<div class='input-group input-daterange'>";
+    echo "<input class='form-control' type='text' name='begin_date' required/>";
+    echo "<span class='input-group-addon'>to</span>";
+    echo "<input class='form-control' type='text' name='end_date' required/>";
+    echo "</div>";
+    //End inline date ragne
+    $view->insertTab();
+    $form->inlineSelectBox(
+        'type',
+        'Query Type',
+        [
+            ['PDIH','PDIH Only'],
+            ['PDN','PDN Only'],
+            ['all','All']
+        ],
+        true
+    );
+    $view->insertTab();
+    $form->inlineSubmit();
+    $form->endInlineForm();
+    $view->hr();
     $view->h3('Latest Added');
     $view->responsiveTableStart(['View','Qty','Material#','Type','Date','Product']);
     foreach($handler->getRecentDiscrepancies() as $row) {
@@ -84,6 +121,15 @@ function searchDisplay () {
         echo "<td>{$row['quantity']}</td><td>{$row['number']}</td><td>{$row['type']}</td><td>".$view->formatUserTimestamp($row['date'],true)."</td><td>{$row['product']}</td></tr>";
     }
     $view->responsiveTableClose();
+    echo "<script>$(document).ready(function(){
+        var options = {
+            format:'yyyy/mm/dd',
+            autoclose: true
+        };
+        $('.input-daterange input').each(function(){
+            $(this).datepicker(options);
+        });
+    });</script>";
     $view->footer();
 }
 
