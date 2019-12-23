@@ -36,26 +36,27 @@ class BillOfMaterials {
 
     public function importBOMCSV ($data) {
         $bom = [];
-        $upload = new FileUpload(FileIndexer::UPLOAD_NAME);
         $this->prokey = $data['prokey'];
         $this->uid = $data['uid'];
         try {
-            $fh = fopen($upload->files[0]['tmp_name'],'r');
+            $fh = fopen($data['file']->files[0]['tmp_name'],'r');
             while(($line = fgetcsv($fh)) !== false) {
                 $line[0] = str_ireplace('-','',$line[0]);
                 $line[1] = trim($line[1]);
                 $line[2] = (float) $line[2];
                 array_push($bom,$line);
             }
-            if ($this->addNewMaterialsFromArray($bom)) 
-                return $this->addBOMArray($bom);
-            else
-                throw new Exception("Failed to add new materials");
         }
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
+        if (!$this->addNewMaterialsFromArray($bom)) return false;
+        if (!$this->addBOMArray($bom)) return false;
+        if (!$this->removeDupes($this->prokey)) return false;
+        return true;
+
+
     }
 
     public function addBOMArray (Array $materials) {
@@ -72,7 +73,7 @@ class BillOfMaterials {
         try {
             $sql = 
             'INSERT INTO bom (id,prokey,qty,uid,partid)
-             SELECT :id,:prokey,:qty,:uid,id FROM material WHERE number = :num';
+                SELECT :id, :prokey, :qty, :uid, id FROM material WHERE number = :num';
             $this->dbh->beginTransaction();
             $pntr = $this->dbh->prepare($sql);
             foreach($addMaterials as $part) {
@@ -80,10 +81,10 @@ class BillOfMaterials {
                     ':id'=>uniqid(),
                     ':prokey'=>$this->prokey,
                     ':num'=>$part[0],
-                    ':qty'=>(float) $part['2'],
+                    ':qty'=>(float) $part[2],
                     ':uid'=>$this->uid
                 ];
-                if (!$pntr->execute($data)) throw new Exception("Insert failed: ".print_r($part,true));
+                if (!$pntr->execute($data)) throw new Exception(print_r($pntr->errorInfo(),true));
             }
             $this->dbh->commit();
             return true;
@@ -96,34 +97,44 @@ class BillOfMaterials {
     }
 
     public function addNewMaterialsFromArray (Array $materials) {
-        $addMaterials = [];
+        $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
+        $pntr = $this->dbh->prepare($sql);
         if (is_array($materials[0])) {
-            foreach($materials as $part) {
-                if ($this->verifyMaterialNotEntered($part[0])) array_push($addMaterials, $part);
-            }
-        }
-        elseif ($this->verifyMaterialNotEntered($materials[0])) {
-            array_push($addMaterials,$materials);
-        }
-
-        try {
-            if (!empty($addMaterials)) {
-                $sql = 'INSERT INTO material (id,number,description,uid) VALUES (:id,:number,:description,:uid)';
-                $this->dbh->beginTransaction();
-                $pntr = $this->dbh->prepare($sql);
-                foreach($addMaterials as $part) {
-                    if (!$pntr->execute([':id'=>uniqid(),':number'=>$part[0],':description'=>$part[1],':uid'=>$this->uid]))
-                        throw new Exception("Insert new material failed: ".print_r($part,true));
+            foreach($materials as &$part) {
+                if ($this->verifyMaterialNotEntered($part[0])) {
+                    $insert = [
+                        ':id'=>uniqid(),
+                        ':number'=>$part[0],
+                        ':description'=>$part[1],
+                        ':uid'=>$this->uid
+                    ];
+                    try {
+                        if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+                    }
+                    catch (Exception $e) {
+                        trigger_error($e->getMessage(),E_USER_WARNING);
+                        return false;
+                    }
                 }
-                $this->dbh->commit();
             }
             return true;
         }
-        catch (Exception $e) {
-            $this->dbh->rollBack();
-            trigger_error($e->getMessage(),E_USER_WARNING);
-            return false;
+        elseif (is_string($materials[0]) && $this->verifyMaterialNotEntered($materials[0])) {
+             $insert = [
+                ':id'=>uniqid(),
+                ':number'=>$materials[0],
+                ':description'=>$materials[1],
+                ':uid'=>$this->uid
+            ];
+            try {
+                if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            catch (Exception $e) {
+                trigger_error($e->getMessage(),E_USER_WARNING);
+                return false;
+            }
         }
+        return false;
     }
 
     /**
@@ -234,16 +245,15 @@ class BillOfMaterials {
     }
 
     protected function verifyMaterialNotEntered ($number) {
-        $sql = 'SELECT count(*) FROM material WHERE number = ?';
+        $sql = 'SELECT * FROM material WHERE number = ?';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$number])) throw new Exception("Select faile: {$sql}");
-            if ($pntr->fetch(PDO::FETCH_ASSOC)['count'] == 0) return true;
-            else return false;
+            if (!$pntr->execute([$number])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $result = empty($pntr->fetchAll(PDO::FETCH_COLUMN)) ? true : false;
+            return $result;
         }
         catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            return false;
+            trigger_error($e->getMessage(), E_USER_ERROR);
         }
     }
 
@@ -309,17 +319,108 @@ class BillOfMaterials {
                 a.partid as partid,
                 (SELECT number FROM material WHERE id = a.partid) as number,
                 (SELECT description FROM material WHERE id = a.partid) as description,
-                (SELECT SUM(qty) FROM cell_material WHERE bomid = a.id) as used,
+                (
+                    SELECT SUM(qty) 
+                    FROM cell_material
+                    INNER JOIN work_cell on work_cell.id = cell_material.cellid 
+                    WHERE bomid = a.id
+                    AND work_cell.prokey = :cell_prokey
+                ) as used,
                 a.qty as required
             FROM bom as a
-            WHERE prokey = ?
+            WHERE prokey = :prokey
             ORDER BY number ASC';
         try {
             $pntr = $this->dbh->prepare($sql);
-            if (!$pntr->execute([$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
+            if (!$pntr->execute([':prokey'=>$prokey,':cell_prokey'=>$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Rebase an existing BOM with an addendum file
+     * 
+     * @param Array $data in the form `['file'=>FileUpload Object,'prokey'=>string,'uid'=>string]
+     * @return Boolean True on success, false otherwise
+     */
+    public function rebaseExistingBOM ($data) {
+        $rebase = [];        
+        $this->prokey = $data['prokey'];
+        $this->uid = $data['uid'];
+        try {
+            $fh = fopen($data['file']->files[0]['tmp_name'],'r');
+            while(($line = fgetcsv($fh)) !== false) {
+                $line[0] = str_ireplace('-','',$line[0]);
+                $line[1] = trim($line[1]);
+                $line[2] = (float) $line[2];
+                array_push($rebase,$line);
+            }
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+
+        if (!$this->addNewMaterialsFromArray($rebase)) return false;
+        if (!$this->addBOMArray($rebase)) return false;
+        if (!$this->removeDupes($this->prokey)) return false;
+        return true;
+    }
+
+    public function removeDupes ($prokey) {
+        $sql = 'SELECT * FROM bom WHERE prokey = ? ORDER BY partid ASC';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute([$prokey])) throw new Exception(print_r($pntr->errorInfo(),true));
+            $bom = $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+        $subtends = [];
+        for($cnt = 0; $cnt < count($bom);$cnt++) {
+            if ($bom[$cnt]['partid'] == $bom[($cnt + 1)]['partid']) array_push($subtends,$bom[($cnt + 1)]);
+        }
+        $sql = 'DELETE FROM bom WHERE id = ?';
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            $this->dbh->beginTransaction();
+            foreach($subtends as $sb) {
+                if (!$pntr->execute([$sb['id']])) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            $this->dbh->commit();
+            return true;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollBack();
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
+     * Delete multiple items from BOM by ID given in an array
+     * @param Array $deletes An unindexed array containing ID's of row's to delete
+     * @return Boolean True on success, false otherwise. 
+     */
+    public function deleteFromIDArray (Array $deletes) {
+        $sql = 'DELETE FROM bom WHERE id = ?';
+        $this->dbh->beginTransaction();
+        $pntr = $this->dbh->prepare($sql);
+        try {
+            foreach($deletes as $id) {
+                if (!$pntr->execute([$id])) throw new Exception(print_r($pntr->errorInfo(),true));
+            }
+            $this->dbh->commit();
+            return true;
+        }
+        catch (Exception $e) {
+            $this->dbh->rollBack();
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
