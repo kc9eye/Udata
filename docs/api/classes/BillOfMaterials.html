@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">455</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">463</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-817439929"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-137532068"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-817439929" class="accordion-body collapse in">
+            <div id="namespace-137532068" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -240,6 +240,9 @@
                                                                     <a href="../classes/BillOfMaterials.html#method_verifyMaterialExists" class="">verifyMaterialExists()</a><br />
                                                                     <a href="../classes/BillOfMaterials.html#method_getUnassignedMaterial" class="">getUnassignedMaterial()</a><br />
                                                                     <a href="../classes/BillOfMaterials.html#method_bomAccounting" class="">bomAccounting()</a><br />
+                                                                    <a href="../classes/BillOfMaterials.html#method_rebaseExistingBOM" class="">rebaseExistingBOM()</a><br />
+                                                                    <a href="../classes/BillOfMaterials.html#method_removeDupes" class="">removeDupes()</a><br />
+                                                                    <a href="../classes/BillOfMaterials.html#method_deleteFromIDArray" class="">deleteFromIDArray()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -805,6 +808,114 @@ or false on error.</p>
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_rebaseExistingBOM" name="method_rebaseExistingBOM" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">rebaseExistingBOM()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">rebaseExistingBOM(Array  <span class="argument">$data</span>) : Boolean</pre>
+                <p><em>Rebase an existing BOM with an addendum file</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$data </td>
+                                <td><p>in the form `['file'=&gt;FileUpload Object,'prokey'=&gt;string,'uid'=&gt;string]</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_removeDupes" name="method_removeDupes" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">removeDupes()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">removeDupes(  <span class="argument">$prokey</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$prokey </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_deleteFromIDArray" name="method_deleteFromIDArray" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">deleteFromIDArray()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">deleteFromIDArray(Array  <span class="argument">$deletes</span>) : Boolean</pre>
+                <p><em>Delete multiple items from BOM by ID given in an array</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$deletes </td>
+                                <td><p>An unindexed array containing ID's of row's to delete</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Boolean
+                                            &mdash; <p>True on success, false otherwise.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                                     <div class="row-fluid">
         <div class="span8 content class">
             <a id="method_verifyMaterialNotEntered" name="method_verifyMaterialNotEntered" class="anchor"></a>
@@ -888,7 +999,7 @@ or false on error.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 6th, 2019 at 14:48.
+                    on December 23rd, 2019 at 19:15.
                 </section>
             </section>
         </section>

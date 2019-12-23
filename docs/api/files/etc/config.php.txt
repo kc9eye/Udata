@@ -26,9 +26,9 @@
  */
 $config = [
     #Database configuration options
-    'dbuser' => 'dev',                                                      #Database user for the active db
-    'dbpass' => 'MonkeyFuck34',                                               #Database users password for the active db
-    'dbpdo' => 'pgsql:host=127.0.0.1;port=5432;dbname=development;sslmode=prefer',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
+    'dbuser' => 'alpha',                                                      #Database user for the active db
+    'dbpass' => 'local',                                               #Database users password for the active db
+    'dbpdo' => 'pgsql:host=127.0.0.1;port=5432;dbname=alpha;sslmode=prefer',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
     'error-log-file-path' => 'C:/Users/mcoccc/Documents/DevOps/Projects/udata/var/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
