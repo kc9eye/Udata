@@ -394,6 +394,52 @@ class Materials {
     }
 
     /**
+     * Retrieves discrepancies by a given daterange
+     * @param String $begin The beginning date, given in ISO format
+     * @param String $end The ending date, given in ISO format
+     * @param String $type One of either 'all'|'PDN'|'PDIH'
+     * @return Array An array of results in the form 
+     * ['id'=>string,'product'=>string,'number'=>string,'description'=>string,'quantity'=>float,'date'=>string,'type'=>string],
+     * or false on error.
+     */
+    public function getDiscrepanciesByDateRange ($begin,$end,$type) {
+        $sql = 
+            "SELECT
+                id,
+                (SELECT description FROM products WHERE product_key = a.prokey) as product,
+                (SELECT number FROM material WHERE id = a.partid) as number,
+                (SELECT description FROM material WHERE id = a.partid) as description,
+                qty as quantity,
+                _date as date,
+                type
+            FROM discrepancies as a
+            WHERE _date >= :begin
+            AND _date <= :end ";
+        switch($type) {
+            case 'PDIH': 
+                $sql .= "AND type = :type";
+                $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDIH'];
+            break;
+            case 'PDN': 
+                $sql .= "AND type = :type";
+                $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDN'];
+            break;
+            default:
+                $insert = [':begin'=>$begin,':end'=>$end];
+            break;
+        }
+        try {
+            $pntr = $this->dbh->prepare($sql);
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            return $pntr->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (Excception $e) {
+            trigger_error($e->getMessage(),E_USER_WARNING);
+            return false;
+        }
+    }
+
+    /**
      * Returns the last 5 discrepancies added
      * @return Array In the form [['product'=>string,'number'=>string,'description'=>string,'quantity'=>string,'date'=>string,'type'=string],...]
      */
