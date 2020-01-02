@@ -293,7 +293,7 @@ class Employees extends Profiles {
                 ':excused'=>$data['excused'],
                 ':uid'=>$data['uid']
             ];
-            if (!$pntr->execute($insert)) throw new Exception("Update failed: {$sql}");
+            if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
         }
         catch (PDOException $e) {
