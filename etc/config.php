@@ -52,8 +52,8 @@ $config = [
     'template-root' => '/var/www/chicago/wwwroot/templates',     #Where the application templates are stored for file_get_contents
     
     #ViewMaker pagedata settings, effect how the UI looks
-    'company-name' => 'UData Production Management',
-    'company-motto' => 'Your slogan here',
+    'company-name' => 'Chicago Assembly Division',
+    'company-motto' => 'Making Uhauls finest and safest',
     'home-name' => 'Safety',
     'theme' => 'dark', #Not implemented as yet
 
