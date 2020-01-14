@@ -206,6 +206,7 @@ function displayPastReview ($revid) {
     $view->h1($review->getFullName());
     $view->h2("<small>Began:</small> ".$review->getStartDate());
     $view->h2("<small>Ended:</small> ".$review->getEndDate());
+    $view->bold("The following data represents the previous 6 months prior to the above begin date.");
 
     //Training
     $view->hr();
@@ -337,6 +338,7 @@ function displayPrintReview ($revid) {
     echo "<li><strong>Attitude</strong>: <i>Presents a positive attitude; demonstrates honesty and integrity; polite and approachable; works well with others; is team orientated.</i></li>";
     echo "<li><strong>Housekeeping</strong>: <i>5S orientated; makes effort to maintain a safe and clean work area, on a consistent basis.</i></li>";
     echo "</ol>";
+    echo "<p>The following data represents the previous 6 months prior to the above begin date.</p>";
     echo "</div>";
     echo "<div class='well'>";
     echo "<h3>Training</h3>";
