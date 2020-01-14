@@ -31,14 +31,14 @@ $config = [
     'dbpdo' => 'pgsql:host=localhost;port=5432;dbname=development;sslmode=prefer',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
-    'error-log-file-path' => '/var/www/developmentvar/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
+    'error-log-file-path' => '/var/www/development/var/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
     'error-support-link' => 'https://github.com/kc9eye/UData/issues', #A link to bug/issue reporting infrastructure, users will see this.
 
     #PHPMailer configuration
     'mailer-type' => 'SMTP',            #The mailer to use, SMTP (sends as SMTP), Mail (sends with PHP mail function), Sendmail (uses host sendmail server)
     'mailer-default-from-addr' => 'noreply@nowhere.com',   #The address the server will send mail as if not defined at send time
     'mailer-default-from-name' => 'UData Server',   #The name the server will send mail as if not defined at send time
-    'mailer-host' => 'smtp.your.mailserver',                #comma separated list is acceptable in order of percedence
+    'mailer-host' => 'smtp.uhi.amerco',                #comma separated list is acceptable in order of percedence
     'mailer-SMTPAuth' => false,         #If this is set to true then the security type should also be set
     'mailer-username' => '',            #Required if above is true
     'mailer-password' => '',            #Same as above
