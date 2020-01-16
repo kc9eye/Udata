@@ -33,7 +33,7 @@
      }
      
      div {
-         page-break-inside: avoid;
+         /* page-break-inside: avoid; //For some reason this borks standard page prints.*/
          page-break-before: auto;
          page-break-after: auto;
      }
