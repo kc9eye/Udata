@@ -296,7 +296,7 @@ function displayPrintReview ($revid) {
     $review = new Review($server->pdo,$revid);
     echo "<head>";
     echo "<title>Review: ".$review->getFullName()."</title>";
-    echo "<link type='text/css' rel='stylesheet' href='{$server->config['application-root']}/wwwroot/css/print.css' />";
+    echo "<link type='text/css' rel='stylesheet' href='{$server->config['application-root']}/wwwroot/css/reportprint.css' />";
     echo "<script>window.print();</script>";
     echo "<style>";
     echo "div.well {";
