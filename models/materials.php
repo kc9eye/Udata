@@ -415,7 +415,7 @@ class Materials {
             FROM discrepancies as a
             WHERE _date >= :begin
             AND _date <= :end 
-            ORDER by number";
+            ORDER by partid";
         switch($type) {
             case 'PDIH': 
                 $sql .= " AND type = :type";
