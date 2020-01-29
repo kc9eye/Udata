@@ -418,11 +418,11 @@ class Materials {
             ORDER by number";
         switch($type) {
             case 'PDIH': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDIH'];
             break;
             case 'PDN': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDN'];
             break;
             default:
