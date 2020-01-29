@@ -428,6 +428,7 @@ class Materials {
                 $insert = [':begin'=>$begin,':end'=>$end];
             break;
         }
+        $sql .= " ORDER BY number";
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
