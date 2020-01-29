@@ -415,14 +415,14 @@ class Materials {
             FROM discrepancies as a
             WHERE _date >= :begin
             AND _date <= :end 
-            ORDER by number";
+            ORDER by partid";
         switch($type) {
             case 'PDIH': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDIH'];
             break;
             case 'PDN': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDN'];
             break;
             default:
