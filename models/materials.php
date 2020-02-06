@@ -414,21 +414,21 @@ class Materials {
                 type
             FROM discrepancies as a
             WHERE _date >= :begin
-            AND _date <= :end 
-            ORDER by number";
+            AND _date <= :end";
         switch($type) {
             case 'PDIH': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDIH'];
             break;
             case 'PDN': 
-                $sql .= "AND type = :type";
+                $sql .= " AND type = :type";
                 $insert = [':begin'=>$begin,':end'=>$end,':type'=>'PDN'];
             break;
             default:
                 $insert = [':begin'=>$begin,':end'=>$end];
             break;
         }
+        $sql .= " ORDER BY number";
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
