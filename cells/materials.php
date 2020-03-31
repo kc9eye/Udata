@@ -79,7 +79,7 @@ function main () {
     else {
         $view->responsiveTableStart(["Quantity","Number","Description"]);
         foreach($cell->Material as $row) {
-            echo "<tr><td>{$row['qty']}</td><td>{$row['number']}</td><td>{$row['descpription']}</td></tr>";
+            echo "<tr><td>{$row['qty']}</td><td>{$row['number']}</td><td>{$row['description']}</td></tr>";
         }
         $view->responsiveTableClose();
     }
