@@ -31,7 +31,7 @@ $sql = [
         uid character varying NOT NULL,
         _date timestamp with time zone NOT NULL DEFAULT now(),
         PRIMARY KEY (id)
-    );',
+    );'
  ];
 
 $inserts = [
