@@ -263,9 +263,10 @@ class Shipments {
      * Updates a shipment comments field given the appropriate data
      * @param Array $data A data array in the form 
      * ['uid'=>string,'shipid'=>string,'comment'=>string]
+     * @param Notification $notify The notification class object
      * @return Boolean True on success, false otherwise.
      */
-    public function amendSHipmentComments (Array $data) {
+    public function amendSHipmentComments (Array $data,Notification $notify) {
         $sql = 'UPDATE shipment SET uid = :uid, comments = :comment, _date = now() WHERE id = :id';
         $insert = [
             ':id'=>$data['shipid'],
@@ -275,6 +276,11 @@ class Shipments {
         try {
             $pntr = $this->dbh->prepare($sql);
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
+            $body = $notify->mailer->wrapInTemplate(
+                "shippingcomment.html",
+                "<a href='{$notify->mailer->config['application-root']}/material/shipping?view_shipment&shipid={$data['shipid']}'>View Comment</a>"
+            );
+            $notify->notify("Shipping Comment","New Shipping Comment",$body);
             return true;
         }
         catch (Exception $e) {

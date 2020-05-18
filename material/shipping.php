@@ -88,7 +88,7 @@ if (!empty($_REQUEST['action'])) {
             $server->userMustHavePermission("editShippingLog");
             $server->processingDialog(
                 [new SHipments($server->pdo),"amendShipmentComments"],
-                [$_REQUEST],
+                [$_REQUEST,new Notification($server->pdo,$server->mailer)],
                 $server->config['application-root'].'/material/shipping?action=view_shipment&shipid='.$_REQUEST['shipid']
             );
         break;
