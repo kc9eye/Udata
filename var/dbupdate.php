@@ -41,6 +41,7 @@ $inserts = [
         [':id'=>uniqid(),':name'=>"shipEquipment"]
     ],
     'INSERT INTO notifications VALUES (:id,:descr,:type,now(),:uid)'=>[
-        [':id'=>uniqid(),':descr'=>"Shipment Ready",':type'=>"EMAIL",':uid'=>'5bc4c8a517238']
+        [':id'=>uniqid(),':descr'=>"Shipment Ready",':type'=>"EMAIL",':uid'=>'5bc4c8a517238'],
+        [':id'=>uniqid(),':descr'=>"Shipping Comment",':type'=>"EMAIL",':uid'=>'5bc4b8a517238']
     ]
 ];
