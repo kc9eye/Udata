@@ -26,18 +26,18 @@
  */
 $config = [
     #Database configuration options
-    'dbuser' => 'developer',                                                      #Database user for the active db
-    'dbpass' => 'testing',                                               #Database users password for the active db
-    'dbpdo' => 'pgsql:host=localhost;port=5432;dbname=development;sslmode=prefer',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
+    'dbuser' => 'dev',                                                      #Database user for the active db
+    'dbpass' => 'localalpha',                                               #Database users password for the active db
+    'dbpdo' => 'pgsql:host=172.18.0.2;port=5432;dbname=development;sslmode=prefer',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
-    'error-log-file-path' => '/var/www/development/var/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
+    'error-log-file-path' => '/var/www/html/var/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
     'error-support-link' => 'https://github.com/kc9eye/UData/issues', #A link to bug/issue reporting infrastructure, users will see this.
 
     #PHPMailer configuration
     'mailer-type' => 'SMTP',            #The mailer to use, SMTP (sends as SMTP), Mail (sends with PHP mail function), Sendmail (uses host sendmail server)
-    'mailer-default-from-addr' => '',   #The address the server will send mail as if not defined at send time
-    'mailer-default-from-name' => 'UData Server',   #The name the server will send mail as if not defined at send time
+    'mailer-default-from-addr' => 'udata@noreply.net',   #The address the server will send mail as if not defined at send time
+    'mailer-default-from-name' => 'UData Alpha Dev',   #The name the server will send mail as if not defined at send time
     'mailer-host' => 'smtp.your.mailserver',                #comma separated list is acceptable in order of percedence
     'mailer-SMTPAuth' => false,         #If this is set to true then the security type should also be set
     'mailer-username' => '',            #Required if above is true
@@ -47,13 +47,13 @@ $config = [
     'mailer-custom-opts' => [],         #Custom SMTP options you may need to set for the mailer as an array
 
     #Application settings dependant on server settings
-    'application-root' => 'http://10.59.27.133',         #The applications URL (Depends on how to machine is accessed what this should be.)
-    'data-root' => '/var/www/development/data/raw',                  #Where data files are going to be stored. SDS files, images, etc... Must be writtable by the server process
-    'template-root' => '/var/www/development/wwwroot/templates',     #Where the application templates are stored for file_get_contents
+    'application-root' => 'http://127.0.0.1:1500',         #The applications URL (Depends on how to machine is accessed what this should be.)
+    'data-root' => '/var/www/html/data/raw',                  #Where data files are going to be stored. SDS files, images, etc... Must be writtable by the server process
+    'template-root' => '/var/www/html/wwwroot/templates',     #Where the application templates are stored for file_get_contents
     
     #ViewMaker pagedata settings, effect how the UI looks
-    'company-name' => 'UData Testing',
-    'company-motto' => 'The next BIG thing',
+    'company-name' => 'UData Aplpha',
+    'company-motto' => 'The next BIG BROKEN thing',
     'home-name' => 'Safety',
     'theme' => 'dark', #Not implemented as yet
 
