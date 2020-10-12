@@ -53,7 +53,7 @@ $config = [
     
     #ViewMaker pagedata settings, effect how the UI looks
     'company-name' => 'UData',
-    'company-motto' => '',
+    'company-motto' => 'The next big thing!',
     'home-name' => 'Safety',
     'theme' => 'dark', #Not implemented as yet
 
