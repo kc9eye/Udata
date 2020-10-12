@@ -26,9 +26,9 @@
  */
 $config = [
     #Database configuration options
-    'dbuser' => '',                                                      #Database user for the active db
-    'dbpass' => '',                                               #Database users password for the active db
-    'dbpdo' => '',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
+    'dbuser' => 'developer',                                                      #Database user for the active db
+    'dbpass' => 'localdev',                                               #Database users password for the active db
+    'dbpdo' => 'pgsql:host=localhost;port=5432;sslmode=prefer;dbname=development',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
     'error-log-file-path' => 'error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
@@ -47,7 +47,7 @@ $config = [
     'mailer-custom-opts' => [],         #Custom SMTP options you may need to set for the mailer as an array
 
     #Application settings dependant on server settings
-    'application-root' => '',         #The applications URL (Depends on how to machine is accessed what this should be.)
+    'application-root' => 'http://10.243.140.10',         #The applications URL (Depends on how to machine is accessed what this should be.)
     'data-root' => 'data/raw',                  #Where data files are going to be stored. SDS files, images, etc... Must be writtable by the server process
     'template-root' => 'wwwroot/templates',     #Where the application templates are stored for file_get_contents
     
