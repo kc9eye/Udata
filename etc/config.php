@@ -27,7 +27,7 @@
 $config = [
     #Database configuration options
     'dbuser' => 'developer',                                                      #Database user for the active db
-    'dbpass' => 'localdev',                                               #Database users password for the active db
+    'dbpass' => 'localalpha',                                               #Database users password for the active db
     'dbpdo' => 'pgsql:host=localhost;port=5432;sslmode=prefer;dbname=development',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
