@@ -31,8 +31,8 @@ $config = [
     'dbpdo' => 'pgsql:host=localhost;port=5432;sslmode=prefer;dbname=development',  #PDO database connection string 'dbdriver:host=mydbhost;port=mydbport;dbnam=mydbname;[sslmode=mydbencryption...]
 
     #Errorhandler config options
-    'error-log-file-path' => 'error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
-    'error-support-link' => '', #A link to bug/issue reporting infrastructure, users will see this.
+    'error-log-file-path' => '/var/www/development/var/error_log.xml',    #Where to save th error log file, hard disk location (URL not supported at this time)
+    'error-support-link' => 'https://github.com/kc9eye/UData/issues', #A link to bug/issue reporting infrastructure, users will see this.
 
     #PHPMailer configuration
     'mailer-type' => 'SMTP',            #The mailer to use, SMTP (sends as SMTP), Mail (sends with PHP mail function), Sendmail (uses host sendmail server)
