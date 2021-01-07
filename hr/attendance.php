@@ -23,11 +23,12 @@ if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
         case 'add':
             $handler = new Employees($server->pdo);
-        $server->processingDialog(
-            [$handler,'addAttendanceRecord'],
-            [$_REQUEST],
-            $server->config['application-root'].'/hr/attendance?id='.$_REQUEST['eid']
-        );
+            // $server->getDebugViewer(var_export($handler->addAttendanceRecord($_REQUEST),true));
+            $server->processingDialog(
+                [$handler,'addAttendanceRecord'],
+                [$_REQUEST],
+                $server->config['application-root'].'/hr/attendance?id='.$_REQUEST['eid']
+            );
     break;
         case 'edit':
             editAttendanceDisplay();
