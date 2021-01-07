@@ -272,6 +272,7 @@ class Employees extends Profiles {
     }
 
     private function calculateTimePoints(Array $data) {
+        if ($data['nopoints'] == 'true') return 0;
         if ($data['congruent']) {
             if ($data['notified'] == 'true') return 0;
             else {
