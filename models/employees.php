@@ -182,7 +182,8 @@ class Employees extends Profiles {
             :leave_time::time,
             :description,
             :excused::boolean,
-            :uid,now(),
+            :uid,
+            now(),
             :points
         )';
         try {
@@ -221,7 +222,7 @@ class Employees extends Profiles {
             }
             elseif (!empty($data['begin_date'])) {
                 //for points calucation
-                $data['congurent'] = false;
+                $data['congruent'] = false;
 
                 $insert = [
                     ':id'=>uniqid(),
@@ -235,7 +236,7 @@ class Employees extends Profiles {
                     ':excused'=>$data['excused'],
                     ':points'=>$this->calculateTimePoints($data)
                 ];
-                if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
+                if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
                 return true;
             }
             elseif (!empty($data['end_date'])) {
@@ -254,7 +255,7 @@ class Employees extends Profiles {
                     ':excused'=>$data['excused'],
                     ':points'=>$this->calculateTimePoints($data)
                 ];
-                if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
+                if (!$pntr->execute($insert)) throw new Exception("Insert failed: {$sql}");
                 return true;
             }
             else {
@@ -269,6 +270,7 @@ class Employees extends Profiles {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
+        return false;
     }
 
     private function calculateTimePoints(Array $data) {
@@ -286,7 +288,7 @@ class Employees extends Profiles {
         else {
             $points = 0;
             if ($data['absent'] != 'true') {
-                if ($data['notified']) {
+                if ($data['notified'] == 'true') {
                     return 0;
                 }
                 else {
