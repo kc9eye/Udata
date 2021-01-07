@@ -174,8 +174,17 @@ class Employees extends Profiles {
      */
     public function addAttendanceRecord (Array $data) {
         $sql = 'INSERT INTO missed_time VALUES (
-            :id,:eid,:occ_date,:absent::boolean,:arrive_time::time,:leave_time::time,:description,:excused::boolean,:uid,now()
-            )';
+            :id,
+            :eid,
+            :occ_date,
+            :absent::boolean,
+            :arrive_time::time,
+            :leave_time::time,
+            :description,
+            :excused::boolean,
+            :uid,now(),
+            :points
+        )';
         try {
             $pntr = $this->dbh->prepare($sql);
             //For issue #57
@@ -185,6 +194,12 @@ class Employees extends Profiles {
                 $end = $end->modify( '+1 day' );
                 $interval = new DateInterval('P1D');
                 $period = new DatePeriod($begin,$interval,$end);
+
+                //for points calculation
+                $data['congruent'] = true;
+                $data['period'] = $period;
+                $data['points'] = $this->calculateTimePoints($data);
+
                 $this->dbh->beginTransaction();
                 foreach($period as $date) {
                     $insert = [
@@ -196,7 +211,8 @@ class Employees extends Profiles {
                         ':absent'=>$data['absent'],
                         ':description'=>$data['description'],
                         ':uid'=>$data['uid'],
-                        ':excused'=>$data['excused']
+                        ':excused'=>$data['excused'],
+                        ':points'=>$data['points']
                     ];
                     $pntr->execute($insert);
                 }
@@ -204,6 +220,9 @@ class Employees extends Profiles {
                 return true;
             }
             elseif (!empty($data['begin_date'])) {
+                //for points calucation
+                $data['congurent'] = false;
+
                 $insert = [
                     ':id'=>uniqid(),
                     ':eid'=>$data['eid'],
@@ -213,12 +232,16 @@ class Employees extends Profiles {
                     ':absent'=>$data['absent'],
                     ':description'=>$data['description'],
                     ':uid'=>$data['uid'],
-                    ':excused'=>$data['excused']
+                    ':excused'=>$data['excused'],
+                    ':points'=>$this->calculateTimePoints($data)
                 ];
                 if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
                 return true;
             }
             elseif (!empty($data['end_date'])) {
+                //for points calculation
+
+                $data['congruent'] = false;
                 $insert = [
                     ':id'=>uniqid(),
                     ':eid'=>$data['eid'],
@@ -228,7 +251,8 @@ class Employees extends Profiles {
                     ':absent'=>$data['absent'],
                     ':description'=>$data['description'],
                     ':uid'=>$data['uid'],
-                    ':excused'=>$data['excused']
+                    ':excused'=>$data['excused'],
+                    ':points'=>$this->calculateTimePoints($data)
                 ];
                 if (!$pntr->execute($insert)) throw new Exception("Insert faile: {$sql}");
                 return true;
@@ -244,6 +268,36 @@ class Employees extends Profiles {
         catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
+        }
+    }
+
+    private function calculateTimePoints(Array $data) {
+        if ($data['congruent']) {
+            if ($data['notified'] == 'true') return 0;
+            else {
+                $count = 0;
+                foreach($data['period'] as $date) {
+                    $count++;
+                }
+                return 1/$count;
+            }
+        }
+        else {
+            $points = 0;
+            if ($data['absent'] != 'true') {
+                if ($data['notified']) {
+                    return 0;
+                }
+                else {
+                    if ($data['arrive_time'] != '00:00') $points += 0.5;
+                    if ($data['leave_time'] != '00:00') $points += 0.5;
+                }                 
+            }
+            else {
+                if ($data['notified'] == 'false') $points += 2;
+                else $points += 1;
+            }
+            return $points;
         }
     }
 
@@ -279,7 +333,8 @@ class Employees extends Profiles {
         $sql = 
             'UPDATE missed_time 
              SET occ_date=:occ_date,absent=:absent::boolean,arrive_time=:arrive_time::time,
-             leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid
+             leave_time=:leave_time::time,description=:description,excused=:excused::boolean,uid=:uid,
+             points=:points
              WHERE id = :id';
         try {
             $pntr = $this->dbh->prepare($sql);
@@ -291,7 +346,8 @@ class Employees extends Profiles {
                 ':leave_time'=>$data['leave_time'],
                 ':description'=>$data['description'],
                 ':excused'=>$data['excused'],
-                ':uid'=>$data['uid']
+                ':uid'=>$data['uid'],
+                ':points'=>$data['points']
             ];
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
@@ -425,7 +481,7 @@ class Employees extends Profiles {
             if (!$pntr->execute([$eid])) throw new Exception(print_r($pntr->errorInfo(),true));
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch (Excecption $e) {
+        catch (Exception $e) {
             trigger_error($e->getMessage(),E_USER_WARNING);
             return false;
         }
