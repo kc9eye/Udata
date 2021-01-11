@@ -276,13 +276,15 @@ class Employees extends Profiles {
     private function calculateTimePoints(Array $data) {
         if ($data['nopoints'] == 'true') return 0;
         elseif ($data['congruent']) {
-            if ($data['absent'] == 'true') return 0;
-            elseif ($data['nocall'] == 'true') {
+            if ($data['nocall'] == 'true'){
                 $count = 0;
                 foreach($data['period'] as $date) {
                     $count++;
                 }
                 return 1/$count;
+            }
+            else {
+                return 0;
             }
         }
         else {
