@@ -94,10 +94,10 @@ function attendanceDisplay () {
     );
     $form->inputCapture('arrive_time','Time Arrived','00:00');
     $form->inputCapture('leave_time','Time Left','00:00');
-    $form->checkBox('absent',['Absent','Yes'],'true',false,"Effects points calculation.",'false');
-    $form->checkBox('notified',['Notified','Yes'],'true',false,"Effects points calculation.",'false');
+    $form->checkBox('absent',['Absent','Yes'],'true',false,null,'false');
+    $form->checkBox('nocall',['No Call/Show','Not Notified'],'true',false,null,'false');
     $form->checkBox('nopoints',['Excused','Yes'],'true',false,'No points will be calculated.','false');
-    $form->checkBox('excused',['Perfect Attendance','Yes'],'true',false,"Does NOT effect points calculation.",'false');
+    $form->checkBox('excused',['Perfect Attendance','Yes'],'true',false,null,'false');
     $form->textArea('description',null,'',true);
     $form->submitForm('Add',false,$view->PageData['approot'].'/hr/viewemployee?id='.$_REQUEST['id']);
     $form->endForm();

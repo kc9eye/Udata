@@ -275,9 +275,9 @@ class Employees extends Profiles {
 
     private function calculateTimePoints(Array $data) {
         if ($data['nopoints'] == 'true') return 0;
-        if ($data['congruent']) {
-            if ($data['notified'] == 'true') return 0;
-            else {
+        elseif ($data['congruent']) {
+            if ($data['absent'] == 'true') return 0;
+            elseif ($data['nocall'] == 'true') {
                 $count = 0;
                 foreach($data['period'] as $date) {
                     $count++;
@@ -287,18 +287,12 @@ class Employees extends Profiles {
         }
         else {
             $points = 0;
-            if ($data['absent'] != 'true') {
-                if ($data['notified'] == 'true') {
-                    return 0;
-                }
-                else {
-                    if ($data['arrive_time'] != '00:00') $points += 0.5;
-                    if ($data['leave_time'] != '00:00') $points += 0.5;
-                }                 
+            if ($data['absent'] == 'true') {
+                $points += 1;
+                if ($data['nocall'] == 'true') $points += 1;
             }
-            else {
-                if ($data['notified'] == 'false') $points += 2;
-                else $points += 1;
+            elseif ($data['arrive_time'] != "00:00"||$data['leave_time'] != "00:00") {
+                $points += 0.5;
             }
             return $points;
         }
@@ -341,6 +335,7 @@ class Employees extends Profiles {
              WHERE id = :id';
         try {
             $pntr = $this->dbh->prepare($sql);
+            $points = (is_null($data['points'])||empty($data['points'])||$data['points'] == "") ? 0 : $data['points'];
             $insert = [
                 ':id'=> $data['id'],
                 ':occ_date'=>$data['occ_date'],
@@ -350,7 +345,7 @@ class Employees extends Profiles {
                 ':description'=>$data['description'],
                 ':excused'=>$data['excused'],
                 ':uid'=>$data['uid'],
-                ':points'=>$data['points']
+                ':points'=>$points
             ];
             if (!$pntr->execute($insert)) throw new Exception(print_r($pntr->errorInfo(),true));
             return true;
