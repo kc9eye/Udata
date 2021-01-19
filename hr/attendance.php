@@ -196,9 +196,9 @@ function printDisplay () {
     echo "<tr><th>Date</th><th>Arrived Late</th><th>Left Early</th><th>Absent</th><th>Excused</th><th>Reason</th></tr>\n";
     foreach($emp->Attendance as $row) {
         $absent = ($row['absent'] == 'true') ? 'Yes' : 'No';
-        $excused = ($row['excused'] == 'true') ? 'Yes' : 'No';
+        //$excused = ($row['excused'] == 'true') ? 'Yes' : 'No';
         echo "<tr><td>{$row['occ_date']}</td><td>{$row['arrive_time']}</td><td>{$row['leave_time']}</td>";
-        echo "<td>{$absent}</td><td>{$excused}</td><td>{$row['description']}</td>";
+        echo "<td>{$absent}</td><td>{$row['description']}</td><td>{$row['points']}</td>";
         echo "</tr>\n";
     }
     echo "</table>\n";
