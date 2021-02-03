@@ -25,6 +25,14 @@ if (!empty($_REQUEST['action'])) {
             $sds = new SDSHandler($server->pdo,$server->config['data-root']);
             displaySearchResults($sds->searchSDS($_REQUEST['sds_search']));
         break;
+        case 'delete':
+            $sds = new SDSHandler($server->pdo,$server->config['data-root']);
+            $server->processingDialog(
+                [$sds,"deleteSDS"],
+                [$_REQUEST['id'].":".$_REQUEST['fid']],
+                $server->config['application-root']."/safety/main"
+            );
+        break;
         default: main();
     }
 }
@@ -74,10 +82,20 @@ function displaySearchResults ($results) {
     $view->h2("Search Results");
     if (empty($results)) $view->bold("Nothing Found");
     else {
-        $view->responsiveTableStart(['Product','Distributor']);
+        $cols = ['Product','Distributor'];
+        if ($server->checkPermission('editSDS')) {
+            array_push($cols,'Delete');
+            $edit = true;
+        }
+        $view->responsiveTableStart($cols);
         foreach($results as $row) {
             echo "<tr><td><a href='{$view->PageData['approot']}/data/files?dis=inline&file=".urlencode($row['file'])."' download='{$row['file']}'>";
-            echo "{$row['name']}</a></td><td>{$row['dist']}</td></tr>";
+            echo "{$row['name']}</a></td><td>{$row['dist']}</td>";
+            if ($edit)
+            {                
+                echo "<td>".$view->trashBtnSm("?action=delete&id={$row['id']}&fid={$row['fid']}",true)."</td>";
+            }
+            echo "</tr>";
         }
         $view->responsiveTableClose();
     }
