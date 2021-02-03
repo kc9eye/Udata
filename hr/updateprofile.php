@@ -22,7 +22,7 @@ $server->userMustHavePermission('addNewProfile');
 if (!empty($_REQUEST['action'])) {
     switch($_REQUEST['action']) {
         case 'update': handleData(); break;
-        default: editFormDisplay(); break;
+        default: editProfileDisplay(); break;
     }
 }
 else {

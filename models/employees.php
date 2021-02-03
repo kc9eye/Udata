@@ -323,7 +323,7 @@ class Employees extends Profiles {
             return $pntr->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (Exception $e) {
-            trigger_error($e->getMessgae(),E_USER_WARNING);
+            trigger_error($e->getMessage(),E_USER_WARNING);
             return [];
         }
     }
