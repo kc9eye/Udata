@@ -25,7 +25,7 @@ if (!empty($_REQUEST['action'])) {
             $sds = new SDSHandler($server->pdo,$server->config['data-root']);
             displaySearchResults($sds->searchSDS($_REQUEST['sds_search']));
         break;
-        case 'delete':
+        case 'rem':
             $sds = new SDSHandler($server->pdo,$server->config['data-root']);
             $server->processingDialog(
                 [$sds,"deleteSDS"],
@@ -64,7 +64,7 @@ function main () {
     foreach($sds->latestAdded() as $row) {
         echo "<tr><td><a href='{$view->PageData['approot']}/data/files?dis=inline&file=".urlencode($row['file'])."' download='{$row['file']}'>";
         echo "{$row['name']}</a></td><td>{$row['dist']}</td>";
-        if ($edit) echo "<td>".$view->trashBtnSm("?action=delete&id={$row['id']}&fid={$row['fid']}",true)."</td>";
+        if ($edit) echo "<td>".$view->trashBtnSm("/safety/main?action=rem&id={$row['id']}&fid={$row['fid']}",true)."</td>";
         echo "</tr>";
     }
     $view->responsiveTableClose();
@@ -93,7 +93,7 @@ function displaySearchResults ($results) {
             echo "{$row['name']}</a></td><td>{$row['dist']}</td>";
             if ($edit)
             {                
-                echo "<td>".$view->trashBtnSm("?action=delete&id={$row['id']}&fid={$row['fid']}",true)."</td>";
+                echo "<td>".$view->trashBtnSm("/safety/main?action=rem&id={$row['id']}&fid={$row['fid']}",true)."</td>";
             }
             echo "</tr>";
         }
