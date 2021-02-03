@@ -55,6 +55,7 @@ function editProfileDisplay () {
         ['Seasonal','Seasonal'],
         ['Temporary','Temporary']
     ],true);
+    $form->inputCapture('smid','SMID',$emp->Employee['smid'],true);
     $form->inputCapture('first','First Name',$emp->Profile['first'],true);
     $form->inputCapture('middle','Middle/Int.',$emp->Profile['middle']);
     $form->inputCapture('last','Last Name',$emp->Profile['last'], true);
